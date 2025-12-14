@@ -1,0 +1,47 @@
+	; Module start
+	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
+	.compiler_invocation	"ctc -f cc764a --dep-file=Libraries/iLLD/TC38A/Tricore/_Impl/IfxSent_cfg.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1 -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Configurations -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o Libraries/iLLD/TC38A/Tricore/_Impl/IfxSent_cfg.src ../Libraries/iLLD/TC38A/Tricore/_Impl/IfxSent_cfg.c"
+	.compiler_name		"ctc"
+	;source	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxSent_cfg.c'
+
+	
+$TC162
+	
+	.sdecl	'.debug_info',debug
+	.sect	'.debug_info'
+.L3:
+	.word	294
+	.half	3
+	.word	.L4
+	.byte	4
+.L2:
+	.byte	1
+	.byte	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxSent_cfg.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
+	.byte	12,1
+	.word	.L5
+	.byte	2,1,3
+	.word	272
+	.byte	4
+	.byte	'__codeptr',0,1,1,1
+	.word	274
+	.byte	0
+	.sdecl	'.debug_abbrev',debug
+	.sect	'.debug_abbrev'
+.L4:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,16,6,0,0,2,21,0,54,15,0,0,3,15,0,73,19,0,0,4,22,0,3,8,58,15,59,15
+	.byte	57,15,73,19,0,0,0
+	.sdecl	'.debug_line',debug
+	.sect	'.debug_line'
+.L5:
+	.word	.L7-.L6
+.L6:
+	.half	3
+	.word	.L9-.L8
+.L8:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxSent_cfg.c',0,0,0,0,0
+.L9:
+.L7:
+	; Module end
