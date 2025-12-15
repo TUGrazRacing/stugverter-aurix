@@ -42,6 +42,7 @@
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
 #include "Bsp.h"
+#include "lut.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -68,8 +69,8 @@ void core0_main(void)
     //Ifx_TickTime ticksFor500ms = IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME);
 
     /* Initialize GTM ATOM module */
+    FOC_CalculateSinCosLut();
     initGtmAtom3phInv();
-    
     while(1)
     {
 

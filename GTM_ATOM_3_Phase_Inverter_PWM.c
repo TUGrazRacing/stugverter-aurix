@@ -28,11 +28,15 @@
 /*********************************************************************************************************************/
 /*-----------------------------------------------------Includes------------------------------------------------------*/
 /*********************************************************************************************************************/
+#include <foc_math.h>
 #include "GTM_ATOM_3_Phase_Inverter_PWM.h"
 #include "Ifx_Types.h"
 #include "IfxGtm_Pwm.h"
 #include "IfxPort.h"
 #include "IfxPort_Pinmap.h"
+#include "math.h"
+#include "foc_math.h"
+#include "lut.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -78,7 +82,6 @@ IFX_STATIC GtmAtom3phInv g_gtmAtom3phInv;
 /*********************************************************************************************************************/
 /* Macro to define the Interrupt Service Routine. */
 IFX_INTERRUPT(interruptGtmAtom, 0, ISR_PRIORITY_ATOM);
-
 /* Interrupt Service Routine of the ATOM */
 void interruptGtmAtom(void)
 {
@@ -236,26 +239,57 @@ void initGtmAtom3phInv(void)
     IfxPort_setPinModeOutput(DEBUG_PIN, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_general);   /* Set pin mode         */
 }
 
+#define FOC_LOOP_PERIOD_S   (1.0f / PWM_FREQUENCY) // 1 / 100kHz = 10 us
+
+AlphaBeta_t V_ab_stat; // Stationary Voltage Vector
+DQ_t V_dq_rot;         // Rotating Voltage Reference (Control Output)
+ThreePhase_t V_abc_duty; // Final normalized Duty Cycles (0.0 to 1.0)
+
+/* Global FOC State Variables */
+float32 g_electricalAngle = 0.0f; // Global angle state
+float32 g_omega = 2.0f * 3.14159f * 10.0f; // Target Electrical Speed (10Hz)
+float32 g_Vq_ref = 0.5f; // Target Q-axis voltage (Torque proxy)
+float32 g_Vd_ref = 0.0f; // Target D-axis voltage (Flux control, usually zero)
 /* This function update duty cycles */
 void updateGtmAtom3phInvDuty(void)
 {
-    g_gtmAtom3phInv.dutyCycles[0] += PHASE_DUTY_STEP;                       /* Increment PWM duty cycle of phase U   */
-    g_gtmAtom3phInv.dutyCycles[1] += PHASE_DUTY_STEP;                       /* Increment PWM duty cycle of phase V   */
-    g_gtmAtom3phInv.dutyCycles[2] += PHASE_DUTY_STEP;                       /* Increment PWM duty cycle of phase W   */
+    float32 sinTheta, cosTheta;
 
-    if((g_gtmAtom3phInv.dutyCycles[0] + PHASE_DUTY_STEP) >= 100)
-    {
-        g_gtmAtom3phInv.dutyCycles[0] = 0;                                 /* Set duty to zero                       */
-    }
-    if((g_gtmAtom3phInv.dutyCycles[1] + PHASE_DUTY_STEP) >= 100)
-    {
-        g_gtmAtom3phInv.dutyCycles[1] = 0;                                 /* Set duty to zero                       */
-    }
-    if((g_gtmAtom3phInv.dutyCycles[2] + PHASE_DUTY_STEP) >= 100)
-    {
-        g_gtmAtom3phInv.dutyCycles[2] = 0;                                  /* Set duty to zero                      */
-    }
+    // --- 1. OPEN LOOP ANGLE ESTIMATION ---
+    // Increment angle based on target speed (g_omega) and loop time
+    g_electricalAngle += (g_omega * FOC_LOOP_PERIOD_S);
 
-    /* Update duty of all configured channels to requested values immediately */
+    // Wrap angle [0, 2*PI]
+    while (g_electricalAngle >= TWO_PI) g_electricalAngle -= TWO_PI;
+
+    // --- 2. Trigonometric Lookup/Calculation ---
+    // In open loop, only the forward path (InvPark) is needed, but we keep the
+    // feedback path functions for completeness if current sensing were added.
+    FOC_GetSinCos_LUT(g_electricalAngle, &sinTheta, &cosTheta);
+
+    // --- 3. OPEN LOOP CONTROL REFERENCE ---
+    // Fixed D/Q reference voltages (this replaces the PI Controllers)
+    V_dq_rot.d = g_Vd_ref;
+    V_dq_rot.q = g_Vq_ref;
+
+    // --- 4. Inverse Park Transform (d/q -> alpha/beta) ---
+    FOC_InvParkTransform(&V_dq_rot, &V_ab_stat, sinTheta, cosTheta);
+
+    // --- 5. SVPWM (alpha/beta -> 3-phase duty cycles) ---
+    // The output V_abc_duty is now normalized from 0.0 to 1.0
+    FOC_SVPWM(&V_ab_stat, &V_abc_duty);
+
+    // --- 6. Update GTM Duty Cycles (Scale 0.0-1.0 to 0.0-100.0) ---
+    // The IfxGtm_Pwm driver expects duty cycles in percentage (0.0 to 100.0)
+    g_gtmAtom3phInv.dutyCycles[1] = V_abc_duty.a * 100.0f; // Phase U (Channel 1 in your init)
+    g_gtmAtom3phInv.dutyCycles[0] = V_abc_duty.b * 100.0f; // Phase V (Channel 0 in your init)
+    g_gtmAtom3phInv.dutyCycles[2] = V_abc_duty.c * 100.0f; // Phase W (Channel 2 in your init)
+
+    // --- 7. Update Hardware ---
     IfxGtm_Pwm_updateChannelsDutyImmediate(&g_gtmAtom3phInv.pwm, (float32*)g_gtmAtom3phInv.dutyCycles);
+
+    // The current feedback part (Clarke/Park) is redundant in open-loop,
+    // but the following is where you would place it if you added current sensing:
+    // FOC_ClarkeTransform(&abc, &ab);
+    // FOC_ParkTransform(&ab, &dq, sinTheta, cosTheta);
 }

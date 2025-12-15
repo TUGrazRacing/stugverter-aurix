@@ -113,3 +113,6 @@
 "Cpu2_Main.o"
 "Cpu3_Main.o"
 "GTM_ATOM_3_Phase_Inverter_PWM.o"
+"foc.o"
+"foc_math.o"
+"lut.o"

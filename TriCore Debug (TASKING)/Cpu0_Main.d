@@ -92,3 +92,11 @@ Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC3
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_reg.h" :
 Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h"
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h" :
+Cpu0_Main.o :	..\lut.h
+..\lut.h :
+Cpu0_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\math.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\math.h" :
+Cpu0_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\typeinfo.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\typeinfo.h" :
+Cpu0_Main.o :	..\foc_math.h
+..\foc_math.h :
