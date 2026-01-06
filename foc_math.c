@@ -10,6 +10,7 @@
 #include "foc_math.h"
 #include <math.h> /* For standard math functions if needed, though mostly manual implementation is used below */
 #include "IfxCpu_Intrinsics.h" //aurix instructions
+#include "stdio.h"
 
 /*********************************************************************************************************************/
 /*---------------------------------------------Function Implementations----------------------------------------------*/
@@ -22,7 +23,7 @@
  * two-phase stationary orthogonal components.
  *
  * The transformation assumes a balanced three-phase system:
- *   α = Ia  
+ *   α = Ia
  *   β = (Ia + 2·Ib) / √3
  *
  * @param[in]  input_abc  Pointer to three-phase input structure (a, b, c)
@@ -30,7 +31,7 @@
  */
 void FOC_ClarkeTransform(const ThreePhase_t *input_abc, AlphaBeta_t *output_ab)
 {
-    /* 
+    /*
      * Alpha = Ia
      * Beta  = (Ia + 2*Ib) / sqrt(3)
      */
@@ -45,8 +46,8 @@ void FOC_ClarkeTransform(const ThreePhase_t *input_abc, AlphaBeta_t *output_ab)
  * stationary quantities.
  *
  * The inverse equations are:
- *   Va = Valpha  
- *   Vb = -0.5·Valpha + (√3/2)·Vbeta  
+ *   Va = Valpha
+ *   Vb = -0.5·Valpha + (√3/2)·Vbeta
  *   Vc = -0.5·Valpha - (√3/2)·Vbeta
  *
  * @param[in]  input_ab   Pointer to αβ input structure
@@ -78,7 +79,7 @@ void FOC_InvClarkeTransform(const AlphaBeta_t *input_ab, ThreePhase_t *output_ab
  *   - q-axis with torque-producing current
  *
  * Equations:
- *   d =  α·cos(θ) + β·sin(θ)  
+ *   d =  α·cos(θ) + β·sin(θ)
  *   q = -α·sin(θ) + β·cos(θ)
  *
  * @param[in]  input_ab  Pointer to αβ input structure
@@ -105,7 +106,7 @@ void FOC_ParkTransform(const AlphaBeta_t *input_ab, DQ_t *output_dq, float32 sin
  * This transformation is typically applied before SVPWM modulation.
  *
  * Equations:
- *   α = d·cos(θ) - q·sin(θ)  
+ *   α = d·cos(θ) - q·sin(θ)
  *   β = d·sin(θ) + q·cos(θ)
  *
  * @param[in]  input_dq  Pointer to dq input structure
@@ -159,13 +160,22 @@ void FOC_SVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles)
     /* Find Min */
     V_min = Ifx__minf(Ifx__minf(V_phase_raw.a, V_phase_raw.b), V_phase_raw.c); //aurix assembly min instruction
 
-    /* * 3. Calculate Zero Sequence Offset 
+    /* * 3. Calculate Zero Sequence Offset
      * Offset = -0.5 * (Min + Max)
      */
     V_offset = -FOC_ONE_HALF * (V_max + V_min);
 
-    /* 4. Apply offset to phases and clamp to valid duty cycle range [0.0 - 1.0] */
-    DutyCycles->a = Ifx__saturatef(V_phase_raw.a + V_offset, FOC_DUTY_MIN, FOC_DUTY_MAX);
-    DutyCycles->b = Ifx__saturatef(V_phase_raw.b + V_offset, FOC_DUTY_MIN, FOC_DUTY_MAX);
-    DutyCycles->c = Ifx__saturatef(V_phase_raw.c + V_offset, FOC_DUTY_MIN, FOC_DUTY_MAX);
+    /* 4. Apply offset, Scale, and Add 50% Bias
+     * Map [-1.0 ... 1.0] range to [0.0 ... 1.0] duty cycle
+     */
+    float32 V_a_mod = (V_phase_raw.a + V_offset);
+    float32 V_b_mod = (V_phase_raw.b + V_offset);
+    float32 V_c_mod = (V_phase_raw.c + V_offset);
+
+    /* * NOTE: Multiply by 0.5 if inputs are range -1.0 to 1.0.
+     * Add 0.5 to center the AC waveform at 50% duty cycle.
+     */
+    DutyCycles->a = Ifx__saturatef((V_a_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
+    DutyCycles->b = Ifx__saturatef((V_b_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
+    DutyCycles->c = Ifx__saturatef((V_c_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
 }

@@ -9,20 +9,27 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include Libraries/iLLD/TC38A/Tricore/_PinMap/subdir.mk
+-include Libraries/iLLD/TC38A/Tricore/_Lib/DataHandling/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/_Impl/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Stm/Std/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Src/Std/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Scu/Std/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Port/Std/subdir.mk
+-include Libraries/iLLD/TC38A/Tricore/Port/Io/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Pms/Std/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Mtu/Std/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Gtm/Trig/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Gtm/Std/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Gtm/Pwm/subdir.mk
+-include Libraries/iLLD/TC38A/Tricore/Evadc/Std/subdir.mk
+-include Libraries/iLLD/TC38A/Tricore/Evadc/Adc/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Cpu/Trap/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Cpu/Std/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/Cpu/Irq/subdir.mk
+-include Libraries/iLLD/TC38A/Tricore/Asclin/Std/subdir.mk
+-include Libraries/iLLD/TC38A/Tricore/Asclin/Asc/subdir.mk
 -include Libraries/Service/CpuGeneric/SysSe/Bsp/subdir.mk
+-include Libraries/Service/CpuGeneric/StdIf/subdir.mk
 -include Libraries/Infra/Ssw/TC38A/Tricore/subdir.mk
 -include Libraries/Infra/Platform/Tricore/Compilers/subdir.mk
 -include Configurations/Debug/subdir.mk
@@ -66,44 +73,44 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1
+BUILD_ARTIFACT_NAME := stugverter-aurix
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_SIZE += \
-iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.siz \
+stugverter-aurix.siz \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf secondary-outputs
+main-build: stugverter-aurix.elf secondary-outputs
 
 # Tool invocations
-iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf: $(OBJS) makefile $(OPTIONAL_TOOL_DEPS) .iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf.opt
+stugverter-aurix.elf: $(OBJS) makefile $(OPTIONAL_TOOL_DEPS) .stugverter-aurix.elf.opt
 	@echo 'Building target: $@'
 	@echo 'Invoking: TASKING Linker'
-	cctc -f .iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf.opt
+	cctc -f .stugverter-aurix.elf.opt
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-.iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf.opt:
-	@argfile .iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf.opt --lsl-file="../Lcf_Tasking_Tricore_Tc.lsl" -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy -Wl--map-file="iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 --fp-model=3 -lrt --lsl-core=vtc --exceptions --strict --anachronisms --force-c++ -Ctc38x -o"iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf" -Wl-o"iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.hex:IHEX" $(OBJS)
+.stugverter-aurix.elf.opt:
+	@argfile .stugverter-aurix.elf.opt --lsl-file="../Lcf_Tasking_Tricore_Tc.lsl" -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy -Wl--map-file="stugverter-aurix.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 --fp-model=3 -lrt --lsl-core=vtc --exceptions --strict --anachronisms --force-c++ -Ctc38x -o"stugverter-aurix.elf" -Wl-o"stugverter-aurix.hex:IHEX" $(OBJS)
 
-.PHONY: .iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf.opt
+.PHONY: .stugverter-aurix.elf.opt
 
-iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.siz: iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf makefile $(OPTIONAL_TOOL_DEPS)
+stugverter-aurix.siz: stugverter-aurix.elf makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Invoking: Print Size'
-	elfsize  "iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf"
+	elfsize  "stugverter-aurix.elf"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.siz iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1.elf
+	-$(RM) stugverter-aurix.siz stugverter-aurix.elf
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_SIZE)

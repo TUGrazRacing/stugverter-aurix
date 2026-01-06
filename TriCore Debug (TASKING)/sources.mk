@@ -35,19 +35,26 @@ Configurations \
 . \
 Libraries/Infra/Platform/Tricore/Compilers \
 Libraries/Infra/Ssw/TC38A/Tricore \
+Libraries/Service/CpuGeneric/StdIf \
 Libraries/Service/CpuGeneric/SysSe/Bsp \
+Libraries/iLLD/TC38A/Tricore/Asclin/Asc \
+Libraries/iLLD/TC38A/Tricore/Asclin/Std \
 Libraries/iLLD/TC38A/Tricore/Cpu/Irq \
 Libraries/iLLD/TC38A/Tricore/Cpu/Std \
 Libraries/iLLD/TC38A/Tricore/Cpu/Trap \
+Libraries/iLLD/TC38A/Tricore/Evadc/Adc \
+Libraries/iLLD/TC38A/Tricore/Evadc/Std \
 Libraries/iLLD/TC38A/Tricore/Gtm/Pwm \
 Libraries/iLLD/TC38A/Tricore/Gtm/Std \
 Libraries/iLLD/TC38A/Tricore/Gtm/Trig \
 Libraries/iLLD/TC38A/Tricore/Mtu/Std \
 Libraries/iLLD/TC38A/Tricore/Pms/Std \
+Libraries/iLLD/TC38A/Tricore/Port/Io \
 Libraries/iLLD/TC38A/Tricore/Port/Std \
 Libraries/iLLD/TC38A/Tricore/Scu/Std \
 Libraries/iLLD/TC38A/Tricore/Src/Std \
 Libraries/iLLD/TC38A/Tricore/Stm/Std \
 Libraries/iLLD/TC38A/Tricore/_Impl \
+Libraries/iLLD/TC38A/Tricore/_Lib/DataHandling \
 Libraries/iLLD/TC38A/Tricore/_PinMap \
 
