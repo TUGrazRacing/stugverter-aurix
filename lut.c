@@ -53,7 +53,7 @@ float32 SinCos_LUT[LUT_SIZE];
  * @brief Generates the Sine LUT at run-time using the MCU's FPU.
  * This should be called ONCE during system initialization.
  */
-void FOC_CalculateSinCosLut(void)
+void FOC_InitializeSinCosLut(void)
 {
     uint32 i;
     float32 angle_step = TWO_PI / (float32)LUT_SIZE;

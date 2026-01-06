@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['ifx_5faddressvalue_0',['Ifx_AddressValue',['../_ifx___types_8h.html#a04585246cc6deb7ef787a5a9523f4510',1,'Ifx_Types.h']]],
+  ['ifx_5ffifo_1',['Ifx_Fifo',['../group___ifx_lld__lib__datahandling__fifo.html#ga368e20091955012b5c528207c741d112',1,'Ifx_Fifo.h']]],
+  ['ifx_5fpriority_2',['Ifx_Priority',['../_ifx___types_8h.html#aaba344620c4613b6535098061fa3b712',1,'Ifx_Types.h']]],
+  ['ifx_5fsignedtimerval_3',['Ifx_SignedTimerVal',['../_ifx___types_8h.html#a782822db345e0915a54587541d791744',1,'Ifx_Types.h']]],
+  ['ifx_5fsizet_4',['Ifx_SizeT',['../_ifx___types_8h.html#a9f7c18b35df2d4689e8254015352bf0a',1,'Ifx_Types.h']]],
+  ['ifx_5fticktime_5',['Ifx_TickTime',['../_ifx___types_8h.html#a1d724603289a7c9ed782b2197f4d6066',1,'Ifx_Types.h']]],
+  ['ifx_5ftimervalue_6',['Ifx_TimerValue',['../_ifx___types_8h.html#a0df6d1910ee531712aa7754acb9a71c7',1,'Ifx_Types.h']]],
+  ['ifxcpu_5fmutexlock_7',['IfxCpu_mutexLock',['../_ifx_cpu_8h.html#a0c7ff2ea972f55ac5b9148753518470e',1,'IfxCpu.h']]],
+  ['ifxcpu_5fspinlock_8',['IfxCpu_spinLock',['../_ifx_cpu_8h.html#abfd2fa31c69ee978ac43089ae9243eef',1,'IfxCpu.h']]],
+  ['ifxcpu_5fsyncevent_9',['IfxCpu_syncEvent',['../_ifx_cpu_8h.html#a5a22b0578adf79a879693760662457af',1,'IfxCpu.h']]],
+  ['ifxcpu_5ftrap_5fnonmaskableinterrupt_5fid_10',['IfxCpu_Trap_NonMaskableInterrupt_Id',['../group___ifx_lld___cpu___trap___hooks.html#ga9fe87a03b30eb84629f1a610d706c769',1,'IfxCpu_Trap.h']]],
+  ['ifxcpu_5ftrap_5fsystemcall_5fid_11',['IfxCpu_Trap_SystemCall_Id',['../group___ifx_lld___cpu___trap___hooks.html#gad1e6f6958936b44179f0fd66be95b65e',1,'IfxCpu_Trap.h']]],
+  ['ifxgtm_5fatom_5ftoutmapp_12',['IfxGtm_Atom_ToutMapP',['../group___ifx_lld___gtm__pinmap.html#gaadf51b5b2b79ff69d35c75a1fe5d7060',1,'IfxGtm_PinMap.h']]],
+  ['ifxgtm_5fpwm_5fcallback_13',['IfxGtm_Pwm_callBack',['../_ifx_gtm___pwm_8h.html#a900e646bf5aa8a5c732e462c803603f7',1,'IfxGtm_Pwm.h']]],
+  ['ifxgtm_5ftom_5ftoutmapp_14',['IfxGtm_Tom_ToutMapP',['../group___ifx_lld___gtm__pinmap.html#ga9faf2a307042c2ca361a3f5d7c9b74ad',1,'IfxGtm_PinMap.h']]],
+  ['ifxscuccu_5fpllstepsfunctionhook_15',['IfxScuCcu_PllStepsFunctionHook',['../_ifx_scu_ccu_8h.html#a1dec157b384244c500abcffb57a922d0',1,'IfxScuCcu.h']]]
+];

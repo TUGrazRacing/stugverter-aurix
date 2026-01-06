@@ -137,7 +137,7 @@ IFX_INLINE void Ifx__jumpBackToLink(void)
 #define Ifx__absf(X)                       ( ((X) < 0.0) ? -(X) : (X) )
 #define Ifx__minf(X,Y)                     ( ((X) < (Y)) ? (X) : (Y) )
 #define Ifx__maxf(X,Y)                     ( ((X) > (Y)) ? (X) : (Y) )
-#define Ifx__saturatef(X,Min,Max)          ( Ifx__minf(_Ifx_maxf(X, Min), Max) )
+#define Ifx__saturatef(X,Min,Max)          ( Ifx__minf(Ifx__maxf(X, Min), Max) )
 #define Ifx__checkrangef(X,Min,Max)        (((X) >= (Min)) && ((X) <= (Max)))
 
 #define Ifx__abs_stdreal(X)                ( ((X) > 0.0) ? (X) : -(X) )

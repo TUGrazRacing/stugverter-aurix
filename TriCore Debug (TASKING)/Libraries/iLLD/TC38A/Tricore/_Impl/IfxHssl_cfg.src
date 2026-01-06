@@ -1,6 +1,6 @@
 	; Module start
 	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
-	.compiler_invocation	"ctc -f cc1288a --dep-file=Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1 -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Configurations -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.src ../Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.c"
+	.compiler_invocation	"ctc -f cc10548a --dep-file=Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Configurations -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2004 -o Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.src ../Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.c"
 	.compiler_name		"ctc"
 	;source	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.c'
 
@@ -26,7 +26,7 @@ IfxHssl_cfg_hsslIndexMap:	.type	object
 	.sdecl	'.debug_info',debug
 	.sect	'.debug_info'
 .L3:
-	.word	14884
+	.word	14831
 	.half	3
 	.word	.L4
 	.byte	4
@@ -34,2204 +34,2203 @@ IfxHssl_cfg_hsslIndexMap:	.type	object
 	.byte	1
 	.byte	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
-	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
-	.byte	12,1
+	.byte	'Z:\\Users\\niklasprobst\\Desktop\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
 	.word	.L5
 	.byte	2
 	.byte	'short int',0,2,5,3
 	.byte	'__wchar_t',0,1,1,1
-	.word	272
+	.word	219
 	.byte	2
 	.byte	'unsigned int',0,4,7,3
 	.byte	'__size_t',0,1,1,1
-	.word	303
+	.word	250
 	.byte	2
 	.byte	'int',0,4,5,3
 	.byte	'__ptrdiff_t',0,1,1,1
-	.word	336
+	.word	283
 	.byte	4,1,5
-	.word	363
+	.word	310
 	.byte	3
 	.byte	'__codeptr',0,1,1,1
-	.word	365
+	.word	312
 	.byte	2
 	.byte	'unsigned char',0,1,8,3
 	.byte	'uint8',0,2,108,29
-	.word	388
+	.word	335
 	.byte	2
 	.byte	'unsigned short int',0,2,7,3
 	.byte	'uint16',0,2,112,29
-	.word	419
+	.word	366
 	.byte	2
 	.byte	'unsigned long int',0,4,7,3
 	.byte	'uint32',0,2,116,29
-	.word	456
+	.word	403
 	.byte	3
 	.byte	'sint16',0,2,129,1,29
-	.word	272
+	.word	219
 	.byte	2
 	.byte	'long int',0,4,5,3
 	.byte	'sint32',0,2,134,1,29
-	.word	508
+	.word	455
 	.byte	2
 	.byte	'long long int',0,8,5,3
 	.byte	'sint64',0,2,141,1,29
-	.word	536
+	.word	483
 	.byte	2
 	.byte	'float',0,4,4,3
 	.byte	'float32',0,2,170,1,29
-	.word	569
+	.word	516
 	.byte	6
 	.byte	'void',0,5
-	.word	595
+	.word	542
 	.byte	3
 	.byte	'pvoid',0,3,54,28
-	.word	601
+	.word	548
 	.byte	3
 	.byte	'Ifx_TickTime',0,3,76,28
-	.word	536
+	.word	483
 	.byte	7
-	.word	595
+	.word	542
 	.byte	5
-	.word	641
+	.word	588
 	.byte	8,3,140,1,9,8,9
 	.byte	'module',0
-	.word	646
+	.word	593
 	.byte	4,2,35,0,9
 	.byte	'index',0
-	.word	508
+	.word	455
 	.byte	4,2,35,4,0,3
 	.byte	'IfxModule_IndexMap',0,3,144,1,3
-	.word	651
+	.word	598
 	.byte	3
 	.byte	'Ifx_UReg_8Bit',0,4,96,24
-	.word	388
+	.word	335
 	.byte	3
 	.byte	'Ifx_UReg_32Bit',0,4,98,24
-	.word	303
+	.word	250
 	.byte	3
 	.byte	'Ifx_SReg_32Bit',0,4,101,24
-	.word	336
+	.word	283
 	.byte	10
 	.byte	'_Ifx_HSSL_ACCEN0_Bits',0,5,68,16,4,11
 	.byte	'EN0',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'EN1',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'EN2',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'EN3',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'EN4',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,0,11
 	.byte	'EN5',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,0,11
 	.byte	'EN6',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,0,11
 	.byte	'EN7',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,0,11
 	.byte	'EN8',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,1,11
 	.byte	'EN9',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,1,11
 	.byte	'EN10',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,1,11
 	.byte	'EN11',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,1,11
 	.byte	'EN12',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,1,11
 	.byte	'EN13',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,1,11
 	.byte	'EN14',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,1,11
 	.byte	'EN15',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,1,11
 	.byte	'EN16',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,2,11
 	.byte	'EN17',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,2,11
 	.byte	'EN18',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,2,11
 	.byte	'EN19',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,2,11
 	.byte	'EN20',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,2,11
 	.byte	'EN21',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,2,11
 	.byte	'EN22',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,2,11
 	.byte	'EN23',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,2,11
 	.byte	'EN24',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,3,11
 	.byte	'EN25',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,3,11
 	.byte	'EN26',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,3,11
 	.byte	'EN27',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,3,11
 	.byte	'EN28',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'EN29',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'EN30',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,3,11
 	.byte	'EN31',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_ACCEN0_Bits',0,5,102,3
-	.word	785
+	.word	732
 	.byte	10
 	.byte	'_Ifx_HSSL_ACCEN1_Bits',0,5,105,16,4,11
 	.byte	'reserved_0',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_ACCEN1_Bits',0,5,108,3
-	.word	1344
+	.word	1291
 	.byte	10
 	.byte	'_Ifx_HSSL_AR_Bits',0,5,111,16,4,11
 	.byte	'ARW0',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,0,11
 	.byte	'ARW1',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,0,11
 	.byte	'ARW2',0,1
-	.word	388
+	.word	335
 	.byte	2,2,2,35,0,11
 	.byte	'ARW3',0,1
-	.word	388
+	.word	335
 	.byte	2,0,2,35,0,11
 	.byte	'reserved_8',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,1,11
 	.byte	'MAVCH',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,2,11
 	.byte	'reserved_18',0,2
-	.word	419
+	.word	366
 	.byte	14,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_AR_Bits',0,5,120,3
-	.word	1423
+	.word	1370
 	.byte	10
 	.byte	'_Ifx_HSSL_AW_AWEND_Bits',0,5,123,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,0,11
 	.byte	'AWE',0,4
-	.word	303
+	.word	250
 	.byte	24,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_AW_AWEND_Bits',0,5,127,3
-	.word	1598
+	.word	1545
 	.byte	10
 	.byte	'_Ifx_HSSL_AW_AWSTART_Bits',0,5,130,1,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,0,11
 	.byte	'AWS',0,4
-	.word	303
+	.word	250
 	.byte	24,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_AW_AWSTART_Bits',0,5,134,1,3
-	.word	1696
+	.word	1643
 	.byte	10
 	.byte	'_Ifx_HSSL_CFG_Bits',0,5,137,1,16,4,11
 	.byte	'PREDIV',0,2
-	.word	419
+	.word	366
 	.byte	14,2,2,35,0,11
 	.byte	'reserved_14',0,1
-	.word	388
+	.word	335
 	.byte	2,0,2,35,1,11
 	.byte	'SMT',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,2,11
 	.byte	'SMR',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,2,11
 	.byte	'SCM',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,2,11
 	.byte	'CCC',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,2,11
 	.byte	'reserved_20',0,2
-	.word	419
+	.word	366
 	.byte	12,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_CFG_Bits',0,5,146,1,3
-	.word	1800
+	.word	1747
 	.byte	10
 	.byte	'_Ifx_HSSL_CLC_Bits',0,5,149,1,16,4,11
 	.byte	'DISR',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'DISS',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'reserved_2',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'EDIS',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'reserved_4',0,4
-	.word	303
+	.word	250
 	.byte	28,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_CLC_Bits',0,5,156,1,3
-	.word	1977
+	.word	1924
 	.byte	10
 	.byte	'_Ifx_HSSL_CRC_Bits',0,5,159,1,16,4,11
 	.byte	'XORMASK',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,0,11
 	.byte	'XEN',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,2,11
 	.byte	'reserved_17',0,2
-	.word	419
+	.word	366
 	.byte	15,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_CRC_Bits',0,5,164,1,3
-	.word	2122
+	.word	2069
 	.byte	10
 	.byte	'_Ifx_HSSL_ID_Bits',0,5,167,1,16,4,11
 	.byte	'MODREV',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,0,11
 	.byte	'MODTYPE',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,1,11
 	.byte	'MODNUMBER',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_ID_Bits',0,5,172,1,3
-	.word	2232
+	.word	2179
 	.byte	10
 	.byte	'_Ifx_HSSL_IS_CA_Bits',0,5,175,1,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,0,11
 	.byte	'CURR',0,4
-	.word	303
+	.word	250
 	.byte	27,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_IS_CA_Bits',0,5,179,1,3
-	.word	2341
+	.word	2288
 	.byte	10
 	.byte	'_Ifx_HSSL_IS_FC_Bits',0,5,182,1,16,4,11
 	.byte	'RELCOUNT',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,0,11
 	.byte	'CURCOUNT',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_IS_FC_Bits',0,5,186,1,3
-	.word	2436
+	.word	2383
 	.byte	10
 	.byte	'_Ifx_HSSL_IS_SA_Bits',0,5,189,1,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,0,11
 	.byte	'START',0,4
-	.word	303
+	.word	250
 	.byte	27,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_IS_SA_Bits',0,5,193,1,3
-	.word	2533
+	.word	2480
 	.byte	10
 	.byte	'_Ifx_HSSL_I_ICON_Bits',0,5,196,1,16,4,11
 	.byte	'IDQ',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'TQ',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'LETT',0,1
-	.word	388
+	.word	335
 	.byte	3,3,2,35,0,11
 	.byte	'CETT',0,1
-	.word	388
+	.word	335
 	.byte	3,0,2,35,0,11
 	.byte	'TOCV',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,1,11
 	.byte	'DATLEN',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,2,11
 	.byte	'RWT',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,2,11
 	.byte	'BSY',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,2,11
 	.byte	'ITTAG',0,1
-	.word	388
+	.word	335
 	.byte	3,0,2,35,2,11
 	.byte	'TOREL',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_I_ICON_Bits',0,5,208,1,3
-	.word	2629
+	.word	2576
 	.byte	10
 	.byte	'_Ifx_HSSL_I_IRD_Bits',0,5,211,1,16,4,11
 	.byte	'DATA',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_I_IRD_Bits',0,5,214,1,3
-	.word	2847
+	.word	2794
 	.byte	10
 	.byte	'_Ifx_HSSL_I_IRWA_Bits',0,5,217,1,16,4,11
 	.byte	'ADDRESS',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_I_IRWA_Bits',0,5,220,1,3
-	.word	2920
+	.word	2867
 	.byte	10
 	.byte	'_Ifx_HSSL_I_IWD_Bits',0,5,223,1,16,4,11
 	.byte	'DATA',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_I_IWD_Bits',0,5,226,1,3
-	.word	2998
+	.word	2945
 	.byte	10
 	.byte	'_Ifx_HSSL_KRST0_Bits',0,5,229,1,16,4,11
 	.byte	'RST',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'RSTSTAT',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'reserved_2',0,4
-	.word	303
+	.word	250
 	.byte	30,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_KRST0_Bits',0,5,234,1,3
-	.word	3071
+	.word	3018
 	.byte	10
 	.byte	'_Ifx_HSSL_KRST1_Bits',0,5,237,1,16,4,11
 	.byte	'RST',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'reserved_1',0,4
-	.word	303
+	.word	250
 	.byte	31,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_KRST1_Bits',0,5,241,1,3
-	.word	3184
+	.word	3131
 	.byte	10
 	.byte	'_Ifx_HSSL_KRSTCLR_Bits',0,5,244,1,16,4,11
 	.byte	'CLR',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'reserved_1',0,4
-	.word	303
+	.word	250
 	.byte	31,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_KRSTCLR_Bits',0,5,248,1,3
-	.word	3278
+	.word	3225
 	.byte	10
 	.byte	'_Ifx_HSSL_MFLAGS_Bits',0,5,251,1,16,4,11
 	.byte	'NACK',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,0,11
 	.byte	'TTE',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,0,11
 	.byte	'TIMEOUT',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,1,11
 	.byte	'UNEXPECTED',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,1,11
 	.byte	'reserved_16',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,2,11
 	.byte	'TMB',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,2,11
 	.byte	'IMB',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,2,11
 	.byte	'ISB',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,2,11
 	.byte	'MAV',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,2,11
 	.byte	'SRIE',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,2,11
 	.byte	'PIE1',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,2,11
 	.byte	'PIE2',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,3,11
 	.byte	'CRCE',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,3,11
 	.byte	'reserved_26',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,3,11
 	.byte	'TSE',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'TEI',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'TEO',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,3,11
 	.byte	'INI',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_MFLAGS_Bits',0,5,143,2,3
-	.word	3376
+	.word	3323
 	.byte	10
 	.byte	'_Ifx_HSSL_MFLAGSCL_Bits',0,5,146,2,16,4,11
 	.byte	'NACKC',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,0,11
 	.byte	'TTEC',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,0,11
 	.byte	'TIMEOUTC',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,1,11
 	.byte	'UNEXPECTEDC',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,1,11
 	.byte	'reserved_16',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,2,11
 	.byte	'TMBC',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,2,11
 	.byte	'IMBC',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,2,11
 	.byte	'ISBC',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,2,11
 	.byte	'MAVC',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,2,11
 	.byte	'SRIEC',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,2,11
 	.byte	'PIE1C',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,2,11
 	.byte	'PIE2C',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,3,11
 	.byte	'CRCEC',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,3,11
 	.byte	'reserved_26',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,3,11
 	.byte	'TSEC',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'reserved_29',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'TEOC',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,3,11
 	.byte	'INIC',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_MFLAGSCL_Bits',0,5,166,2,3
-	.word	3737
+	.word	3684
 	.byte	10
 	.byte	'_Ifx_HSSL_MFLAGSEN_Bits',0,5,169,2,16,4,11
 	.byte	'NACKEN',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,0,11
 	.byte	'TTEEN',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,0,11
 	.byte	'TIMEOUTEN',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,1,11
 	.byte	'UNEXPECTEDEN',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,1,11
 	.byte	'reserved_16',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,2,11
 	.byte	'MAVEN',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,2,11
 	.byte	'SRIEEN',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,2,11
 	.byte	'PIE1EN',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,2,11
 	.byte	'PIE2EN',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,3,11
 	.byte	'CRCEEN',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,3,11
 	.byte	'reserved_26',0,1
-	.word	388
+	.word	335
 	.byte	3,3,2,35,3,11
 	.byte	'TEIEN',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'reserved_30',0,1
-	.word	388
+	.word	335
 	.byte	2,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_MFLAGSEN_Bits',0,5,184,2,3
-	.word	4125
+	.word	4072
 	.byte	10
 	.byte	'_Ifx_HSSL_MFLAGSSET_Bits',0,5,187,2,16,4,11
 	.byte	'NACKS',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,0,11
 	.byte	'TTES',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,0,11
 	.byte	'TIMEOUTS',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,1,11
 	.byte	'UNEXPECTEDS',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,1,11
 	.byte	'reserved_16',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,2,11
 	.byte	'TMBS',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,2,11
 	.byte	'IMBS',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,2,11
 	.byte	'ISBS',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,2,11
 	.byte	'MAVS',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,2,11
 	.byte	'SRIES',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,2,11
 	.byte	'PIE1S',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,2,11
 	.byte	'PIE2S',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,3,11
 	.byte	'CRCES',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,3,11
 	.byte	'reserved_26',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,3,11
 	.byte	'TSES',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'reserved_29',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'TEOS',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,3,11
 	.byte	'INIS',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_MFLAGSSET_Bits',0,5,207,2,3
-	.word	4443
+	.word	4390
 	.byte	10
 	.byte	'_Ifx_HSSL_MSCR_Bits',0,5,210,2,16,4,11
 	.byte	'EN',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'SLAVETAG',0,1
-	.word	388
+	.word	335
 	.byte	2,5,2,35,0,11
 	.byte	'reserved_3',0,2
-	.word	419
+	.word	366
 	.byte	13,0,2,35,0,11
 	.byte	'ITXSTOP',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,2,11
 	.byte	'reserved_17',0,2
-	.word	419
+	.word	366
 	.byte	15,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_MSCR_Bits',0,5,217,2,3
-	.word	4833
+	.word	4780
 	.byte	10
 	.byte	'_Ifx_HSSL_OCS_Bits',0,5,220,2,16,4,11
 	.byte	'TGS',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,0,11
 	.byte	'TGB',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'TG_P',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'reserved_4',0,4
-	.word	303
+	.word	250
 	.byte	20,8,2,35,0,11
 	.byte	'SUS',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,3,11
 	.byte	'SUS_P',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'SUSSTA',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'reserved_30',0,1
-	.word	388
+	.word	335
 	.byte	2,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_OCS_Bits',0,5,230,2,3
-	.word	4986
+	.word	4933
 	.byte	10
 	.byte	'_Ifx_HSSL_QFLAGS_Bits',0,5,233,2,16,4,11
 	.byte	'I',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,0,11
 	.byte	'T',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,0,11
 	.byte	'R',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,1,11
 	.byte	'reserved_12',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,1,11
 	.byte	'E0',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,2,11
 	.byte	'E1',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,2,11
 	.byte	'E2',0,1
-	.word	388
+	.word	335
 	.byte	2,2,2,35,2,11
 	.byte	'E3',0,1
-	.word	388
+	.word	335
 	.byte	2,0,2,35,2,11
 	.byte	'reserved_24',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,3,11
 	.byte	'IS',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'RS',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'TS',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,3,11
 	.byte	'ES',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_QFLAGS_Bits',0,5,248,2,3
-	.word	5180
+	.word	5127
 	.byte	10
 	.byte	'_Ifx_HSSL_SEC_Bits',0,5,251,2,16,4,11
 	.byte	'LCK',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'LAW',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'reserved_2',0,4
-	.word	303
+	.word	250
 	.byte	30,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_SEC_Bits',0,5,128,3,3
-	.word	5436
+	.word	5383
 	.byte	10
 	.byte	'_Ifx_HSSL_SFSFLAGS_Bits',0,5,131,3,16,4,11
 	.byte	'RXFL',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,0,11
 	.byte	'TXFL',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,0,11
 	.byte	'EXFL',0,1
-	.word	388
+	.word	335
 	.byte	2,2,2,35,0,11
 	.byte	'reserved_6',0,2
-	.word	419
+	.word	366
 	.byte	9,1,2,35,0,11
 	.byte	'ISF',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,1,11
 	.byte	'reserved_16',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_SFSFLAGS_Bits',0,5,139,3,3
-	.word	5541
+	.word	5488
 	.byte	10
 	.byte	'_Ifx_HSSL_TIDADD_Bits',0,5,142,3,16,4,11
 	.byte	'A',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_TIDADD_Bits',0,5,145,3,3
-	.word	5712
+	.word	5659
 	.byte	10
 	.byte	'_Ifx_HSSL_TSTAT_Bits',0,5,148,3,16,4,11
 	.byte	'LASTCC0',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,0,11
 	.byte	'LASTTT0',0,1
-	.word	388
+	.word	335
 	.byte	3,0,2,35,0,11
 	.byte	'LASTCC1',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,1,11
 	.byte	'LASTTT1',0,1
-	.word	388
+	.word	335
 	.byte	3,0,2,35,1,11
 	.byte	'LASTCC2',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,2,11
 	.byte	'LASTTT2',0,1
-	.word	388
+	.word	335
 	.byte	3,0,2,35,2,11
 	.byte	'LASTCC3',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,3,11
 	.byte	'LASTTT3',0,1
-	.word	388
+	.word	335
 	.byte	3,0,2,35,3,0,3
 	.byte	'Ifx_HSSL_TSTAT_Bits',0,5,158,3,3
-	.word	5784
+	.word	5731
 	.byte	10
 	.byte	'_Ifx_HSSL_TS_CA_Bits',0,5,161,3,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,0,11
 	.byte	'CURR',0,4
-	.word	303
+	.word	250
 	.byte	27,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_TS_CA_Bits',0,5,165,3,3
-	.word	5993
+	.word	5940
 	.byte	10
 	.byte	'_Ifx_HSSL_TS_FC_Bits',0,5,168,3,16,4,11
 	.byte	'RELCOUNT',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,0,11
 	.byte	'CURCOUNT',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,2,0,3
 	.byte	'Ifx_HSSL_TS_FC_Bits',0,5,172,3,3
-	.word	6088
+	.word	6035
 	.byte	10
 	.byte	'_Ifx_HSSL_TS_SA_Bits',0,5,175,3,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,0,11
 	.byte	'ADDR',0,4
-	.word	303
+	.word	250
 	.byte	27,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_TS_SA_Bits',0,5,179,3,3
-	.word	6185
+	.word	6132
 	.byte	10
 	.byte	'_Ifx_HSSL_T_TCA_Bits',0,5,182,3,16,4,11
 	.byte	'A',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_T_TCA_Bits',0,5,185,3,3
-	.word	6280
+	.word	6227
 	.byte	10
 	.byte	'_Ifx_HSSL_T_TCD_Bits',0,5,188,3,16,4,11
 	.byte	'D',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSSL_T_TCD_Bits',0,5,191,3,3
-	.word	6350
+	.word	6297
 	.byte	12,5,199,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	785
+	.word	732
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_ACCEN0',0,5,204,3,3
-	.word	6420
+	.word	6367
 	.byte	12,5,207,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	1344
+	.word	1291
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_ACCEN1',0,5,212,3,3
-	.word	6485
+	.word	6432
 	.byte	12,5,215,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	1423
+	.word	1370
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_AR',0,5,220,3,3
-	.word	6550
+	.word	6497
 	.byte	12,5,223,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	1598
+	.word	1545
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_AW_AWEND',0,5,228,3,3
-	.word	6611
+	.word	6558
 	.byte	12,5,231,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	1696
+	.word	1643
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_AW_AWSTART',0,5,236,3,3
-	.word	6678
+	.word	6625
 	.byte	12,5,239,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	1800
+	.word	1747
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_CFG',0,5,244,3,3
-	.word	6747
+	.word	6694
 	.byte	12,5,247,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	1977
+	.word	1924
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_CLC',0,5,252,3,3
-	.word	6809
+	.word	6756
 	.byte	12,5,255,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2122
+	.word	2069
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_CRC',0,5,132,4,3
-	.word	6871
+	.word	6818
 	.byte	12,5,135,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2232
+	.word	2179
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_ID',0,5,140,4,3
-	.word	6933
+	.word	6880
 	.byte	12,5,143,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2341
+	.word	2288
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_IS_CA',0,5,148,4,3
-	.word	6994
+	.word	6941
 	.byte	12,5,151,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2436
+	.word	2383
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_IS_FC',0,5,156,4,3
-	.word	7058
+	.word	7005
 	.byte	12,5,159,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2533
+	.word	2480
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_IS_SA',0,5,164,4,3
-	.word	7122
+	.word	7069
 	.byte	12,5,167,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2629
+	.word	2576
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_I_ICON',0,5,172,4,3
-	.word	7186
+	.word	7133
 	.byte	12,5,175,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2847
+	.word	2794
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_I_IRD',0,5,180,4,3
-	.word	7251
+	.word	7198
 	.byte	12,5,183,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2920
+	.word	2867
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_I_IRWA',0,5,188,4,3
-	.word	7315
+	.word	7262
 	.byte	12,5,191,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	2998
+	.word	2945
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_I_IWD',0,5,196,4,3
-	.word	7380
+	.word	7327
 	.byte	12,5,199,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	3071
+	.word	3018
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_KRST0',0,5,204,4,3
-	.word	7444
+	.word	7391
 	.byte	12,5,207,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	3184
+	.word	3131
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_KRST1',0,5,212,4,3
-	.word	7508
+	.word	7455
 	.byte	12,5,215,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	3278
+	.word	3225
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_KRSTCLR',0,5,220,4,3
-	.word	7572
+	.word	7519
 	.byte	12,5,223,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	3376
+	.word	3323
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_MFLAGS',0,5,228,4,3
-	.word	7638
+	.word	7585
 	.byte	12,5,231,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	3737
+	.word	3684
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_MFLAGSCL',0,5,236,4,3
-	.word	7703
+	.word	7650
 	.byte	12,5,239,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	4125
+	.word	4072
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_MFLAGSEN',0,5,244,4,3
-	.word	7770
+	.word	7717
 	.byte	12,5,247,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	4443
+	.word	4390
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_MFLAGSSET',0,5,252,4,3
-	.word	7837
+	.word	7784
 	.byte	12,5,255,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	4833
+	.word	4780
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_MSCR',0,5,132,5,3
-	.word	7905
+	.word	7852
 	.byte	12,5,135,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	4986
+	.word	4933
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_OCS',0,5,140,5,3
-	.word	7968
+	.word	7915
 	.byte	12,5,143,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	5180
+	.word	5127
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_QFLAGS',0,5,148,5,3
-	.word	8030
+	.word	7977
 	.byte	12,5,151,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	5436
+	.word	5383
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_SEC',0,5,156,5,3
-	.word	8095
+	.word	8042
 	.byte	12,5,159,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	5541
+	.word	5488
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_SFSFLAGS',0,5,164,5,3
-	.word	8157
+	.word	8104
 	.byte	12,5,167,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	5712
+	.word	5659
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_TIDADD',0,5,172,5,3
-	.word	8224
+	.word	8171
 	.byte	12,5,175,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	5784
+	.word	5731
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_TSTAT',0,5,180,5,3
-	.word	8289
+	.word	8236
 	.byte	12,5,183,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	5993
+	.word	5940
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_TS_CA',0,5,188,5,3
-	.word	8353
+	.word	8300
 	.byte	12,5,191,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	6088
+	.word	6035
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_TS_FC',0,5,196,5,3
-	.word	8417
+	.word	8364
 	.byte	12,5,199,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	6185
+	.word	6132
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_TS_SA',0,5,204,5,3
-	.word	8481
+	.word	8428
 	.byte	12,5,207,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	6280
+	.word	6227
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_T_TCA',0,5,212,5,3
-	.word	8545
+	.word	8492
 	.byte	12,5,215,5,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	6350
+	.word	6297
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSSL_T_TCD',0,5,220,5,3
-	.word	8609
+	.word	8556
 	.byte	10
 	.byte	'_Ifx_HSSL_I',0,5,232,5,25,16,9
 	.byte	'IWD',0
-	.word	7380
+	.word	7327
 	.byte	4,2,35,0,9
 	.byte	'ICON',0
-	.word	7186
+	.word	7133
 	.byte	4,2,35,4,9
 	.byte	'IRWA',0
-	.word	7315
+	.word	7262
 	.byte	4,2,35,8,9
 	.byte	'IRD',0
-	.word	7251
+	.word	7198
 	.byte	4,2,35,12,0,7
-	.word	8673
+	.word	8620
 	.byte	3
 	.byte	'Ifx_HSSL_I',0,5,238,5,3
-	.word	8746
+	.word	8693
 	.byte	10
 	.byte	'_Ifx_HSSL_T',0,5,253,5,25,8,9
 	.byte	'TCD',0
-	.word	8609
+	.word	8556
 	.byte	4,2,35,0,9
 	.byte	'TCA',0
-	.word	8545
+	.word	8492
 	.byte	4,2,35,4,0,7
-	.word	8771
+	.word	8718
 	.byte	3
 	.byte	'Ifx_HSSL_T',0,5,129,6,3
-	.word	8816
+	.word	8763
 	.byte	13,8
-	.word	7122
+	.word	7069
 	.byte	14,1,0,10
 	.byte	'_Ifx_HSSL_IS',0,5,144,6,25,16,9
 	.byte	'SA',0
-	.word	8841
+	.word	8788
 	.byte	8,2,35,0,9
 	.byte	'CA',0
-	.word	6994
+	.word	6941
 	.byte	4,2,35,8,9
 	.byte	'FC',0
-	.word	7058
+	.word	7005
 	.byte	4,2,35,12,0,7
-	.word	8850
+	.word	8797
 	.byte	3
 	.byte	'Ifx_HSSL_IS',0,5,149,6,3
-	.word	8906
+	.word	8853
 	.byte	13,8
-	.word	8481
+	.word	8428
 	.byte	14,1,0,10
 	.byte	'_Ifx_HSSL_TS',0,5,164,6,25,16,9
 	.byte	'SA',0
-	.word	8932
+	.word	8879
 	.byte	8,2,35,0,9
 	.byte	'CA',0
-	.word	8353
+	.word	8300
 	.byte	4,2,35,8,9
 	.byte	'FC',0
-	.word	8417
+	.word	8364
 	.byte	4,2,35,12,0,7
-	.word	8941
+	.word	8888
 	.byte	3
 	.byte	'Ifx_HSSL_TS',0,5,169,6,3
-	.word	8997
+	.word	8944
 	.byte	10
 	.byte	'_Ifx_HSSL_AW',0,5,184,6,25,8,9
 	.byte	'AWSTART',0
-	.word	6678
+	.word	6625
 	.byte	4,2,35,0,9
 	.byte	'AWEND',0
-	.word	6611
+	.word	6558
 	.byte	4,2,35,4,0,7
-	.word	9023
+	.word	8970
 	.byte	3
 	.byte	'Ifx_HSSL_AW',0,5,188,6,3
-	.word	9075
+	.word	9022
 	.byte	10
 	.byte	'_Ifx_HSCT_ACCEN0_Bits',0,6,68,16,4,11
 	.byte	'EN0',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'EN1',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'EN2',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'EN3',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'EN4',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,0,11
 	.byte	'EN5',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,0,11
 	.byte	'EN6',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,0,11
 	.byte	'EN7',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,0,11
 	.byte	'EN8',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,1,11
 	.byte	'EN9',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,1,11
 	.byte	'EN10',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,1,11
 	.byte	'EN11',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,1,11
 	.byte	'EN12',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,1,11
 	.byte	'EN13',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,1,11
 	.byte	'EN14',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,1,11
 	.byte	'EN15',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,1,11
 	.byte	'EN16',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,2,11
 	.byte	'EN17',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,2,11
 	.byte	'EN18',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,2,11
 	.byte	'EN19',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,2,11
 	.byte	'EN20',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,2,11
 	.byte	'EN21',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,2,11
 	.byte	'EN22',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,2,11
 	.byte	'EN23',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,2,11
 	.byte	'EN24',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,3,11
 	.byte	'EN25',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,3,11
 	.byte	'EN26',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,3,11
 	.byte	'EN27',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,3,11
 	.byte	'EN28',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'EN29',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'EN30',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,3,11
 	.byte	'EN31',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,3,0,3
 	.byte	'Ifx_HSCT_ACCEN0_Bits',0,6,102,3
-	.word	9101
+	.word	9048
 	.byte	10
 	.byte	'_Ifx_HSCT_ACCEN1_Bits',0,6,105,16,4,11
 	.byte	'reserved_0',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_ACCEN1_Bits',0,6,108,3
-	.word	9660
+	.word	9607
 	.byte	10
 	.byte	'_Ifx_HSCT_CLC_Bits',0,6,111,16,4,11
 	.byte	'DISR',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'DISS',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'reserved_2',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'EDIS',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'reserved_4',0,4
-	.word	303
+	.word	250
 	.byte	28,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_CLC_Bits',0,6,118,3
-	.word	9739
+	.word	9686
 	.byte	10
 	.byte	'_Ifx_HSCT_CONFIGPHY_Bits',0,6,121,16,4,11
 	.byte	'PON',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'reserved_1',0,2
-	.word	419
+	.word	366
 	.byte	15,0,2,35,0,11
 	.byte	'CORCEN',0,1
-	.word	388
+	.word	335
 	.byte	5,3,2,35,2,11
 	.byte	'reserved_21',0,2
-	.word	419
+	.word	366
 	.byte	11,0,2,35,2,0,3
 	.byte	'Ifx_HSCT_CONFIGPHY_Bits',0,6,127,3
-	.word	9882
+	.word	9829
 	.byte	10
 	.byte	'_Ifx_HSCT_CTSCTRL_Bits',0,6,130,1,16,4,11
 	.byte	'CTS_FRAME',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'CTS_TXD',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'CTS_RXD',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'HSSL_CTS_FBD',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'reserved_4',0,4
-	.word	303
+	.word	250
 	.byte	28,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_CTSCTRL_Bits',0,6,137,1,3
-	.word	10023
+	.word	9970
 	.byte	10
 	.byte	'_Ifx_HSCT_DISABLE_Bits',0,6,140,1,16,4,11
 	.byte	'TX_DIS',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'RX_DIS',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'RX_HEPD',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'reserved_3',0,4
-	.word	303
+	.word	250
 	.byte	29,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_DISABLE_Bits',0,6,146,1,3
-	.word	10189
+	.word	10136
 	.byte	10
 	.byte	'_Ifx_HSCT_ID_Bits',0,6,149,1,16,4,11
 	.byte	'MOD_REV',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,0,11
 	.byte	'MOD_TYPE',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,1,11
 	.byte	'MOD_NUM',0,2
-	.word	419
+	.word	366
 	.byte	16,0,2,35,2,0,3
 	.byte	'Ifx_HSCT_ID_Bits',0,6,154,1,3
-	.word	10327
+	.word	10274
 	.byte	10
 	.byte	'_Ifx_HSCT_IFCTRL_Bits',0,6,157,1,16,4,11
 	.byte	'IFCVS',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,0,11
 	.byte	'SIFCV',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,1,11
 	.byte	'reserved_9',0,1
-	.word	388
+	.word	335
 	.byte	7,0,2,35,1,11
 	.byte	'MRXSPEED',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,2,11
 	.byte	'MTXSPEED',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,2,11
 	.byte	'IFTESTMD',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,2,11
 	.byte	'reserved_21',0,2
-	.word	419
+	.word	366
 	.byte	11,0,2,35,2,0,3
 	.byte	'Ifx_HSCT_IFCTRL_Bits',0,6,166,1,3
-	.word	10436
+	.word	10383
 	.byte	10
 	.byte	'_Ifx_HSCT_IFSTAT_Bits',0,6,169,1,16,4,11
 	.byte	'RX_STAT',0,1
-	.word	388
+	.word	335
 	.byte	3,5,2,35,0,11
 	.byte	'TX_STAT',0,1
-	.word	388
+	.word	335
 	.byte	2,3,2,35,0,11
 	.byte	'TX_EN',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,0,11
 	.byte	'reserved_6',0,4
-	.word	303
+	.word	250
 	.byte	26,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_IFSTAT_Bits',0,6,175,1,3
-	.word	10634
+	.word	10581
 	.byte	10
 	.byte	'_Ifx_HSCT_INIT_Bits',0,6,178,1,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'SYS_CLK_EN',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'reserved_2',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'IFM',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'SRCF',0,1
-	.word	388
+	.word	335
 	.byte	2,2,2,35,0,11
 	.byte	'SSCF',0,1
-	.word	388
+	.word	335
 	.byte	2,0,2,35,0,11
 	.byte	'reserved_8',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,1,11
 	.byte	'TXHD',0,1
-	.word	388
+	.word	335
 	.byte	3,5,2,35,2,11
 	.byte	'RXHD',0,1
-	.word	388
+	.word	335
 	.byte	3,2,2,35,2,11
 	.byte	'reserved_22',0,2
-	.word	419
+	.word	366
 	.byte	10,0,2,35,2,0,3
 	.byte	'Ifx_HSCT_INIT_Bits',0,6,190,1,3
-	.word	10770
+	.word	10717
 	.byte	10
 	.byte	'_Ifx_HSCT_IRQ_Bits',0,6,193,1,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'HER',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'PYER',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'CER',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'IFCFS',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,0,11
 	.byte	'SMER',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,0,11
 	.byte	'USMSF',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,0,11
 	.byte	'PLER',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,0,11
 	.byte	'USM',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,1,11
 	.byte	'PAR',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,1,11
 	.byte	'TXTE',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,1,11
 	.byte	'SFO',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,1,11
 	.byte	'SFU',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,1,11
 	.byte	'MSCE',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,1,11
 	.byte	'reserved_14',0,4
-	.word	303
+	.word	250
 	.byte	18,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_IRQ_Bits',0,6,210,1,3
-	.word	11015
+	.word	10962
 	.byte	10
 	.byte	'_Ifx_HSCT_IRQCLR_Bits',0,6,213,1,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'HERCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'PYERCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'CERCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'IFCFSCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,0,11
 	.byte	'SMERCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,0,11
 	.byte	'USMSFCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,0,11
 	.byte	'PLERCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,0,11
 	.byte	'USMCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,1,11
 	.byte	'PARCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,1,11
 	.byte	'TXTECLR',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,1,11
 	.byte	'SFOCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,1,11
 	.byte	'SFUCLR',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,1,11
 	.byte	'MSCELR',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,1,11
 	.byte	'reserved_14',0,4
-	.word	303
+	.word	250
 	.byte	18,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_IRQCLR_Bits',0,6,230,1,3
-	.word	11317
+	.word	11264
 	.byte	10
 	.byte	'_Ifx_HSCT_IRQEN_Bits',0,6,233,1,16,4,11
 	.byte	'reserved_0',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'HEREN',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'PYEREN',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'CEREN',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'IFCFSEN',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,0,11
 	.byte	'SMEREN',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,0,11
 	.byte	'USMSFEN',0,1
-	.word	388
+	.word	335
 	.byte	1,1,2,35,0,11
 	.byte	'PLEREN',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,0,11
 	.byte	'USMEN',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,1,11
 	.byte	'PAREN',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,1,11
 	.byte	'TXTEEN',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,1,11
 	.byte	'SFOEN',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,1,11
 	.byte	'SFUEN',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,1,11
 	.byte	'MSCEEN',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,1,11
 	.byte	'reserved_14',0,4
-	.word	303
+	.word	250
 	.byte	18,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_IRQEN_Bits',0,6,250,1,3
-	.word	11663
+	.word	11610
 	.byte	10
 	.byte	'_Ifx_HSCT_KRST0_Bits',0,6,253,1,16,4,11
 	.byte	'RST',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'RSTSTAT',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'reserved_2',0,4
-	.word	303
+	.word	250
 	.byte	30,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_KRST0_Bits',0,6,130,2,3
-	.word	11995
+	.word	11942
 	.byte	10
 	.byte	'_Ifx_HSCT_KRST1_Bits',0,6,133,2,16,4,11
 	.byte	'RST',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'reserved_1',0,4
-	.word	303
+	.word	250
 	.byte	31,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_KRST1_Bits',0,6,137,2,3
-	.word	12108
+	.word	12055
 	.byte	10
 	.byte	'_Ifx_HSCT_KRSTCLR_Bits',0,6,140,2,16,4,11
 	.byte	'CLR',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'reserved_1',0,4
-	.word	303
+	.word	250
 	.byte	31,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_KRSTCLR_Bits',0,6,144,2,3
-	.word	12202
+	.word	12149
 	.byte	10
 	.byte	'_Ifx_HSCT_OCS_Bits',0,6,147,2,16,4,11
 	.byte	'TGS',0,1
-	.word	388
+	.word	335
 	.byte	2,6,2,35,0,11
 	.byte	'TGB',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'TG_P',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'reserved_4',0,4
-	.word	303
+	.word	250
 	.byte	20,8,2,35,0,11
 	.byte	'SUS',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,3,11
 	.byte	'SUS_P',0,1
-	.word	388
+	.word	335
 	.byte	1,3,2,35,3,11
 	.byte	'SUSSTA',0,1
-	.word	388
+	.word	335
 	.byte	1,2,2,35,3,11
 	.byte	'reserved_30',0,1
-	.word	388
+	.word	335
 	.byte	2,0,2,35,3,0,3
 	.byte	'Ifx_HSCT_OCS_Bits',0,6,157,2,3
-	.word	12300
+	.word	12247
 	.byte	10
 	.byte	'_Ifx_HSCT_SLEEPCTRL_Bits',0,6,160,2,16,4,11
 	.byte	'SLPEN',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'SLPCLKG',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'reserved_2',0,2
-	.word	419
+	.word	366
 	.byte	14,0,2,35,0,11
 	.byte	'WKUPCNT',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,2,11
 	.byte	'reserved_24',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,3,0,3
 	.byte	'Ifx_HSCT_SLEEPCTRL_Bits',0,6,167,2,3
-	.word	12494
+	.word	12441
 	.byte	10
 	.byte	'_Ifx_HSCT_STAT_Bits',0,6,170,2,16,4,11
 	.byte	'RX_PSIZE',0,1
-	.word	388
+	.word	335
 	.byte	3,5,2,35,0,11
 	.byte	'RX_CHANNEL',0,1
-	.word	388
+	.word	335
 	.byte	4,1,2,35,0,11
 	.byte	'RX_SLEEP',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,0,11
 	.byte	'TX_SLEEP',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,1,11
 	.byte	'reserved_9',0,1
-	.word	388
+	.word	335
 	.byte	3,4,2,35,1,11
 	.byte	'TX_PSIZE',0,1
-	.word	388
+	.word	335
 	.byte	3,1,2,35,1,11
 	.byte	'reserved_15',0,1
-	.word	388
+	.word	335
 	.byte	1,0,2,35,1,11
 	.byte	'TX_CHANNEL_TYPE',0,1
-	.word	388
+	.word	335
 	.byte	4,4,2,35,2,11
 	.byte	'reserved_20',0,1
-	.word	388
+	.word	335
 	.byte	4,0,2,35,2,11
 	.byte	'LIFCCMDR',0,1
-	.word	388
+	.word	335
 	.byte	8,0,2,35,3,0,3
 	.byte	'Ifx_HSCT_STAT_Bits',0,6,182,2,3
-	.word	12659
+	.word	12606
 	.byte	10
 	.byte	'_Ifx_HSCT_STATPHY_Bits',0,6,185,2,16,4,11
 	.byte	'PLOCK',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'reserved_1',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'TXSA',0,1
-	.word	388
+	.word	335
 	.byte	2,4,2,35,0,11
 	.byte	'RXSA',0,1
-	.word	388
+	.word	335
 	.byte	2,2,2,35,0,11
 	.byte	'reserved_6',0,4
-	.word	303
+	.word	250
 	.byte	26,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_STATPHY_Bits',0,6,192,2,3
-	.word	12931
+	.word	12878
 	.byte	10
 	.byte	'_Ifx_HSCT_TESTCTRL_Bits',0,6,195,2,16,4,11
 	.byte	'TXENS',0,1
-	.word	388
+	.word	335
 	.byte	1,7,2,35,0,11
 	.byte	'TXDISS',0,1
-	.word	388
+	.word	335
 	.byte	1,6,2,35,0,11
 	.byte	'LLOPTXRX',0,1
-	.word	388
+	.word	335
 	.byte	1,5,2,35,0,11
 	.byte	'PRBSEN',0,1
-	.word	388
+	.word	335
 	.byte	1,4,2,35,0,11
 	.byte	'reserved_4',0,4
-	.word	303
+	.word	250
 	.byte	28,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_TESTCTRL_Bits',0,6,202,2,3
-	.word	13085
+	.word	13032
 	.byte	10
 	.byte	'_Ifx_HSCT_USMR_Bits',0,6,205,2,16,4,11
 	.byte	'USMR',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_USMR_Bits',0,6,208,2,3
-	.word	13243
+	.word	13190
 	.byte	10
 	.byte	'_Ifx_HSCT_USMS_Bits',0,6,211,2,16,4,11
 	.byte	'USMS',0,4
-	.word	303
+	.word	250
 	.byte	32,0,2,35,0,0,3
 	.byte	'Ifx_HSCT_USMS_Bits',0,6,214,2,3
-	.word	13314
+	.word	13261
 	.byte	12,6,222,2,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	9101
+	.word	9048
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_ACCEN0',0,6,227,2,3
-	.word	13385
+	.word	13332
 	.byte	12,6,230,2,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	9660
+	.word	9607
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_ACCEN1',0,6,235,2,3
-	.word	13450
+	.word	13397
 	.byte	12,6,238,2,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	9739
+	.word	9686
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_CLC',0,6,243,2,3
-	.word	13515
+	.word	13462
 	.byte	12,6,246,2,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	9882
+	.word	9829
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_CONFIGPHY',0,6,251,2,3
-	.word	13577
+	.word	13524
 	.byte	12,6,254,2,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	10023
+	.word	9970
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_CTSCTRL',0,6,131,3,3
-	.word	13645
+	.word	13592
 	.byte	12,6,134,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	10189
+	.word	10136
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_DISABLE',0,6,139,3,3
-	.word	13711
+	.word	13658
 	.byte	12,6,142,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	10327
+	.word	10274
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_ID',0,6,147,3,3
-	.word	13777
+	.word	13724
 	.byte	12,6,150,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	10436
+	.word	10383
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_IFCTRL',0,6,155,3,3
-	.word	13838
+	.word	13785
 	.byte	12,6,158,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	10634
+	.word	10581
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_IFSTAT',0,6,163,3,3
-	.word	13903
+	.word	13850
 	.byte	12,6,166,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	10770
+	.word	10717
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_INIT',0,6,171,3,3
-	.word	13968
+	.word	13915
 	.byte	12,6,174,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	11015
+	.word	10962
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_IRQ',0,6,179,3,3
-	.word	14031
+	.word	13978
 	.byte	12,6,182,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	11317
+	.word	11264
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_IRQCLR',0,6,187,3,3
-	.word	14093
+	.word	14040
 	.byte	12,6,190,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	11663
+	.word	11610
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_IRQEN',0,6,195,3,3
-	.word	14158
+	.word	14105
 	.byte	12,6,198,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	11995
+	.word	11942
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_KRST0',0,6,203,3,3
-	.word	14222
+	.word	14169
 	.byte	12,6,206,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	12108
+	.word	12055
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_KRST1',0,6,211,3,3
-	.word	14286
+	.word	14233
 	.byte	12,6,214,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	12202
+	.word	12149
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_KRSTCLR',0,6,219,3,3
-	.word	14350
+	.word	14297
 	.byte	12,6,222,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	12300
+	.word	12247
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_OCS',0,6,227,3,3
-	.word	14416
+	.word	14363
 	.byte	12,6,230,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	12494
+	.word	12441
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_SLEEPCTRL',0,6,235,3,3
-	.word	14478
+	.word	14425
 	.byte	12,6,238,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	12659
+	.word	12606
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_STAT',0,6,243,3,3
-	.word	14546
+	.word	14493
 	.byte	12,6,246,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	12931
+	.word	12878
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_STATPHY',0,6,251,3,3
-	.word	14609
+	.word	14556
 	.byte	12,6,254,3,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	13085
+	.word	13032
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_TESTCTRL',0,6,131,4,3
-	.word	14675
+	.word	14622
 	.byte	12,6,134,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	13243
+	.word	13190
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_USMR',0,6,139,4,3
-	.word	14742
+	.word	14689
 	.byte	12,6,142,4,9,4,9
 	.byte	'U',0
-	.word	303
+	.word	250
 	.byte	4,2,35,0,9
 	.byte	'I',0
-	.word	336
+	.word	283
 	.byte	4,2,35,0,9
 	.byte	'B',0
-	.word	13314
+	.word	13261
 	.byte	4,2,35,0,0,3
 	.byte	'Ifx_HSCT_USMS',0,6,147,4,3
-	.word	14805
+	.word	14752
 	.byte	13,8
-	.word	651
+	.word	598
 	.byte	14,0,0
 .L10:
 	.byte	15
-	.word	14868
+	.word	14815
 .L11:
 	.byte	15
-	.word	14868
+	.word	14815
 	.byte	0
 	.sdecl	'.debug_abbrev',debug
 	.sect	'.debug_abbrev'
@@ -2250,12 +2249,12 @@ IfxHssl_cfg_hsslIndexMap:	.type	object
 	.word	.L15-.L14
 .L14:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1
-	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg',0
+	.byte	'Z:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg',0
 	.byte	0
 	.byte	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.c',0,0,0,0
-	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\Cpu\\Std\\Platform_Types.h',0
+	.byte	'Z:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\Cpu\\Std\\Platform_Types.h',0
 	.byte	0,0,0
-	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\Cpu\\Std\\Ifx_Types.h',0
+	.byte	'Z:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\Cpu\\Std\\Ifx_Types.h',0
 	.byte	0,0,0
 	.byte	'Ifx_TypesReg.h',0,1,0,0
 	.byte	'IfxHssl_regdef.h',0,1,0,0
@@ -2265,14 +2264,13 @@ IfxHssl_cfg_hsslIndexMap:	.type	object
 	.sdecl	'.debug_info',debug,cluster('IfxHssl_cfg_hsctIndexMap')
 	.sect	'.debug_info'
 .L6:
-	.word	310
+	.word	257
 	.half	3
 	.word	.L7
 	.byte	4,1
 	.byte	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
-	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
-	.byte	12,1,2
+	.byte	'Z:\\Users\\niklasprobst\\Desktop\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1,2
 	.word	.L2
 	.byte	3
 	.byte	'IfxHssl_cfg_hsctIndexMap',0,1,52,30
@@ -2288,14 +2286,13 @@ IfxHssl_cfg_hsslIndexMap:	.type	object
 	.sdecl	'.debug_info',debug,cluster('IfxHssl_cfg_hsslIndexMap')
 	.sect	'.debug_info'
 .L8:
-	.word	310
+	.word	257
 	.half	3
 	.word	.L9
 	.byte	4,1
 	.byte	'../Libraries/iLLD/TC38A/Tricore/_Impl/IfxHssl_cfg.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
-	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
-	.byte	12,1,2
+	.byte	'Z:\\Users\\niklasprobst\\Desktop\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1,2
 	.word	.L2
 	.byte	3
 	.byte	'IfxHssl_cfg_hsslIndexMap',0,1,56,30

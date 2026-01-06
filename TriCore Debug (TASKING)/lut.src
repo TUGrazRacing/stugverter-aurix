@@ -1,24 +1,24 @@
 	; Module start
 	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
-	.compiler_invocation	"ctc -f cc25344a --dep-file=lut.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1 -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Configurations -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o lut.src ../lut.c"
+	.compiler_invocation	"ctc -f cc12700a --dep-file=lut.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Configurations -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IZ:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2004 -o lut.src ../lut.c"
 	.compiler_name		"ctc"
 	;source	'../lut.c'
 
 	
 $TC162
 	
-	.sdecl	'.text.lut.FOC_CalculateSinCosLut',code,cluster('FOC_CalculateSinCosLut')
-	.sect	'.text.lut.FOC_CalculateSinCosLut'
+	.sdecl	'.text.lut.FOC_InitializeSinCosLut',code,cluster('FOC_InitializeSinCosLut')
+	.sect	'.text.lut.FOC_InitializeSinCosLut'
 	.align	2
 	
-	.global	FOC_CalculateSinCosLut
-; Function FOC_CalculateSinCosLut
+	.global	FOC_InitializeSinCosLut
+; Function FOC_InitializeSinCosLut
 .L5:
-FOC_CalculateSinCosLut:	.type	func
+FOC_InitializeSinCosLut:	.type	func
 	mov	d8,#4059
 .L50:
 	addih	d8,d8,#15305
-.L95:
+.L75:
 	mov	d9,#0
 .L51:
 	mov	d10,#0
@@ -26,32 +26,32 @@ FOC_CalculateSinCosLut:	.type	func
 	j	.L2
 .L3:
 	mul	d15,d10,#4
-.L96:
+.L76:
 	movh.a	a15,#@his(SinCos_LUT)
 	lea	a15,[a15]@los(SinCos_LUT)
-.L97:
+.L77:
 	addsc.a	a15,a15,d15,#0
-.L98:
+.L78:
 	mov	d4,d9
 .L53:
 	call	sinf
 .L54:
 	st.w	[a15],d2
-.L99:
+.L79:
 	add.f	d9,d9,d8
-.L100:
+.L80:
 	add	d10,#1
 .L2:
 	mov	d15,#1024
-.L101:
+.L81:
 	jlt.u	d10,d15,.L3
-.L102:
+.L82:
 	ret
-.L45:
+.L24:
 	
-__FOC_CalculateSinCosLut_function_end:
-	.size	FOC_CalculateSinCosLut,__FOC_CalculateSinCosLut_function_end-FOC_CalculateSinCosLut
-.L21:
+__FOC_InitializeSinCosLut_function_end:
+	.size	FOC_InitializeSinCosLut,__FOC_InitializeSinCosLut_function_end-FOC_InitializeSinCosLut
+.L16:
 	; End of function
 	
 	.sdecl	'.text.lut.FOC_GetSinCos_LUT',code,cluster('FOC_GetSinCos_LUT')
@@ -64,79 +64,79 @@ __FOC_CalculateSinCosLut_function_end:
 FOC_GetSinCos_LUT:	.type	func
 	mov.u	d15,#63875
 	addih	d15,d15,#17186
-.L75:
+.L87:
 	mul.f	d0,d4,d15
 .L55:
 	ftouz	d1,d0
 .L57:
 	utof	d15,d1
-.L76:
+.L88:
 	sub.f	d3,d0,d15
-.L34:
+.L38:
 	insert	d0,d1,#0,#10,#22
 .L56:
 	add	d15,d1,#1
-.L77:
+.L89:
 	insert	d2,d15,#0,#10,#22
 .L60:
 	mul	d15,d0,#4
-.L78:
+.L90:
 	movh.a	a15,#@his(SinCos_LUT)
 	lea	a15,[a15]@los(SinCos_LUT)
-.L79:
+.L91:
 	addsc.a	a15,a15,d15,#0
 	ld.w	d0,[a15]
 .L59:
 	mul	d15,d2,#4
-.L80:
+.L92:
 	movh.a	a15,#@his(SinCos_LUT)
 	lea	a15,[a15]@los(SinCos_LUT)
-.L81:
+.L93:
 	addsc.a	a15,a15,d15,#0
 	ld.w	d15,[a15]
 .L62:
 	sub.f	d15,d15,d0
 .L63:
 	madd.f	d15,d0,d3,d15
-.L82:
+.L94:
 	st.w	[a4],d15
-.L39:
+.L43:
 	addi	d15,d1,#256
-.L83:
+.L95:
 	insert	d0,d15,#0,#10,#22
 .L61:
 	add	d15,d0,#1
-.L84:
+.L96:
 	insert	d1,d15,#0,#10,#22
 .L58:
 	mul	d15,d0,#4
-.L85:
+.L97:
 	movh.a	a15,#@his(SinCos_LUT)
 	lea	a15,[a15]@los(SinCos_LUT)
-.L86:
+.L98:
 	addsc.a	a15,a15,d15,#0
 	ld.w	d0,[a15]
 .L64:
 	mul	d15,d1,#4
-.L87:
+.L99:
 	movh.a	a15,#@his(SinCos_LUT)
 	lea	a15,[a15]@los(SinCos_LUT)
-.L88:
+.L100:
 	addsc.a	a15,a15,d15,#0
 	ld.w	d15,[a15]
 .L65:
 	sub.f	d15,d15,d0
 .L66:
 	madd.f	d15,d0,d3,d15
-.L89:
+.L101:
 	st.w	[a5],d15
-.L90:
+.L102:
 	ret
-.L24:
+.L30:
 	
 __FOC_GetSinCos_LUT_function_end:
 	.size	FOC_GetSinCos_LUT,__FOC_GetSinCos_LUT_function_end-FOC_GetSinCos_LUT
-.L16:
+.L21:
 	; End of function
 	
 	.sdecl	'.bss.lut.SinCos_LUT',data,cluster('SinCos_LUT')
@@ -146,14 +146,14 @@ __FOC_GetSinCos_LUT_function_end:
 SinCos_LUT:	.type	object
 	.size	SinCos_LUT,4096
 	.space	4096
-	.calls	'FOC_CalculateSinCosLut','sinf'
-	.calls	'FOC_CalculateSinCosLut','',0
+	.calls	'FOC_InitializeSinCosLut','sinf'
+	.calls	'FOC_InitializeSinCosLut','',0
 	.extern	sinf
 	.calls	'FOC_GetSinCos_LUT','',0
 	.sdecl	'.debug_info',debug
 	.sect	'.debug_info'
 .L9:
-	.word	637
+	.word	584
 	.half	3
 	.word	.L10
 	.byte	4
@@ -161,76 +161,76 @@ SinCos_LUT:	.type	object
 	.byte	1
 	.byte	'../lut.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
-	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
-	.byte	12,1
+	.byte	'Z:\\Users\\niklasprobst\\Desktop\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
 	.word	.L11
-.L25:
+.L27:
 	.byte	2
 	.byte	'float',0,4,4,3
 	.byte	'sinf',0,1,89,25
-	.word	229
+	.word	176
 	.byte	1,1,1,1,4,1,89,43
-	.word	229
+	.word	176
 	.byte	0
-.L27:
-	.byte	5
-	.word	229
-.L31:
+.L25:
 	.byte	2
-	.byte	'unsigned long int',0,4,7,2
+	.byte	'unsigned long int',0,4,7
+.L32:
+	.byte	5
+	.word	176
+	.byte	2
 	.byte	'short int',0,2,5,6
 	.byte	'__wchar_t',0,2,1,1
-	.word	290
+	.word	237
 	.byte	2
 	.byte	'unsigned int',0,4,7,6
 	.byte	'__size_t',0,2,1,1
-	.word	321
+	.word	268
 	.byte	2
 	.byte	'int',0,4,5,6
 	.byte	'__ptrdiff_t',0,2,1,1
-	.word	354
+	.word	301
 	.byte	7,1,5
-	.word	381
+	.word	328
 	.byte	6
 	.byte	'__codeptr',0,2,1,1
-	.word	383
+	.word	330
 	.byte	2
 	.byte	'unsigned char',0,1,8,6
 	.byte	'uint8',0,3,108,29
-	.word	406
+	.word	353
 	.byte	2
 	.byte	'unsigned short int',0,2,7,6
 	.byte	'uint16',0,3,112,29
-	.word	437
+	.word	384
 	.byte	6
 	.byte	'uint32',0,3,116,29
-	.word	269
+	.word	211
 	.byte	6
 	.byte	'sint16',0,3,129,1,29
-	.word	290
+	.word	237
 	.byte	2
 	.byte	'long int',0,4,5,6
 	.byte	'sint32',0,3,134,1,29
-	.word	505
+	.word	452
 	.byte	2
 	.byte	'long long int',0,8,5,6
 	.byte	'sint64',0,3,141,1,29
-	.word	533
+	.word	480
 	.byte	6
 	.byte	'float32',0,3,170,1,29
-	.word	229
+	.word	176
 	.byte	8
 	.byte	'void',0,5
-	.word	583
+	.word	530
 	.byte	6
 	.byte	'pvoid',0,4,54,28
-	.word	589
+	.word	536
 	.byte	6
 	.byte	'Ifx_TickTime',0,4,76,28
-	.word	533
+	.word	480
 .L49:
 	.byte	9,128,32
-	.word	229
+	.word	176
 	.byte	10,255,7,0,0
 	.sdecl	'.debug_abbrev',debug
 	.sect	'.debug_abbrev'
@@ -247,8 +247,8 @@ SinCos_LUT:	.type	object
 	.word	.L70-.L69
 .L69:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1
-	.byte	'C:\\Infineon\\AURIX-Studio-1.10.28\\tools\\Compilers\\Tasking_1.1r8\\ctc\\include\\',0
-	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std',0
+	.byte	'C:\\Infineon\\AURIX-Studio-1.10.24\\tools\\Compilers\\Tasking_1.1r8\\ctc\\include\\',0
+	.byte	'Z:\\\\Users\\\\niklasprobst\\\\Desktop\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std',0
 	.byte	0
 	.byte	'math.h',0,1,0,0
 	.byte	'../lut.c',0,0,0,0
@@ -256,82 +256,40 @@ SinCos_LUT:	.type	object
 	.byte	'Ifx_Types.h',0,2,0,0,0
 .L70:
 .L68:
-	.sdecl	'.debug_info',debug,cluster('FOC_GetSinCos_LUT')
+	.sdecl	'.debug_info',debug,cluster('FOC_InitializeSinCosLut')
 	.sect	'.debug_info'
 .L12:
-	.word	604
+	.word	291
 	.half	3
 	.word	.L13
 	.byte	4,1
 	.byte	'../lut.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
-	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
-	.byte	12,1
+	.byte	'Z:\\Users\\niklasprobst\\Desktop\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
 	.word	.L15,.L14
 	.byte	2
 	.word	.L8
 	.byte	3
-	.byte	'FOC_GetSinCos_LUT',0,1,78,6,1,1,1
-	.word	.L7,.L24,.L6
+	.byte	'FOC_InitializeSinCosLut',0,1,56,6,1,1,1
+	.word	.L5,.L24,.L4
 	.byte	4
-	.byte	'angle_rad',0,1,78,32
+	.word	.L5,.L24
+	.byte	5
+	.byte	'i',0,1,58,12
 	.word	.L25,.L26
-	.byte	4
-	.byte	'sinVal',0,1,78,52
+	.byte	5
+	.byte	'angle_step',0,1,59,13
 	.word	.L27,.L28
-	.byte	4
-	.byte	'cosVal',0,1,78,69
+	.byte	5
+	.byte	'angle',0,1,60,13
 	.word	.L27,.L29
-	.byte	5
-	.word	.L7,.L24
-	.byte	6
-	.byte	'exactIndex',0,1,80,13
-	.word	.L25,.L30
-	.byte	6
-	.byte	'idx_i',0,1,81,12
-	.word	.L31,.L32
-	.byte	6
-	.byte	'frac',0,1,82,13
-	.word	.L25,.L33
-	.byte	5
-	.word	.L34,.L24
-	.byte	6
-	.byte	'idx_sin_0',0,1,93,12
-	.word	.L31,.L35
-	.byte	6
-	.byte	'idx_sin_1',0,1,94,12
-	.word	.L31,.L36
-	.byte	6
-	.byte	'sin_y0',0,1,96,13
-	.word	.L25,.L37
-	.byte	6
-	.byte	'sin_y1',0,1,97,13
-	.word	.L25,.L38
-	.byte	5
-	.word	.L39,.L24
-	.byte	6
-	.byte	'offset',0,1,103,12
-	.word	.L31,.L40
-	.byte	6
-	.byte	'idx_cos_0',0,1,105,12
-	.word	.L31,.L41
-	.byte	6
-	.byte	'idx_cos_1',0,1,106,12
-	.word	.L31,.L42
-	.byte	6
-	.byte	'cos_c0',0,1,108,13
-	.word	.L25,.L43
-	.byte	6
-	.byte	'cos_c1',0,1,109,13
-	.word	.L25,.L44
-	.byte	0,0,0,0,0
-	.sdecl	'.debug_abbrev',debug,cluster('FOC_GetSinCos_LUT')
+	.byte	0,0,0
+	.sdecl	'.debug_abbrev',debug,cluster('FOC_InitializeSinCosLut')
 	.sect	'.debug_abbrev'
 .L13:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
-	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
-	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
-	.sdecl	'.debug_line',debug,cluster('FOC_GetSinCos_LUT')
+	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,11,1,17,1,18,1,0,0,5,52,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,0
+	.sdecl	'.debug_line',debug,cluster('FOC_InitializeSinCosLut')
 	.sect	'.debug_line'
 .L14:
 	.word	.L72-.L71
@@ -342,168 +300,207 @@ SinCos_LUT:	.type	object
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../lut.c',0,0,0,0,0
 .L74:
-	.byte	5,30,7,0,5,2
-	.word	.L7
-	.byte	3,213,0,1,5,28,9
-	.half	.L75-.L7
-	.byte	1,5,13,9
-	.half	.L55-.L75
-	.byte	3,3,1,5,26,9
-	.half	.L57-.L55
-	.byte	3,1,1,5,24,9
-	.half	.L76-.L57
-	.byte	1,5,30,9
-	.half	.L34-.L76
-	.byte	3,3,1,5,31,9
-	.half	.L56-.L34
-	.byte	3,1,1,5,37,9
-	.half	.L77-.L56
-	.byte	1,5,32,9
-	.half	.L60-.L77
-	.byte	3,2,1,5,22,9
-	.half	.L78-.L60
-	.byte	1,5,32,9
-	.half	.L79-.L78
-	.byte	1,9
-	.half	.L59-.L79
-	.byte	3,1,1,5,22,9
-	.half	.L80-.L59
-	.byte	1,5,32,9
-	.half	.L81-.L80
-	.byte	1,5,40,9
-	.half	.L62-.L81
-	.byte	3,3,1,5,22,9
-	.half	.L63-.L62
-	.byte	1,5,13,9
-	.half	.L82-.L63
-	.byte	1,5,31,9
-	.half	.L39-.L82
-	.byte	3,5,1,5,41,9
-	.half	.L83-.L39
-	.byte	1,5,35,9
-	.half	.L61-.L83
-	.byte	3,1,1,5,41,9
-	.half	.L84-.L61
-	.byte	1,5,32,9
-	.half	.L58-.L84
-	.byte	3,2,1,5,22,9
-	.half	.L85-.L58
-	.byte	1,5,32,9
-	.half	.L86-.L85
-	.byte	1,9
-	.half	.L64-.L86
-	.byte	3,1,1,5,22,9
-	.half	.L87-.L64
-	.byte	1,5,32,9
-	.half	.L88-.L87
-	.byte	1,5,40,9
-	.half	.L65-.L88
-	.byte	3,2,1,5,22,9
-	.half	.L66-.L65
-	.byte	1,5,13,9
-	.half	.L89-.L66
-	.byte	1,5,1,9
-	.half	.L90-.L89
-	.byte	3,1,1,7,9
-	.half	.L16-.L90
-	.byte	0,1,1
-.L72:
-	.sdecl	'.debug_ranges',debug,cluster('FOC_GetSinCos_LUT')
-	.sect	'.debug_ranges'
-.L15:
-	.word	-1,.L7,0,.L16-.L7,0,0
-	.sdecl	'.debug_info',debug,cluster('FOC_CalculateSinCosLut')
-	.sect	'.debug_info'
-.L17:
-	.word	343
-	.half	3
-	.word	.L18
-	.byte	4,1
-	.byte	'../lut.c',0
-	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
-	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
-	.byte	12,1
-	.word	.L20,.L19
-	.byte	2
-	.word	.L8
-	.byte	3
-	.byte	'FOC_CalculateSinCosLut',0,1,56,6,1,1,1
-	.word	.L5,.L45,.L4
-	.byte	4
-	.word	.L5,.L45
-	.byte	5
-	.byte	'i',0,1,58,12
-	.word	.L31,.L46
-	.byte	5
-	.byte	'angle_step',0,1,59,13
-	.word	.L25,.L47
-	.byte	5
-	.byte	'angle',0,1,60,13
-	.word	.L25,.L48
-	.byte	0,0,0
-	.sdecl	'.debug_abbrev',debug,cluster('FOC_CalculateSinCosLut')
-	.sect	'.debug_abbrev'
-.L18:
-	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
-	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,11,1,17,1,18,1,0,0,5,52,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,0
-	.sdecl	'.debug_line',debug,cluster('FOC_CalculateSinCosLut')
-	.sect	'.debug_line'
-.L19:
-	.word	.L92-.L91
-.L91:
-	.half	3
-	.word	.L94-.L93
-.L93:
-	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
-	.byte	'../lut.c',0,0,0,0,0
-.L94:
 	.byte	5,33,7,0,5,2
 	.word	.L5
 	.byte	3,58,1,5,19,9
-	.half	.L95-.L5
+	.half	.L75-.L5
 	.byte	3,1,1,5,12,9
-	.half	.L51-.L95
+	.half	.L51-.L75
 	.byte	3,2,1,5,29,9
 	.half	.L52-.L51
 	.byte	1,5,19,9
 	.half	.L3-.L52
 	.byte	3,3,1,5,9,9
-	.half	.L96-.L3
+	.half	.L76-.L3
 	.byte	1,5,19,9
-	.half	.L97-.L96
+	.half	.L77-.L76
 	.byte	1,5,30,9
-	.half	.L98-.L97
+	.half	.L78-.L77
 	.byte	1,5,23,9
-	.half	.L54-.L98
+	.half	.L54-.L78
 	.byte	1,5,15,9
-	.half	.L99-.L54
+	.half	.L79-.L54
 	.byte	3,3,1,5,32,9
-	.half	.L100-.L99
+	.half	.L80-.L79
 	.byte	3,122,1,5,21,9
-	.half	.L2-.L100
+	.half	.L2-.L80
 	.byte	1,5,29,9
-	.half	.L101-.L2
+	.half	.L81-.L2
 	.byte	1,5,1,7,9
-	.half	.L102-.L101
+	.half	.L82-.L81
 	.byte	3,8,1,7,9
+	.half	.L16-.L82
+	.byte	0,1,1
+.L72:
+	.sdecl	'.debug_ranges',debug,cluster('FOC_InitializeSinCosLut')
+	.sect	'.debug_ranges'
+.L15:
+	.word	-1,.L5,0,.L16-.L5,0,0
+	.sdecl	'.debug_info',debug,cluster('FOC_GetSinCos_LUT')
+	.sect	'.debug_info'
+.L17:
+	.word	551
+	.half	3
+	.word	.L18
+	.byte	4,1
+	.byte	'../lut.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'Z:\\Users\\niklasprobst\\Desktop\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
+	.word	.L20,.L19
+	.byte	2
+	.word	.L8
+	.byte	3
+	.byte	'FOC_GetSinCos_LUT',0,1,78,6,1,1,1
+	.word	.L7,.L30,.L6
+	.byte	4
+	.byte	'angle_rad',0,1,78,32
+	.word	.L27,.L31
+	.byte	4
+	.byte	'sinVal',0,1,78,52
+	.word	.L32,.L33
+	.byte	4
+	.byte	'cosVal',0,1,78,69
+	.word	.L32,.L34
+	.byte	5
+	.word	.L7,.L30
+	.byte	6
+	.byte	'exactIndex',0,1,80,13
+	.word	.L27,.L35
+	.byte	6
+	.byte	'idx_i',0,1,81,12
+	.word	.L25,.L36
+	.byte	6
+	.byte	'frac',0,1,82,13
+	.word	.L27,.L37
+	.byte	5
+	.word	.L38,.L30
+	.byte	6
+	.byte	'idx_sin_0',0,1,93,12
+	.word	.L25,.L39
+	.byte	6
+	.byte	'idx_sin_1',0,1,94,12
+	.word	.L25,.L40
+	.byte	6
+	.byte	'sin_y0',0,1,96,13
+	.word	.L27,.L41
+	.byte	6
+	.byte	'sin_y1',0,1,97,13
+	.word	.L27,.L42
+	.byte	5
+	.word	.L43,.L30
+	.byte	6
+	.byte	'offset',0,1,103,12
+	.word	.L25,.L44
+	.byte	6
+	.byte	'idx_cos_0',0,1,105,12
+	.word	.L25,.L45
+	.byte	6
+	.byte	'idx_cos_1',0,1,106,12
+	.word	.L25,.L46
+	.byte	6
+	.byte	'cos_c0',0,1,108,13
+	.word	.L27,.L47
+	.byte	6
+	.byte	'cos_c1',0,1,109,13
+	.word	.L27,.L48
+	.byte	0,0,0,0,0
+	.sdecl	'.debug_abbrev',debug,cluster('FOC_GetSinCos_LUT')
+	.sect	'.debug_abbrev'
+.L18:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
+	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
+	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
+	.sdecl	'.debug_line',debug,cluster('FOC_GetSinCos_LUT')
+	.sect	'.debug_line'
+.L19:
+	.word	.L84-.L83
+.L83:
+	.half	3
+	.word	.L86-.L85
+.L85:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'../lut.c',0,0,0,0,0
+.L86:
+	.byte	5,30,7,0,5,2
+	.word	.L7
+	.byte	3,213,0,1,5,28,9
+	.half	.L87-.L7
+	.byte	1,5,13,9
+	.half	.L55-.L87
+	.byte	3,3,1,5,26,9
+	.half	.L57-.L55
+	.byte	3,1,1,5,24,9
+	.half	.L88-.L57
+	.byte	1,5,30,9
+	.half	.L38-.L88
+	.byte	3,3,1,5,31,9
+	.half	.L56-.L38
+	.byte	3,1,1,5,37,9
+	.half	.L89-.L56
+	.byte	1,5,32,9
+	.half	.L60-.L89
+	.byte	3,2,1,5,22,9
+	.half	.L90-.L60
+	.byte	1,5,32,9
+	.half	.L91-.L90
+	.byte	1,9
+	.half	.L59-.L91
+	.byte	3,1,1,5,22,9
+	.half	.L92-.L59
+	.byte	1,5,32,9
+	.half	.L93-.L92
+	.byte	1,5,40,9
+	.half	.L62-.L93
+	.byte	3,3,1,5,22,9
+	.half	.L63-.L62
+	.byte	1,5,13,9
+	.half	.L94-.L63
+	.byte	1,5,31,9
+	.half	.L43-.L94
+	.byte	3,5,1,5,41,9
+	.half	.L95-.L43
+	.byte	1,5,35,9
+	.half	.L61-.L95
+	.byte	3,1,1,5,41,9
+	.half	.L96-.L61
+	.byte	1,5,32,9
+	.half	.L58-.L96
+	.byte	3,2,1,5,22,9
+	.half	.L97-.L58
+	.byte	1,5,32,9
+	.half	.L98-.L97
+	.byte	1,9
+	.half	.L64-.L98
+	.byte	3,1,1,5,22,9
+	.half	.L99-.L64
+	.byte	1,5,32,9
+	.half	.L100-.L99
+	.byte	1,5,40,9
+	.half	.L65-.L100
+	.byte	3,2,1,5,22,9
+	.half	.L66-.L65
+	.byte	1,5,13,9
+	.half	.L101-.L66
+	.byte	1,5,1,9
+	.half	.L102-.L101
+	.byte	3,1,1,7,9
 	.half	.L21-.L102
 	.byte	0,1,1
-.L92:
-	.sdecl	'.debug_ranges',debug,cluster('FOC_CalculateSinCosLut')
+.L84:
+	.sdecl	'.debug_ranges',debug,cluster('FOC_GetSinCos_LUT')
 	.sect	'.debug_ranges'
 .L20:
-	.word	-1,.L5,0,.L21-.L5,0,0
+	.word	-1,.L7,0,.L21-.L7,0,0
 	.sdecl	'.debug_info',debug,cluster('SinCos_LUT')
 	.sect	'.debug_info'
 .L22:
-	.word	253
+	.word	200
 	.half	3
 	.word	.L23
 	.byte	4,1
 	.byte	'../lut.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
-	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\iLLD_TC387_ADS_GTM_ATOM_3_Phase_Inverter_PWM_1\\TriCore Debug (TASKING)\\',0
-	.byte	12,1,2
+	.byte	'Z:\\Users\\niklasprobst\\Desktop\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1,2
 	.word	.L8
 	.byte	3
 	.byte	'SinCos_LUT',0,2,40,9
@@ -516,109 +513,109 @@ SinCos_LUT:	.type	object
 .L23:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,0,0,2,61,0,24,16,0,0,3,52,0,3,8,58,15,59,15,57,15,73,16,63,12,2,9
 	.byte	0,0,0
-	.sdecl	'.debug_loc',debug,cluster('FOC_CalculateSinCosLut')
+	.sdecl	'.debug_loc',debug,cluster('FOC_GetSinCos_LUT')
 	.sect	'.debug_loc'
-.L4:
-	.word	-1,.L5,0,.L45-.L5
+.L6:
+	.word	-1,.L7,0,.L30-.L7
 	.half	2
 	.byte	138,0
 	.word	0,0
+.L31:
+	.word	-1,.L7,0,.L30-.L7
+	.half	1
+	.byte	84
+	.word	0,0
+.L34:
+	.word	-1,.L7,0,.L30-.L7
+	.half	1
+	.byte	101
+	.word	0,0
+.L47:
+	.word	-1,.L7,.L64-.L7,.L30-.L7
+	.half	5
+	.byte	144,32,157,32,0
+	.word	0,0
 .L48:
-	.word	-1,.L5,.L51-.L5,.L45-.L5
+	.word	-1,.L7,.L65-.L7,.L66-.L7
+	.half	1
+	.byte	95
+	.word	0,0
+.L35:
+	.word	-1,.L7,.L55-.L7,.L56-.L7
+	.half	5
+	.byte	144,32,157,32,0
+	.word	0,0
+.L37:
+	.word	-1,.L7,.L38-.L7,.L30-.L7
+	.half	1
+	.byte	83
+	.word	0,0
+.L45:
+	.word	-1,.L7,.L61-.L7,.L64-.L7
+	.half	5
+	.byte	144,32,157,32,0
+	.word	0,0
+.L46:
+	.word	-1,.L7,.L58-.L7,.L30-.L7
+	.half	1
+	.byte	81
+	.word	0,0
+.L36:
+	.word	-1,.L7,.L57-.L7,.L58-.L7
+	.half	1
+	.byte	81
+	.word	0,0
+.L39:
+	.word	-1,.L7,.L56-.L7,.L59-.L7
+	.half	5
+	.byte	144,32,157,32,0
+	.word	0,0
+.L40:
+	.word	-1,.L7,.L60-.L7,.L30-.L7
+	.half	1
+	.byte	82
+	.word	0,0
+.L44:
+	.word	0,0
+.L33:
+	.word	-1,.L7,0,.L30-.L7
+	.half	1
+	.byte	100
+	.word	0,0
+.L41:
+	.word	-1,.L7,.L59-.L7,.L61-.L7
+	.half	5
+	.byte	144,32,157,32,0
+	.word	0,0
+.L42:
+	.word	-1,.L7,.L62-.L7,.L63-.L7
+	.half	1
+	.byte	95
+	.word	0,0
+	.sdecl	'.debug_loc',debug,cluster('FOC_InitializeSinCosLut')
+	.sect	'.debug_loc'
+.L4:
+	.word	-1,.L5,0,.L24-.L5
+	.half	2
+	.byte	138,0
+	.word	0,0
+.L29:
+	.word	-1,.L5,.L51-.L5,.L24-.L5
 	.half	1
 	.byte	89
 	.word	.L53-.L5,.L54-.L5
 	.half	1
 	.byte	84
 	.word	0,0
-.L47:
-	.word	-1,.L5,.L50-.L5,.L45-.L5
+.L28:
+	.word	-1,.L5,.L50-.L5,.L24-.L5
 	.half	1
 	.byte	88
 	.word	0,0
-.L46:
-	.word	-1,.L5,.L52-.L5,.L45-.L5
+.L26:
+	.word	-1,.L5,.L52-.L5,.L24-.L5
 	.half	1
 	.byte	90
-	.word	0,0
-	.sdecl	'.debug_loc',debug,cluster('FOC_GetSinCos_LUT')
-	.sect	'.debug_loc'
-.L6:
-	.word	-1,.L7,0,.L24-.L7
-	.half	2
-	.byte	138,0
-	.word	0,0
-.L26:
-	.word	-1,.L7,0,.L24-.L7
-	.half	1
-	.byte	84
-	.word	0,0
-.L29:
-	.word	-1,.L7,0,.L24-.L7
-	.half	1
-	.byte	101
-	.word	0,0
-.L43:
-	.word	-1,.L7,.L64-.L7,.L24-.L7
-	.half	5
-	.byte	144,32,157,32,0
-	.word	0,0
-.L44:
-	.word	-1,.L7,.L65-.L7,.L66-.L7
-	.half	1
-	.byte	95
-	.word	0,0
-.L30:
-	.word	-1,.L7,.L55-.L7,.L56-.L7
-	.half	5
-	.byte	144,32,157,32,0
-	.word	0,0
-.L33:
-	.word	-1,.L7,.L34-.L7,.L24-.L7
-	.half	1
-	.byte	83
-	.word	0,0
-.L41:
-	.word	-1,.L7,.L61-.L7,.L64-.L7
-	.half	5
-	.byte	144,32,157,32,0
-	.word	0,0
-.L42:
-	.word	-1,.L7,.L58-.L7,.L24-.L7
-	.half	1
-	.byte	81
-	.word	0,0
-.L32:
-	.word	-1,.L7,.L57-.L7,.L58-.L7
-	.half	1
-	.byte	81
-	.word	0,0
-.L35:
-	.word	-1,.L7,.L56-.L7,.L59-.L7
-	.half	5
-	.byte	144,32,157,32,0
-	.word	0,0
-.L36:
-	.word	-1,.L7,.L60-.L7,.L24-.L7
-	.half	1
-	.byte	82
-	.word	0,0
-.L40:
-	.word	0,0
-.L28:
-	.word	-1,.L7,0,.L24-.L7
-	.half	1
-	.byte	100
-	.word	0,0
-.L37:
-	.word	-1,.L7,.L59-.L7,.L61-.L7
-	.half	5
-	.byte	144,32,157,32,0
-	.word	0,0
-.L38:
-	.word	-1,.L7,.L62-.L7,.L63-.L7
-	.half	1
-	.byte	95
 	.word	0,0
 	.sdecl	'.debug_frame',debug
 	.sect	'.debug_frame'
@@ -627,13 +624,13 @@ SinCos_LUT:	.type	object
 	.word	-1
 	.byte	3,0,2,1,27,12,26,0,8,26,8,27,8,30,8,29,8,28,8,16,8,17,8,24,8,25,8,31,8,32,8,33,8,34,8,35,8,36,8,37,8,38
 	.byte	8,39
-	.sdecl	'.debug_frame',debug,cluster('FOC_CalculateSinCosLut')
+	.sdecl	'.debug_frame',debug,cluster('FOC_InitializeSinCosLut')
 	.sect	'.debug_frame'
 	.word	12
-	.word	.L103,.L5,.L45-.L5
+	.word	.L103,.L5,.L24-.L5
 	.sdecl	'.debug_frame',debug,cluster('FOC_GetSinCos_LUT')
 	.sect	'.debug_frame'
 	.word	20
-	.word	.L103,.L7,.L24-.L7
+	.word	.L103,.L7,.L30-.L7
 	.byte	8,18,8,19,8,22,8,23
 	; Module end
