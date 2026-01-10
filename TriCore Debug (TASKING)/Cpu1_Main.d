@@ -76,3 +76,31 @@ Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugvert
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxDmu_regdef.h" :
 Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Scu\\Std\IfxScuWdt.h"
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Scu\\Std\IfxScuWdt.h" :
+Cpu1_Main.o :	..\adc.h
+..\adc.h :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Evadc\\Adc\IfxEvadc_Adc.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Evadc\\Adc\IfxEvadc_Adc.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Evadc\Std\IfxEvadc.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Evadc\Std\IfxEvadc.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxEvadc_cfg.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxEvadc_cfg.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Src\Std\IfxSrc.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Src\Std\IfxSrc.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxSrc_cfg.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxSrc_cfg.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_PinMap\IfxEvadc_PinMap.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_PinMap\IfxEvadc_PinMap.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxEvadc_reg.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxEvadc_reg.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxEvadc_regdef.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxEvadc_regdef.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxEvadc_bf.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxEvadc_bf.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_reg.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_reg.h" :
+Cpu1_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h" :
+Cpu1_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h" :
+Cpu1_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h" :

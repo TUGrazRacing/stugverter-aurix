@@ -1,6 +1,6 @@
 	; Module start
 	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
-	.compiler_invocation	"ctc -f cc13780a --dep-file=Cpu0_Main.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o Cpu0_Main.src ../Cpu0_Main.c"
+	.compiler_invocation	"ctc -f cc21196a --dep-file=Cpu0_Main.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o Cpu0_Main.src ../Cpu0_Main.c"
 	.compiler_name		"ctc"
 	;source	'../Cpu0_Main.c'
 
@@ -15,7 +15,7 @@ $TC162
 ; Function core0_main
 .L6:
 core0_main:	.type	func
-	sub.a	a10,#56
+	sub.a	a10,#64
 .L22:
 	enable
 .L23:
@@ -48,7 +48,7 @@ core0_main:	.type	func
 	lea	a15,[a15]0
 .L114:
 	lea	a2,[a10]0
-	mov.a	a4,#11
+	mov.a	a4,#13
 .L2:
 	ld.w	d15,[a15+]
 	st.w	[a2+],d15
@@ -58,13 +58,13 @@ core0_main:	.type	func
 	lea	a15,[a15]@los(.3.ini)
 	ld.da	a2/a3,[a15]0
 .L116:
-	st.da	[a10]48,a2/a3
+	st.da	[a10]56,a2/a3
 .L117:
 	lea	a15,[a10]0
 .L118:
-	st.a	[a10]52,a15
+	st.a	[a10]60,a15
 .L119:
-	lea	a4,[a10]48
+	lea	a4,[a10]56
 	call	IfxPort_Io_initModule
 .L120:
 	movh.a	a15,#61444
@@ -264,7 +264,7 @@ SERIALIO:	.type	object
 	.sect	'.rodata.Cpu0_Main..2.ini'
 	.align	4
 .2.ini:	.type	object
-	.size	.2.ini,48
+	.size	.2.ini,56
 	.word	IfxPort_P21_2
 	.byte	128
 	.space	3
@@ -283,12 +283,15 @@ SERIALIO:	.type	object
 	.word	IfxPort_P20_0
 	.byte	128
 	.space	3
+	.word	IfxPort_P00_12
+	.byte	128
+	.space	3
 	.sdecl	'.rodata.Cpu0_Main..3.ini',data,rom
 	.sect	'.rodata.Cpu0_Main..3.ini'
 	.align	4
 .3.ini:	.type	object
 	.size	.3.ini,8
-	.word	6
+	.word	7
 	.space	4
 	.calls	'core0_main','IfxScuWdt_getCpuWatchdogPassword'
 	.calls	'core0_main','IfxScuWdt_disableCpuWatchdog'
@@ -310,17 +313,18 @@ SERIALIO:	.type	object
 	.extern	SERIALIO_Init
 	.extern	IfxPort_Io_initModule
 	.extern	initGtmAtom3phInv
+	.extern	IfxPort_P00_12
 	.extern	IfxPort_P14_6
 	.extern	IfxPort_P14_7
 	.extern	IfxPort_P14_8
 	.extern	IfxPort_P20_0
 	.extern	IfxPort_P21_2
 	.extern	IfxPort_P21_3
-	.calls	'core0_main','',56
+	.calls	'core0_main','',64
 	.sdecl	'.debug_info',debug
 	.sect	'.debug_info'
 .L8:
-	.word	164822
+	.word	164847
 	.half	3
 	.word	.L9
 	.byte	4
@@ -4386,9 +4390,9 @@ SERIALIO:	.type	object
 	.byte	'config',0,19,205,1,64
 	.word	25500
 	.byte	0,31
-	.byte	'initGtmAtom3phInv',0,20,34,6,1,1,1,1,15,48
+	.byte	'initGtmAtom3phInv',0,20,34,6,1,1,1,1,15,56
 	.word	25398
-	.byte	16,5,0
+	.byte	16,6,0
 .L26:
 	.byte	30
 	.word	25579
@@ -24120,6 +24124,9 @@ SERIALIO:	.type	object
 	.byte	'IfxPort_Io_Config',0,19,191,1,3
 	.word	25456
 	.byte	34
+	.byte	'IfxPort_P00_12',0,37,58,24
+	.word	24257
+	.byte	1,1,34
 	.byte	'IfxPort_P14_6',0,37,162,1,24
 	.word	24257
 	.byte	1,1,34
@@ -24253,7 +24260,7 @@ SERIALIO:	.type	object
 	.byte	'configPin',0,1,53,32
 	.word	.L26,.L27
 	.byte	7
-	.byte	'conf',0,1,62,29
+	.byte	'conf',0,1,63,29
 	.word	.L28,.L29
 	.byte	5
 	.word	.L30,.L31,.L32
@@ -24528,7 +24535,7 @@ SERIALIO:	.type	object
 	.byte	0,0,0,4
 	.word	.L93,.L20
 	.byte	7
-	.byte	'loopCount',0,1,104,8
+	.byte	'loopCount',0,1,105,8
 	.word	.L95,.L96
 	.byte	0,0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('core0_main')
@@ -24577,7 +24584,7 @@ SERIALIO:	.type	object
 	.half	.L114-.L25
 	.byte	1,5,36,9
 	.half	.L115-.L114
-	.byte	3,9,1,5,34,9
+	.byte	3,10,1,5,34,9
 	.half	.L116-.L115
 	.byte	1,5,33,9
 	.half	.L117-.L116
@@ -24591,153 +24598,153 @@ SERIALIO:	.type	object
 	.half	.L121-.L120
 	.byte	1,4,3,5,41,9
 	.half	.L31-.L121
-	.byte	3,215,4,1,5,26,9
+	.byte	3,214,4,1,5,26,9
 	.half	.L39-.L31
 	.byte	3,18,1,5,17,9
 	.half	.L122-.L39
 	.byte	1,4,1,5,24,9
 	.half	.L32-.L122
-	.byte	3,152,123,1,5,36,9
+	.byte	3,153,123,1,5,36,9
 	.half	.L123-.L32
 	.byte	1,4,3,5,41,9
 	.half	.L47-.L123
-	.byte	3,214,4,1,5,26,9
+	.byte	3,213,4,1,5,26,9
 	.half	.L49-.L47
 	.byte	3,18,1,5,17,9
 	.half	.L124-.L49
 	.byte	1,4,1,5,24,9
 	.half	.L48-.L124
-	.byte	3,153,123,1,5,36,9
+	.byte	3,154,123,1,5,36,9
 	.half	.L125-.L48
 	.byte	1,4,3,5,41,9
 	.half	.L50-.L125
-	.byte	3,213,4,1,5,26,9
+	.byte	3,212,4,1,5,26,9
 	.half	.L52-.L50
 	.byte	3,18,1,5,17,9
 	.half	.L126-.L52
 	.byte	1,4,1,5,25,9
 	.half	.L51-.L126
-	.byte	3,156,123,1,5,37,9
+	.byte	3,157,123,1,5,37,9
 	.half	.L127-.L51
 	.byte	1,4,3,5,41,9
 	.half	.L54-.L127
-	.byte	3,204,4,1,5,26,9
+	.byte	3,203,4,1,5,26,9
 	.half	.L61-.L54
 	.byte	3,24,1,5,17,9
 	.half	.L128-.L61
 	.byte	1,4,1,5,24,9
 	.half	.L55-.L128
-	.byte	3,157,123,1,5,36,9
+	.byte	3,158,123,1,5,36,9
 	.half	.L129-.L55
 	.byte	1,4,3,5,41,9
 	.half	.L62-.L129
-	.byte	3,209,4,1,5,26,9
+	.byte	3,208,4,1,5,26,9
 	.half	.L64-.L62
 	.byte	3,18,1,5,17,9
 	.half	.L130-.L64
 	.byte	1,4,1,5,25,9
 	.half	.L63-.L130
-	.byte	3,158,123,1,5,37,9
+	.byte	3,159,123,1,5,37,9
 	.half	.L131-.L63
 	.byte	1,4,3,5,41,9
 	.half	.L65-.L131
-	.byte	3,202,4,1,5,26,9
+	.byte	3,201,4,1,5,26,9
 	.half	.L67-.L65
 	.byte	3,24,1,5,17,9
 	.half	.L132-.L67
 	.byte	1,4,1,5,25,9
 	.half	.L66-.L132
-	.byte	3,161,123,1,5,37,9
+	.byte	3,162,123,1,5,37,9
 	.half	.L133-.L66
 	.byte	1,4,3,5,41,9
 	.half	.L68-.L133
-	.byte	3,199,4,1,5,26,9
+	.byte	3,198,4,1,5,26,9
 	.half	.L70-.L68
 	.byte	3,24,1,5,17,9
 	.half	.L134-.L70
 	.byte	1,4,1,5,24,9
 	.half	.L69-.L134
-	.byte	3,162,123,1,5,36,9
+	.byte	3,163,123,1,5,36,9
 	.half	.L135-.L69
 	.byte	1,4,3,5,41,9
 	.half	.L71-.L135
-	.byte	3,204,4,1,5,26,9
+	.byte	3,203,4,1,5,26,9
 	.half	.L73-.L71
 	.byte	3,18,1,5,17,9
 	.half	.L136-.L73
 	.byte	1,4,1,5,25,9
 	.half	.L72-.L136
-	.byte	3,163,123,1,5,37,9
+	.byte	3,164,123,1,5,37,9
 	.half	.L137-.L72
 	.byte	1,4,3,5,41,9
 	.half	.L74-.L137
-	.byte	3,197,4,1,5,26,9
+	.byte	3,196,4,1,5,26,9
 	.half	.L76-.L74
 	.byte	3,24,1,5,17,9
 	.half	.L138-.L76
 	.byte	1,4,1,5,25,9
 	.half	.L75-.L138
-	.byte	3,166,123,1,5,37,9
+	.byte	3,167,123,1,5,37,9
 	.half	.L139-.L75
 	.byte	1,4,3,5,41,9
 	.half	.L77-.L139
-	.byte	3,194,4,1,5,26,9
+	.byte	3,193,4,1,5,26,9
 	.half	.L79-.L77
 	.byte	3,24,1,5,17,9
 	.half	.L140-.L79
 	.byte	1,4,1,5,24,9
 	.half	.L78-.L140
-	.byte	3,167,123,1,5,36,9
+	.byte	3,168,123,1,5,36,9
 	.half	.L141-.L78
 	.byte	1,4,3,5,41,9
 	.half	.L80-.L141
-	.byte	3,199,4,1,5,26,9
+	.byte	3,198,4,1,5,26,9
 	.half	.L82-.L80
 	.byte	3,18,1,5,17,9
 	.half	.L142-.L82
 	.byte	1,4,1,5,25,9
 	.half	.L81-.L142
-	.byte	3,168,123,1,5,37,9
+	.byte	3,169,123,1,5,37,9
 	.half	.L143-.L81
 	.byte	1,4,3,5,41,9
 	.half	.L83-.L143
-	.byte	3,192,4,1,5,26,9
+	.byte	3,191,4,1,5,26,9
 	.half	.L85-.L83
 	.byte	3,24,1,5,17,9
 	.half	.L144-.L85
 	.byte	1,4,1,5,24,9
 	.half	.L84-.L144
-	.byte	3,171,123,1,5,36,9
+	.byte	3,172,123,1,5,36,9
 	.half	.L145-.L84
 	.byte	1,4,3,5,41,9
 	.half	.L86-.L145
-	.byte	3,189,4,1,5,26,9
+	.byte	3,188,4,1,5,26,9
 	.half	.L88-.L86
 	.byte	3,24,1,5,17,9
 	.half	.L146-.L88
 	.byte	1,4,1,5,24,9
 	.half	.L87-.L146
-	.byte	3,172,123,1,5,36,9
+	.byte	3,173,123,1,5,36,9
 	.half	.L147-.L87
 	.byte	1,4,3,5,41,9
 	.half	.L89-.L147
-	.byte	3,188,4,1,5,26,9
+	.byte	3,187,4,1,5,26,9
 	.half	.L91-.L89
 	.byte	3,24,1,5,17,9
 	.half	.L148-.L91
 	.byte	1,4,1,5,24,9
 	.half	.L90-.L148
-	.byte	3,173,123,1,5,36,9
+	.byte	3,174,123,1,5,36,9
 	.half	.L149-.L90
 	.byte	1,4,3,5,41,9
 	.half	.L92-.L149
-	.byte	3,187,4,1,5,26,9
+	.byte	3,186,4,1,5,26,9
 	.half	.L94-.L92
 	.byte	3,24,1,5,17,9
 	.half	.L150-.L94
 	.byte	1,4,1,5,11,9
 	.half	.L93-.L150
-	.byte	3,185,123,1,5,1,9
+	.byte	3,186,123,1,5,1,9
 	.half	.L99-.L93
 	.byte	3,7,1,7,9
 	.half	.L15-.L99
@@ -24805,15 +24812,15 @@ SERIALIO:	.type	object
 .L27:
 	.word	-1,.L6,0,.L99-.L6
 	.half	2
-	.byte	145,72
+	.byte	145,64
 	.word	0,0
 .L5:
 	.word	-1,.L6,0,.L22-.L6
 	.half	2
 	.byte	138,0
 	.word	.L22-.L6,.L20-.L6
-	.half	2
-	.byte	138,56
+	.half	3
+	.byte	138,192,0
 	.word	0,0
 .L96:
 	.word	0,0
@@ -24842,5 +24849,5 @@ SERIALIO:	.type	object
 	.word	.L151,.L6,.L20-.L6
 	.byte	4
 	.word	(.L22-.L6)/2
-	.byte	19,56,22,26,3,19,138,56,0,0,0
+	.byte	19,192,0,22,26,4,19,138,192,0,0
 	; Module end

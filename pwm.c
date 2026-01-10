@@ -36,6 +36,9 @@
 #include <math.h>
 #include "foc_math.h"
 #include "stdio.h"
+#include "adc.h"
+#include <Port/Io/IfxPort_Io.h>
+
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -101,8 +104,10 @@ IFX_INTERRUPT(interruptGtmAtom, 0, ISR_PRIORITY_ATOM);
 /* Interrupt Service Routine of the ATOM - Executes Open Loop FOC */
 void interruptGtmAtom(void)
 {
-    float32 sinVal, cosVal;
+    IfxPort_setPinHigh(&MODULE_P00, 12);
 
+    float32 sinVal, cosVal;
+    startEvadcConversion();
     /* 1. Update Electrical Angle */
     g_focControl.electricalAngle += (g_focControl.speedRefHz * FOC_TWO_PI * FOC_PWM_PERIOD);
 
@@ -140,6 +145,7 @@ void interruptGtmAtom(void)
 
     /* Toggle LED for liveness check */
     IfxPort_togglePin(LED);
+
 }
 
 /* Period interrupt callback function */
@@ -151,6 +157,7 @@ void IfxGtm_periodEventFunction(void *data)
 /* This function initializes the ATOM */
 void initGtmAtom3phInv(void)
 {
+    initEvadc(); /* <--- 3. Call ADC Init */
     /* Initialize FOC variables */
     g_focControl.electricalAngle = 0.0f;
     g_focControl.speedRefHz      = OPEN_LOOP_SPEED_HZ;

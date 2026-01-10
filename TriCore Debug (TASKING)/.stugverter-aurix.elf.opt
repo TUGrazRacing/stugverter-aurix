@@ -124,6 +124,7 @@
 "Cpu1_Main.o"
 "Cpu2_Main.o"
 "Cpu3_Main.o"
+"adc.o"
 "foc.o"
 "foc_math.o"
 "gate_driver.o"

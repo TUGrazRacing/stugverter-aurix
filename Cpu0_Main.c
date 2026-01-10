@@ -57,6 +57,7 @@ void core0_main(void)
         {&IfxPort_P21_3, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable W
         {&IfxPort_P14_7, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable V
         {&IfxPort_P20_0, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable U
+        {&IfxPort_P00_12, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable debug pin
     };
 
     const IfxPort_Io_Config conf = {
