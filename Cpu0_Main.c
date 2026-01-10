@@ -7,6 +7,7 @@
 #include "pwm.h"
 #include "IfxPort_Pinmap.h"
 #include "stdio.h"
+#include "adc.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -28,10 +29,6 @@ SERIALIO_t SERIALIO =
 void core0_main(void)
 {
     IfxCpu_enableInterrupts();
-
-    /* !!WATCHDOG0 AND SAFETY WATCHDOG ARE DISABLED HERE!!
-     * Enable the watchdogs and service them periodically if it is required
-     */
     IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
     IfxScuWdt_disableSafetyWatchdog(IfxScuWdt_getSafetyWatchdogPassword());
 
@@ -45,10 +42,8 @@ void core0_main(void)
     //Ifx_TickTime ticksFor500ms = IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME);
     /* Initialize GTM ATOM module */
     // FOC_InitializeSinCosLut();
-    initGtmAtom3phInv();
     // initADCTrigger();
-    // initADC();
-
+    //initEvadc();
     // init gate driver
     const IfxPort_Io_ConfigPin configPin[] = {
         {&IfxPort_P21_2, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //NRST W
@@ -57,7 +52,6 @@ void core0_main(void)
         {&IfxPort_P21_3, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable W
         {&IfxPort_P14_7, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable V
         {&IfxPort_P20_0, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable U
-        {&IfxPort_P00_12, IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1}, //Enable debug pin
     };
 
     const IfxPort_Io_Config conf = {
@@ -67,7 +61,13 @@ void core0_main(void)
 
     IfxPort_Io_initModule(&conf);
 
+    initGtmAtom3phInv();
+    initEvadc();
 
+
+
+
+    /*
     //ENABLES LOW
     IfxPort_setPinLow(&MODULE_P21, 3);
     IfxPort_setPinLow(&MODULE_P14, 7);
@@ -92,7 +92,7 @@ void core0_main(void)
    IfxPort_setPinHigh(&MODULE_P21, 3);
    IfxPort_setPinHigh(&MODULE_P14, 7);
    IfxPort_setPinHigh(&MODULE_P20, 0);
-
+*/
    /* Delay for 3 seconds (10000 ms) */
    /*
    wait(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, 3000));
@@ -102,7 +102,6 @@ void core0_main(void)
    IfxPort_setPinLow(&MODULE_P14, 7);
    IfxPort_setPinLow(&MODULE_P20, 0);
     */
-   int loopCount = 0;
    while(1)
    {
        /* Print a keep-alive message every ~1 second (assuming loop runs fast)

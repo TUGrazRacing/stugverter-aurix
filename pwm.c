@@ -33,25 +33,13 @@
 #include "IfxGtm_Pwm.h"
 #include "IfxPort.h"
 #include "IfxPort_Pinmap.h"
-#include <math.h>
-#include "foc_math.h"
-#include "stdio.h"
-#include "adc.h"
-#include <Port/Io/IfxPort_Io.h>
-
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
 /*********************************************************************************************************************/
-#define NUM_OF_CHANNELS         (3)                                    /* Number of PWM complementary pairs          */
+#define NUM_OF_CHANNELS         (4)                                    /* Number of PWM complementary pairs          */
 #define PWM_FREQUENCY           (20.0E3)                               /* PWM frequency in [Hz]                      */
 #define ISR_PRIORITY_ATOM       (20)                                   /* Interrupt priority number                  */
-
-/* Open Loop FOC Settings */
-#define FOC_PWM_PERIOD          (1.0f / PWM_FREQUENCY)                 /* PWM Period in Seconds                      */
-#define FOC_TWO_PI              (6.28318530718f)
-#define OPEN_LOOP_SPEED_HZ      (25.0f)                                 /* Initial Rotation Speed (Hz electrical)     */
-#define OPEN_LOOP_VOLTAGE       (0.13f)                                 /* Open Loop Amplitude (0.0 to 1.0)           */
 
 #define PHASE_U_HS              &IfxGtm_ATOM1_0_TOUT0_P02_0_OUT        /* Pin which will be driven by the PWM, P02.0 */
 #define PHASE_U_LS              &IfxGtm_ATOM1_0N_TOUT7_P02_7_OUT       /* Pin which will be driven by the PWM, P02.7 */
@@ -59,12 +47,13 @@
 #define PHASE_V_LS              &IfxGtm_ATOM1_1N_TOUT4_P02_4_OUT       /* Pin which will be driven by the PWM, P02.4 */
 #define PHASE_W_HS              &IfxGtm_ATOM1_2_TOUT2_P02_2_OUT        /* Pin which will be driven by the PWM, P02.2 */
 #define PHASE_W_LS              &IfxGtm_ATOM1_2N_TOUT5_P02_5_OUT       /* Pin which will be driven by the PWM, P02.5 */
+#define TRG_OUT                 &IfxGtm_ATOM1_3_TOUT3_P02_3_OUT        /* Pin which will be driven by the pin*/
 
-#define PHASE_U_DUTY            (0.0f)                                 /* Initial PWM duty cycle of phase U in [%]   */
-#define PHASE_V_DUTY            (0.0f)                                 /* Initial PWM duty cycle of phase V in [%]   */
-#define PHASE_W_DUTY            (0.0f)                                 /* Initial PWM duty cycle of phase W in [%]   */
+#define PHASE_U_DUTY            (25.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
+#define PHASE_V_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
+#define PHASE_W_DUTY            (75.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
+#define PHASE_DUTY_STEP         (10.0f)                                /* PWM duty cycle step in [%]                 */
 
-#define LED                     &MODULE_P13, 0       /* LED which will be toggled in Interrupt Service Routine (ISR) */
 
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global variables--------------------------------------------------*/
@@ -73,27 +62,15 @@ typedef struct
 {
         IfxGtm_Pwm          pwm;                                /* PWM Driver handle                                 */
         IfxGtm_Pwm_Channel  channels[NUM_OF_CHANNELS];          /* Array containing channel data after configuration */
-        float32             dutyCycles[NUM_OF_CHANNELS];        /* Duty Cycle values to hold (0-100%)                */
-        IfxGtm_Pwm_DeadTime deadTimes[NUM_OF_CHANNELS];         /* Deadtimes                                         */
+        float32             dutyCycles[NUM_OF_CHANNELS];        /* Duty Cycle values to hold                         */
+        IfxGtm_Pwm_DeadTime deadTimes[NUM_OF_CHANNELS];         /* PhaseShift values to hold                         */
 } GtmAtom3phInv;
 
-typedef struct
-{
-        float32       electricalAngle;    /* Current electrical angle [rad] */
-        float32       speedRefHz;         /* Target speed [Hz] */
-        float32       voltageRef;         /* Target voltage amplitude [0.0 - 1.0] */
-        DQ_t          v_dq;               /* Voltage in DQ frame */
-        AlphaBeta_t   v_ab;               /* Voltage in AlphaBeta frame */
-        ThreePhase_t  duty_3ph;           /* Calculated Duty Cycles (0.0 - 1.0) */
-} GtmFocControl;
-
 IFX_STATIC GtmAtom3phInv g_gtmAtom3phInv;
-IFX_STATIC GtmFocControl g_focControl;
 
 /*********************************************************************************************************************/
 /*-----------------------------------------------Function Prototypes-------------------------------------------------*/
 /*********************************************************************************************************************/
-void updateGtmAtom3phInvDuty(void);
 
 /*********************************************************************************************************************/
 /*--------------------------------------------Function Implementations-----------------------------------------------*/
@@ -101,182 +78,202 @@ void updateGtmAtom3phInvDuty(void);
 /* Macro to define the Interrupt Service Routine. */
 IFX_INTERRUPT(interruptGtmAtom, 0, ISR_PRIORITY_ATOM);
 
-/* Interrupt Service Routine of the ATOM - Executes Open Loop FOC */
+/* Interrupt Service Routine of the ATOM */
 void interruptGtmAtom(void)
 {
-    IfxPort_setPinHigh(&MODULE_P00, 12);
-
-    float32 sinVal, cosVal;
-    startEvadcConversion();
-    /* 1. Update Electrical Angle */
-    g_focControl.electricalAngle += (g_focControl.speedRefHz * FOC_TWO_PI * FOC_PWM_PERIOD);
-
-    /* Wrap Angle (0 to 2PI) */
-    if(g_focControl.electricalAngle >= FOC_TWO_PI)
-    {
-        g_focControl.electricalAngle -= FOC_TWO_PI;
-    }
-    else if(g_focControl.electricalAngle < 0.0f)
-    {
-        g_focControl.electricalAngle += FOC_TWO_PI;
-    }
-
-    /* 2. Set Reference Vector in DQ Frame (Open Loop: Vd=0, Vq=Target) */
-    g_focControl.v_dq.d = 0.0f;
-    g_focControl.v_dq.q = g_focControl.voltageRef;
-
-    /* 3. Inverse Park Transform (DQ -> AlphaBeta) */
-    sinVal = sinf(g_focControl.electricalAngle);
-    cosVal = cosf(g_focControl.electricalAngle);
-    FOC_InvParkTransform(&g_focControl.v_dq, &g_focControl.v_ab, sinVal, cosVal);
-
-    /* 4. SVPWM (AlphaBeta -> 3-Phase Duty 0.0-1.0) */
-    FOC_SVPWM(&g_focControl.v_ab, &g_focControl.duty_3ph);
-
-    /* 5. Update Hardware (Convert 0.0-1.0 to 0-100%) */
-    g_gtmAtom3phInv.dutyCycles[0] = g_focControl.duty_3ph.a * 100.0f; /* Phase U */
-    g_gtmAtom3phInv.dutyCycles[1] = g_focControl.duty_3ph.b * 100.0f; /* Phase V */
-    g_gtmAtom3phInv.dutyCycles[2] = g_focControl.duty_3ph.c * 100.0f; /* Phase W */
-
-    /* Apply duties immediately */
-    IfxGtm_Pwm_updateChannelsDutyImmediate(&g_gtmAtom3phInv.pwm, (float32*)g_gtmAtom3phInv.dutyCycles);
-
-    //printf("%.2f;%.2f;%.2f\n", g_gtmAtom3phInv.dutyCycles[0], g_gtmAtom3phInv.dutyCycles[1], g_gtmAtom3phInv.dutyCycles[2]);
-
-    /* Toggle LED for liveness check */
-    IfxPort_togglePin(LED);
-
+    //IfxPort_togglePin(DEBUG);                                                      /* Toggle the LED                   */
 }
 
 /* Period interrupt callback function */
 void IfxGtm_periodEventFunction(void *data)
 {
-    /* Not used if ISR is handled directly via interruptGtmAtom logic above */
+
 }
 
 /* This function initializes the ATOM */
 void initGtmAtom3phInv(void)
 {
-    initEvadc(); /* <--- 3. Call ADC Init */
-    /* Initialize FOC variables */
-    g_focControl.electricalAngle = 0.0f;
-    g_focControl.speedRefHz      = OPEN_LOOP_SPEED_HZ;
-    g_focControl.voltageRef      = OPEN_LOOP_VOLTAGE;
-
-    /* Configuration variables */
+    /* Configuration variables
+     * Neither application (in most of the cases) nor the PWM driver need configuration variables post initialization.
+     * It is recommended to define such variables within the function (local), alternatively such structures could
+     * also be initialized (element-wise) as constant (in FLASH)
+     */
     IfxGtm_Pwm_Config config;                                /* Main PWM configuration structure                     */
     IfxGtm_Pwm_ChannelConfig channelConfig[NUM_OF_CHANNELS]; /* Array containing configuration for each channel      */
     IfxGtm_Pwm_DtmConfig dtmConfig[NUM_OF_CHANNELS];         /* Only needed if using DTM module                      */
-    IfxGtm_Pwm_InterruptConfig interruptConfig;              /* Only needed if using interrupt.                      */
+    IfxGtm_Pwm_InterruptConfig interruptConfig;              /* Only needed if using interrupt. Can also be an array */
     IfxGtm_Pwm_OutputConfig output[NUM_OF_CHANNELS];         /* Only needed if connected to pin                      */
 
+    /* 1. Configuration structure initialization
+     * If the configuration structure is located in the RAM, the initConfig API would be handy to initialize the
+     * elements to their default values
+     */
     IfxGtm_Pwm_initConfig(&config, &MODULE_GTM);
 
-    /* Output configuration */
-    /* CH0 - Phase U (Note: Mapped to CH0 for logical consistency with array index 0) */
-    output[0].pin                   = (IfxGtm_Pwm_ToutMap*)PHASE_U_HS;
-    output[0].complementaryPin      = (IfxGtm_Pwm_ToutMap*)PHASE_U_LS;
-    output[0].polarity              = Ifx_ActiveState_high;
-    output[0].complementaryPolarity = Ifx_ActiveState_low;
-    output[0].outputMode            = IfxPort_OutputMode_pushPull;
-    output[0].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;
+    /* 2. Output configuration
+     * Output configurations are optional.
+     */
 
-    /* CH1 - Phase V */
-    output[1].pin                   = (IfxGtm_Pwm_ToutMap*)PHASE_V_HS;
-    output[1].complementaryPin      = (IfxGtm_Pwm_ToutMap*)PHASE_V_LS;
-    output[1].polarity              = Ifx_ActiveState_high;
-    output[1].complementaryPolarity = Ifx_ActiveState_low;
-    output[1].outputMode            = IfxPort_OutputMode_pushPull;
-    output[1].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;
+    /* CH0 configurations */
+    output[0].pin                   = (IfxGtm_Pwm_ToutMap*)PHASE_V_HS;          /* Phase V PWM High-side             */
+    output[0].complementaryPin      = (IfxGtm_Pwm_ToutMap*)PHASE_V_LS;          /* Phase V PWM Low-side              */
+    output[0].polarity              = Ifx_ActiveState_high;                     /* Active low/high of pin            */
+    output[0].complementaryPolarity = Ifx_ActiveState_low;                      /* Active low/high of pin            */
+    output[0].outputMode            = IfxPort_OutputMode_pushPull;              /* Output mode                       */
+    output[0].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;   /* Pad driver                        */
 
-    /* CH2 - Phase W */
-    output[2].pin                   = (IfxGtm_Pwm_ToutMap*)PHASE_W_HS;
-    output[2].complementaryPin      = (IfxGtm_Pwm_ToutMap*)PHASE_W_LS;
-    output[2].polarity              = Ifx_ActiveState_high;
-    output[2].complementaryPolarity = Ifx_ActiveState_low;
-    output[2].outputMode            = IfxPort_OutputMode_pushPull;
-    output[2].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;
+    /* CH1 configurations */
+    output[1].pin                   = (IfxGtm_Pwm_ToutMap*)PHASE_U_HS;          /* Phase U PWM High-side             */
+    output[1].complementaryPin      = (IfxGtm_Pwm_ToutMap*)PHASE_U_LS;          /* Phase U PWM Low-side              */
+    output[1].polarity              = Ifx_ActiveState_high;                     /* Active low/high of pin            */
+    output[1].complementaryPolarity = Ifx_ActiveState_low;                      /* Active low/high of pin            */
+    output[1].outputMode            = IfxPort_OutputMode_pushPull;              /* Output mode                       */
+    output[1].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;   /* Pad driver                        */
 
-    /* Dead-time configuration */
-    dtmConfig[0].deadTime.rising    = 1e-6f;
-    dtmConfig[0].deadTime.falling   = 1e-6f;
-    dtmConfig[1].deadTime.rising    = 1e-6f;
-    dtmConfig[1].deadTime.falling   = 1e-6f;
-    dtmConfig[2].deadTime.rising    = 1e-6f;
-    dtmConfig[2].deadTime.falling   = 1e-6f;
+    /* CH2 configurations */
+    output[2].pin                   = (IfxGtm_Pwm_ToutMap*)PHASE_W_HS;          /* Phase W PWM High-side             */
+    output[2].complementaryPin      = (IfxGtm_Pwm_ToutMap*)PHASE_W_LS;          /* Phase W PWM Low-side              */
+    output[2].polarity              = Ifx_ActiveState_high;                     /* Active low/high of pin            */
+    output[2].complementaryPolarity = Ifx_ActiveState_low;                      /* Active low/high of pin            */
+    output[2].outputMode            = IfxPort_OutputMode_pushPull;              /* Output mode                       */
+    output[2].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;   /* Pad driver                        */
 
-    /* Interrupt configuration */
-    interruptConfig.mode          = IfxGtm_IrqMode_pulseNotify;
-    interruptConfig.isrProvider   = IfxSrc_Tos_cpu0;
-    interruptConfig.priority      = ISR_PRIORITY_ATOM;
+    /* CH2 configurations */
+    output[3].pin                   = (IfxGtm_Pwm_ToutMap*)TRG_OUT;          /* Phase W PWM High-side             */
+    output[3].complementaryPin      = NULL_PTR;          /* Phase W PWM Low-side              */
+    output[3].polarity              = Ifx_ActiveState_high;                     /* Active low/high of pin            */
+    output[3].complementaryPolarity = Ifx_ActiveState_low;                      /* Active low/high of pin            */
+    output[3].outputMode            = IfxPort_OutputMode_pushPull;              /* Output mode                       */
+    output[3].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;   /* Pad driver                        */
+
+
+
+    /* 3. Dead-time configuration */
+
+    dtmConfig[0].deadTime.rising    = 1e-6f;                /* Rising Dead time in seconds                           */
+    dtmConfig[0].deadTime.falling   = 1e-6f;                /* Falling Dead time in seconds                          */
+
+    dtmConfig[1].deadTime.rising    = 1e-6f;                /* Rising Dead time in seconds                           */
+    dtmConfig[1].deadTime.falling   = 1e-6f;                /* Falling Dead time in seconds                          */
+
+    dtmConfig[2].deadTime.rising    = 1e-6f;                /* Rising Dead time in seconds                           */
+    dtmConfig[2].deadTime.falling   = 1e-6f;                /* Falling Dead time in seconds                          */
+
+    dtmConfig[3].deadTime.rising    = 1e-6f;                /* Rising Dead time in seconds                           */
+    dtmConfig[3].deadTime.falling   = 1e-6f;                /* Falling Dead time in seconds                          */
+
+    /* 4. [Optional] Interrupt configuration, Example configuration of interrupt for base channel                    */
+
+    interruptConfig.mode          = IfxGtm_IrqMode_pulseNotify;  /* IRQ mode of interrupt                            */
+    interruptConfig.isrProvider   = IfxSrc_Tos_cpu0;             /* Type of Service                                  */
+    interruptConfig.priority      = ISR_PRIORITY_ATOM;           /* Interrupt priority                               */
+    /* Connect callback function for period event interrupt */
     interruptConfig.periodEvent   = IfxGtm_periodEventFunction;
-    interruptConfig.dutyEvent     = NULL_PTR;
+    interruptConfig.dutyEvent     = NULL_PTR;                /* Do not duty event interrupt                          */
 
-    /* Channel configuration */
-    /* CH0 (Phase U) - Master for Sync */
-    channelConfig[0].timerCh      = IfxGtm_Pwm_SubModule_Ch_0;
-    channelConfig[0].phase        = 0.0f;
-    channelConfig[0].duty         = PHASE_U_DUTY;
-    channelConfig[0].dtm          = &dtmConfig[0];
-    channelConfig[0].output       = &output[0];
-    channelConfig[0].mscOut       = NULL_PTR;
-    channelConfig[0].interrupt    = &interruptConfig; /* Interrupt enabled on this channel */
+    /*5. Channel configuration */
+    /*Base channel - CH0 configuration. */
+    channelConfig[0].timerCh      = IfxGtm_Pwm_SubModule_Ch_0;   /* Atom channel index to be used for sync channel   */
+    channelConfig[0].phase        = 0.0f;                        /* Phase shift in radians (range: 0.0 .. 2pi;
+                                                                  * only for edge aligned sync channels)             */
+    channelConfig[0].duty         = PHASE_V_DUTY;                /* PWM duty in % (range: 0.0 .. 100.0)              */
+    channelConfig[0].dtm          = &dtmConfig[0];               /* Dead time configuration for this channel         */
+    channelConfig[0].output       = &output[0];                  /* Pin connections and polarities for this channel  */
+    channelConfig[0].mscOut       = NULL_PTR;                    /* MSC configuration for this channel               */
+    channelConfig[0].interrupt    = &interruptConfig;            /* Attach Interrupt configuration for this channel  */
 
-    /* CH1 (Phase V) */
-    channelConfig[1].timerCh      = IfxGtm_Pwm_SubModule_Ch_1;
-    channelConfig[1].phase        = 0.0f;
-    channelConfig[1].duty         = PHASE_V_DUTY;
-    channelConfig[1].dtm          = &dtmConfig[1];
-    channelConfig[1].output       = &output[1];
-    channelConfig[1].mscOut       = NULL_PTR;
-    channelConfig[1].interrupt    = NULL_PTR;
+    /* Sync channel - CH1 configuration */
+    channelConfig[1].timerCh      = IfxGtm_Pwm_SubModule_Ch_1;   /* Atom channel index to be used for base channel   */
+    channelConfig[1].phase        = 0.0f;                        /* Phase shift in radians (range: 0.0 .. 2pi;
+                                                                  * only for edge aligned sync channels)             */
+    channelConfig[1].duty         = PHASE_U_DUTY;                /* PWM duty in % (range: 0.0 .. 100.0) */
+    channelConfig[1].dtm          = &dtmConfig[1];               /* Attach Dead time configuration for this channel  */
+    channelConfig[1].output       = &output[1];                  /* Pin connections and polarities for this channel  */
+    channelConfig[1].mscOut       = NULL_PTR;                    /* MSC configuration for this channel               */
+    channelConfig[1].interrupt    = NULL_PTR;                    /* Interrupt configuration for this channel         */
 
-    /* CH2 (Phase W) */
-    channelConfig[2].timerCh      = IfxGtm_Pwm_SubModule_Ch_2;
-    channelConfig[2].phase        = 0.0f;
-    channelConfig[2].duty         = PHASE_W_DUTY;
-    channelConfig[2].dtm          = &dtmConfig[2];
-    channelConfig[2].output       = &output[2];
-    channelConfig[2].mscOut       = NULL_PTR;
-    channelConfig[2].interrupt    = NULL_PTR;
+    /*Sync channel CH2 configuration.*/
+    channelConfig[2].timerCh      = IfxGtm_Pwm_SubModule_Ch_2;   /* Atom channel index to be used for sync channel   */
+    channelConfig[2].phase        = 0.0f;                        /* Phase shift in radians (range: 0.0 .. 2pi;
+                                                                  * only for edge aligned sync channels)             */
+    channelConfig[2].duty         = PHASE_W_DUTY;                /* PWM duty in % (range: 0.0 .. 100.0)              */
+    channelConfig[2].dtm          = &dtmConfig[2];               /* Dead time configuration for this channel         */
+    channelConfig[2].output       = &output[2];                  /* Pin connections and polarities for this channel  */
+    channelConfig[2].mscOut       = NULL_PTR;                    /* MSC configuration for this channel               */
+    channelConfig[2].interrupt    = NULL_PTR;                    /* Interrupt configuration for this channel         */
 
-    /* Global GTM Config */
-    config.cluster                = IfxGtm_Cluster_1;
-    config.subModule              = IfxGtm_Pwm_SubModule_atom;
-    config.alignment              = IfxGtm_Pwm_Alignment_center;
-    config.syncStart              = TRUE;
-    config.numChannels            = NUM_OF_CHANNELS;
-    config.channels               = channelConfig;
-    config.frequency              = PWM_FREQUENCY;
-    config.clockSource.atom       = IfxGtm_Cmu_Clk_0;
-    config.dtmClockSource         = IfxGtm_Dtm_ClockSource_cmuClock0;
-    config.syncUpdateEnabled      = TRUE;
+    /*Sync channel TRG configuration.*/
+    channelConfig[3].timerCh      = IfxGtm_Pwm_SubModule_Ch_3;   /* Atom channel index to be used for sync channel   */
+    channelConfig[3].phase        = 0.0f;                        /* Phase shift in radians (range: 0.0 .. 2pi;
+                                                                  * only for edge aligned sync channels)             */
+    channelConfig[3].duty         = 0.1f;                /* PWM duty in % (range: 0.0 .. 100.0)              */
+    channelConfig[3].dtm          = NULL_PTR;               /* Dead time configuration for this channel         */
+    channelConfig[3].output       = &output[3];                  /* Pin connections and polarities for this channel  */
+    channelConfig[3].mscOut       = NULL_PTR;                    /* MSC configuration for this channel               */
+    channelConfig[3].interrupt    = NULL_PTR;                    /* Interrupt configuration for this channel         */
+
+    /* 6. Other configurations */
+
+    config.cluster                = IfxGtm_Cluster_1;                  /* Cluster                                    */
+    config.subModule              = IfxGtm_Pwm_SubModule_atom;         /* Sub module                                 */
+    config.alignment              = IfxGtm_Pwm_Alignment_center;       /* Alignment                                  */
+    config.syncStart              = TRUE;                              /* Start all channels after init              */
+    config.numChannels            = NUM_OF_CHANNELS;                   /* Number of channels configured              */
+    config.channels               = channelConfig;                     /* Attach Channel configuration               */
+    config.frequency              = PWM_FREQUENCY;                     /* PWM frequency                              */
+    config.clockSource.atom       = IfxGtm_Cmu_Clk_0;                  /* Clock source for atom                      */
+    config.dtmClockSource         = IfxGtm_Dtm_ClockSource_cmuClock0;  /* Clock source for dtm                       */
+    config.syncUpdateEnabled      = TRUE;                              /* TRUE: Update compare registers from shadow
+                                                                        * at the end of period */
+
+    /* 7. Call the init function */
 
     if(!IfxGtm_isEnabled(&MODULE_GTM))
     {
         float32 frequency;
+        /* Enable GTM, it is necessary if the GTM is not initialized earlier */
         IfxGtm_enable(&MODULE_GTM);
+
         frequency = IfxGtm_Cmu_getModuleFrequency(&MODULE_GTM);
+        /* Set the global clock frequency to the max */
         IfxGtm_Cmu_setGclkFrequency(&MODULE_GTM, frequency);
+        /* Set the CMU CLK0 */
         IfxGtm_Cmu_setClkFrequency(&MODULE_GTM, IfxGtm_Cmu_Clk_0, frequency);
+        /* Enable the FXU clock */
         IfxGtm_Cmu_enableClocks(&MODULE_GTM, IFXGTM_CMU_CLKEN_CLK0);
     }
 
     IfxGtm_Pwm_init(&g_gtmAtom3phInv.pwm, &g_gtmAtom3phInv.channels[0], &config);
 
-    /* Store initial values */
+    /* 8. Store the current duty values and dead-times for runtime calls */
     g_gtmAtom3phInv.dutyCycles[0]= channelConfig[0].duty;
     g_gtmAtom3phInv.dutyCycles[1]= channelConfig[1].duty;
     g_gtmAtom3phInv.dutyCycles[2]= channelConfig[2].duty;
     g_gtmAtom3phInv.deadTimes[0]= channelConfig[0].dtm->deadTime;
     g_gtmAtom3phInv.deadTimes[1]= channelConfig[1].dtm->deadTime;
     g_gtmAtom3phInv.deadTimes[2]= channelConfig[2].dtm->deadTime;
-
-    IfxPort_setPinModeOutput(LED, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_general);
 }
 
-/* This function can be used to change speed at runtime */
+/* This function update duty cycles */
 void updateGtmAtom3phInvDuty(void)
 {
-    /* Example: Ramp speed or change voltage here if needed by main loop */
+    g_gtmAtom3phInv.dutyCycles[0] += PHASE_DUTY_STEP;                       /* Increment PWM duty cycle of phase U   */
+    g_gtmAtom3phInv.dutyCycles[1] += PHASE_DUTY_STEP;                       /* Increment PWM duty cycle of phase V   */
+    g_gtmAtom3phInv.dutyCycles[2] += PHASE_DUTY_STEP;                       /* Increment PWM duty cycle of phase W   */
+
+    if((g_gtmAtom3phInv.dutyCycles[0] + PHASE_DUTY_STEP) >= 100)
+    {
+        g_gtmAtom3phInv.dutyCycles[0] = 0;                                 /* Set duty to zero                       */
+    }
+    if((g_gtmAtom3phInv.dutyCycles[1] + PHASE_DUTY_STEP) >= 100)
+    {
+        g_gtmAtom3phInv.dutyCycles[1] = 0;                                 /* Set duty to zero                       */
+    }
+    if((g_gtmAtom3phInv.dutyCycles[2] + PHASE_DUTY_STEP) >= 100)
+    {
+        g_gtmAtom3phInv.dutyCycles[2] = 0;                                  /* Set duty to zero                      */
+    }
+
+    /* Update duty of all configured channels to requested values immediately */
+    IfxGtm_Pwm_updateChannelsDutyImmediate(&g_gtmAtom3phInv.pwm, (float32*)g_gtmAtom3phInv.dutyCycles);
 }

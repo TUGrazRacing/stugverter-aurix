@@ -25,13 +25,15 @@
  * IN THE SOFTWARE.
  *********************************************************************************************************************/
 
-#ifndef GTM_ATOM_3_PHASE_INVERTER_PWM_H_
-#define GTM_ATOM_3_PHASE_INVERTER_PWM_H_
+#ifndef PWM_H_
+#define PWM_H_
 
 /*********************************************************************************************************************/
 /*-----------------------------------------------Function Prototypes-------------------------------------------------*/
 /*********************************************************************************************************************/
+#define PWM_FREQUENCY           (20.0E3)                               /* PWM frequency in [Hz]                      */
+
 void initGtmAtom3phInv(void);                                 /* Function to initialize the GTM ATOM                 */
 void updateGtmAtom3phInvDuty(void);                           /* Function to update the GTM ATOM duty cycles         */
 
-#endif /* GTM_ATOM_3_PHASE_INVERTER_PWM_H_ */
+#endif /* PWM_H_ */

@@ -47,37 +47,41 @@ float32 convertAdcToAmps(float32 rawAdcValue)
 
 void core1_main(void)
 {
-    float32 currentU, currentV, currentW;
-
-    IfxCpu_enableInterrupts();
-    
-    /* Disable Watchdog for Core 1 (Simplification for debug) */
-    IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
-    
-    /* Wait for CPU sync event */
-    IfxCpu_emitEvent(&g_cpuSyncEvent);
-    IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
-    
+//    float32 currentU, currentV, currentW;
+//
+//    IfxCpu_enableInterrupts();
+//
+//    /* Disable Watchdog for Core 1 (Simplification for debug) */
+//    IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
+//
+//    /* Wait for CPU sync event */
+//    IfxCpu_emitEvent(&g_cpuSyncEvent);
+//    IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
+//
+//    while(1)
+//    {
+//        /* --- CONSUMER LOOP --- */
+//        /* Check if Core 0 has provided new ADC data */
+//        if(g_adcSharedData.newData == TRUE)
+//        {
+//            /* 1. Clear flag immediately */
+//            g_adcSharedData.newData = FALSE;
+//
+//            /* 2. Convert Raw values to Amps */
+//            currentU = convertAdcToAmps(g_adcSharedData.u);
+//            currentV = convertAdcToAmps(g_adcSharedData.v);
+//            currentW = convertAdcToAmps(g_adcSharedData.w);
+//
+//            /* 3. Print Results */
+//            /* Using %.2f for 2 decimal places of precision */
+//            printf("%.2f;%.2f;%.2f\n",
+//                   currentU,
+//                   currentV,
+//                   currentW);
+//        }
+//    }
     while(1)
     {
-        /* --- CONSUMER LOOP --- */
-        /* Check if Core 0 has provided new ADC data */
-        if(g_adcSharedData.newData == TRUE)
-        {
-            /* 1. Clear flag immediately */
-            g_adcSharedData.newData = FALSE;
 
-            /* 2. Convert Raw values to Amps */
-            currentU = convertAdcToAmps(g_adcSharedData.u);
-            currentV = convertAdcToAmps(g_adcSharedData.v);
-            currentW = convertAdcToAmps(g_adcSharedData.w);
-
-            /* 3. Print Results */
-            /* Using %.2f for 2 decimal places of precision */
-            printf("%.2f;%.2f;%.2f\n",
-                   currentU,
-                   currentV,
-                   currentW);
-        }
     }
 }
