@@ -16,6 +16,8 @@ foc.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aur
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Platform_Types.h" :
 foc.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_TypesTasking.h"
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_TypesTasking.h" :
+foc.o :	..\foc_math.h
+..\foc_math.h :
 foc.o :	..\pwm.h
 ..\pwm.h :
 foc.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Port\\Std\IfxPort.h"
@@ -52,3 +54,7 @@ foc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\incl
 "C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\math.h" :
 foc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\typeinfo.h"
 "C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\typeinfo.h" :
+foc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h" :
+foc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h" :

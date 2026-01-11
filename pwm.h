@@ -28,12 +28,12 @@
 #ifndef PWM_H_
 #define PWM_H_
 
+#include "Ifx_Types.h"
 /*********************************************************************************************************************/
 /*-----------------------------------------------Function Prototypes-------------------------------------------------*/
 /*********************************************************************************************************************/
 #define PWM_FREQUENCY           (20.0E3)                               /* PWM frequency in [Hz]                      */
 
-void initGtmAtom3phInv(void);                                 /* Function to initialize the GTM ATOM                 */
-void updateGtmAtom3phInvDuty(void);                           /* Function to update the GTM ATOM duty cycles         */
-
+void inverterInit(void);                                 /* Function to initialize the GTM ATOM                 */
+void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW);                           /* Function to update the GTM ATOM duty cycles         */
 #endif /* PWM_H_ */

@@ -102,3 +102,13 @@ adc.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aur
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Evadc\Std\IfxEvadc.h" :
 adc.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Port\\Std\IfxPort.h"
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Port\\Std\IfxPort.h" :
+adc.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
+adc.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h" :
+adc.o :	..\logger.h
+..\logger.h :
+adc.o :	..\foc.h
+..\foc.h :
+adc.o :	..\foc_math.h
+..\foc_math.h :

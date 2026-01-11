@@ -1,6 +1,6 @@
 	; Module start
 	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
-	.compiler_invocation	"ctc -f cc15916a --dep-file=serialio.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o serialio.src ../serialio.c"
+	.compiler_invocation	"ctc -f cc16216a --dep-file=serialio.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o serialio.src ../serialio.c"
 	.compiler_name		"ctc"
 	;source	'../serialio.c'
 
@@ -13,79 +13,79 @@ $TC162
 	
 	.global	SERIALIO_Init
 ; Function SERIALIO_Init
-.L17:
+.L21:
 SERIALIO_Init:	.type	func
 	sub.a	a10,#128
-.L92:
+.L100:
 	mov	d15,d4
-.L94:
+.L102:
 	lea	a4,[a10]28
-.L104:
+.L112:
 	movh.a	a15,#@his(SERIALIO)
 	lea	a15,[a15]@los(SERIALIO)
-.L105:
+.L113:
 	ld.a	a5,[a15]
 	call	IfxAsclin_Asc_initModuleConfig
-.L93:
+.L101:
 	itof	d15,d15
-.L95:
+.L103:
 	st.w	[a10]32,d15
-.L48:
+.L52:
 	movh.a	a15,#@his(.2.ini)
 	lea	a15,[a15]@los(.2.ini)
 	lea	a15,[a15]0
-.L106:
+.L114:
 	lea	a2,[a10]92
 	mov.a	a4,#7
 .L2:
 	ld.w	d15,[a15+]
 	st.w	[a2+],d15
 	loop	a4,.L2
-.L107:
-	movh.a	a15,#@his(SERIALIO)
-	lea	a15,[a15]@los(SERIALIO)
-.L108:
-	ld.a	a15,[a15]8
-.L109:
-	st.a	[a10]100,a15
-.L110:
-	movh.a	a15,#@his(SERIALIO)
-	lea	a15,[a15]@los(SERIALIO)
-.L111:
-	ld.a	a15,[a15]4
-.L112:
-	st.a	[a10]116,a15
-.L113:
-	lea	a15,[a10]92
-.L114:
-	st.a	[a10]68,a15
 .L115:
-	lea	a4,[a10]0
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
 .L116:
+	ld.a	a15,[a15]8
+.L117:
+	st.a	[a10]100,a15
+.L118:
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
+.L119:
+	ld.a	a15,[a15]4
+.L120:
+	st.a	[a10]116,a15
+.L121:
+	lea	a15,[a10]92
+.L122:
+	st.a	[a10]68,a15
+.L123:
+	lea	a4,[a10]0
+.L124:
 	lea	a5,[a10]28
 	call	IfxAsclin_Asc_initModule
-.L117:
+.L125:
 	movh.a	a15,#@his(SERIALIO)
 	lea	a15,[a15]@los(SERIALIO)
-.L118:
+.L126:
 	ld.a	a15,[a15]
-.L119:
+.L127:
 	movh.a	a2,#@his(SERIALIO)
 	lea	a2,[a2]@los(SERIALIO)
-.L120:
+.L128:
 	ld.a	a2,[a2]
-.L121:
+.L129:
 	ld.bu	d15,[a2]59
-.L122:
+.L130:
 	or	d15,#128
 	st.b	[a15]59,d15
-.L123:
+.L131:
 	ret
-.L41:
+.L45:
 	
 __SERIALIO_Init_function_end:
 	.size	SERIALIO_Init,__SERIALIO_Init_function_end-SERIALIO_Init
-.L30:
+.L34:
 	; End of function
 	
 	.sdecl	'.text.serialio._io_putc',code,cluster('_io_putc')
@@ -94,67 +94,105 @@ __SERIALIO_Init_function_end:
 	
 	.global	_io_putc
 ; Function _io_putc
-.L19:
+.L23:
 _io_putc:	.type	func
 	ld.w	d15,[a4]
-.L143:
+.L151:
 	jne	d15,#0,.L3
-.L144:
+.L152:
 	ld.w	d15,[a4]4
-.L145:
+.L153:
 	ld.w	d0,[a4]8
-.L146:
+.L154:
 	jge.u	d15,d0,.L4
-.L147:
+.L155:
 	ld.a	a15,[a4]4
-.L148:
+.L156:
 	st.b	[a15],d4
-.L149:
+.L157:
 	ld.a	a15,[a4]4
-.L150:
+.L158:
 	add.a	a15,#1
 	st.a	[a4]4,a15
 .L4:
 	j	.L5
 .L3:
-	j	.L6
+	mov	d15,#10
+.L159:
+	jne	d15,d4,.L6
+.L160:
+	j	.L7
+.L8:
 .L7:
-.L6:
 	movh.a	a15,#@his(SERIALIO)
 	lea	a15,[a15]@los(SERIALIO)
-.L151:
+.L161:
 	ld.a	a15,[a15]
-.L75:
+.L79:
 	ld.bu	d15,[a15]55
 	extr.u	d15,d15,#7,#1
-.L152:
-	j	.L8
-.L8:
-	jne	d15,#1,.L7
-.L153:
+.L162:
+	j	.L9
+.L9:
+	jne	d15,#1,.L8
+.L163:
 	movh.a	a15,#@his(SERIALIO)
 	lea	a15,[a15]@los(SERIALIO)
-.L154:
+.L164:
 	ld.a	a15,[a15]
-.L80:
+.L84:
 	ld.bu	d15,[a15]63
-.L155:
+.L165:
 	or	d15,#128
 	st.b	[a15]63,d15
-.L81:
+.L85:
 	movh.a	a15,#@his(SERIALIO)
 	lea	a15,[a15]@los(SERIALIO)
-.L156:
+.L166:
 	ld.a	a15,[a15]
-.L86:
+.L167:
+	mov	d15,#13
+.L90:
+	st.w	[a15]68,d15
+.L6:
+	j	.L10
+.L11:
+.L10:
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
+.L168:
+	ld.a	a15,[a15]
+.L96:
+	ld.bu	d15,[a15]55
+	extr.u	d15,d15,#7,#1
+.L169:
+	j	.L12
+.L12:
+	jne	d15,#1,.L11
+.L170:
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
+.L171:
+	ld.a	a15,[a15]
+.L97:
+	ld.bu	d15,[a15]63
+.L172:
+	or	d15,#128
+	st.b	[a15]63,d15
+.L98:
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
+.L173:
+	ld.a	a15,[a15]
+.L99:
 	st.w	[a15]68,d4
 .L5:
 	ret
-.L71:
+.L75:
 	
 ___io_putc_function_end:
 	.size	_io_putc,___io_putc_function_end-_io_putc
-.L40:
+.L44:
 	; End of function
 	
 	.sdecl	'.text.serialio._io_getc',code,cluster('_io_getc')
@@ -163,61 +201,61 @@ ___io_putc_function_end:
 	
 	.global	_io_getc
 ; Function _io_getc
-.L21:
+.L25:
 _io_getc:	.type	func
 	ld.w	d15,[a4]
-.L128:
-	jeq	d15,#0,.L9
-.L129:
-	j	.L10
-.L11:
-.L10:
-	movh.a	a15,#@his(SERIALIO)
-	lea	a15,[a15]@los(SERIALIO)
-.L130:
-	ld.a	a15,[a15]
-.L56:
-	ld.bu	d15,[a15]55
-	extr.u	d15,d15,#4,#1
-.L131:
-	j	.L12
-.L12:
-	jne	d15,#1,.L11
-.L132:
-	movh.a	a15,#@his(SERIALIO)
-	lea	a15,[a15]@los(SERIALIO)
-.L133:
-	ld.a	a15,[a15]
-.L61:
-	ld.bu	d15,[a15]63
-.L134:
-	or	d15,#16
-	st.b	[a15]63,d15
-.L62:
-	movh.a	a15,#@his(SERIALIO)
-	lea	a15,[a15]@los(SERIALIO)
-.L135:
-	ld.a	a15,[a15]
-.L67:
-	ld.w	d2,[a15]72
 .L136:
-	j	.L13
-.L13:
-	j	.L14
-.L9:
-	debug
+	jeq	d15,#0,.L13
 .L137:
-	mov	d2,#-1
-.L138:
-	j	.L15
+	j	.L14
 .L15:
 .L14:
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
+.L138:
+	ld.a	a15,[a15]
+.L60:
+	ld.bu	d15,[a15]55
+	extr.u	d15,d15,#4,#1
+.L139:
+	j	.L16
+.L16:
+	jne	d15,#1,.L15
+.L140:
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
+.L141:
+	ld.a	a15,[a15]
+.L65:
+	ld.bu	d15,[a15]63
+.L142:
+	or	d15,#16
+	st.b	[a15]63,d15
+.L66:
+	movh.a	a15,#@his(SERIALIO)
+	lea	a15,[a15]@los(SERIALIO)
+.L143:
+	ld.a	a15,[a15]
+.L71:
+	ld.w	d2,[a15]72
+.L144:
+	j	.L17
+.L17:
+	j	.L18
+.L13:
+	debug
+.L145:
+	mov	d2,#-1
+.L146:
+	j	.L19
+.L19:
+.L18:
 	ret
-.L52:
+.L56:
 	
 ___io_getc_function_end:
 	.size	_io_getc,___io_getc_function_end-_io_getc
-.L35:
+.L39:
 	; End of function
 	
 	.sdecl	'.rodata.serialio..2.ini',data,rom
@@ -244,18 +282,18 @@ ___io_getc_function_end:
 	.calls	'_io_getc','',0
 	.sdecl	'.debug_info',debug
 	.sect	'.debug_info'
-.L23:
+.L27:
 	.word	163759
 	.half	3
-	.word	.L24
+	.word	.L28
 	.byte	4
-.L22:
+.L26:
 	.byte	1
 	.byte	'../serialio.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0
 	.byte	12,1
-	.word	.L25
+	.word	.L29
 	.byte	2,1,1,3
 	.word	204
 	.byte	4
@@ -290,7 +328,7 @@ ___io_getc_function_end:
 	.word	350
 	.byte	6,0,7
 	.byte	'unsigned int',0,4,7
-.L51:
+.L55:
 	.byte	7
 	.byte	'int',0,4,5,7
 	.byte	'unsigned int',0,4,7,10
@@ -3010,45 +3048,45 @@ ___io_getc_function_end:
 	.word	17061
 	.byte	3
 	.word	17503
-.L60:
+.L64:
 	.byte	4
 	.byte	'IfxAsclin_clearRxFifoFillLevelFlag',0,3,12,158,13,17,1,1
-.L63:
+.L67:
 	.byte	5
 	.byte	'asclin',0,12,158,13,64
 	.word	17508
-.L65:
+.L69:
 	.byte	6,0
-.L79:
+.L83:
 	.byte	4
 	.byte	'IfxAsclin_clearTxFifoFillLevelFlag',0,3,12,194,13,17,1,1
-.L82:
+.L86:
 	.byte	5
 	.byte	'asclin',0,12,194,13,64
 	.word	17508
-.L84:
+.L88:
 	.byte	6,0
-.L55:
+.L59:
 	.byte	8
 	.byte	'IfxAsclin_getRxFifoFillLevelFlagStatus',0,3,12,134,16,20
 	.word	643
 	.byte	1,1
-.L57:
+.L61:
 	.byte	5
 	.byte	'asclin',0,12,134,16,71
 	.word	17508
-.L59:
+.L63:
 	.byte	6,0
-.L74:
+.L78:
 	.byte	8
 	.byte	'IfxAsclin_getTxFifoFillLevelFlagStatus',0,3,12,188,16,20
 	.word	643
 	.byte	1,1
-.L76:
+.L80:
 	.byte	5
 	.byte	'asclin',0,12,188,16,71
 	.word	17508
-.L78:
+.L82:
 	.byte	6,0,4
 	.byte	'IfxAsclin_enableCts',0,3,12,248,13,17,1,1,5
 	.byte	'asclin',0,12,248,13,49
@@ -3083,32 +3121,32 @@ ___io_getc_function_end:
 	.byte	'alti',0,12,217,18,82
 	.word	18019
 	.byte	6,0
-.L66:
+.L70:
 	.byte	8
 	.byte	'IfxAsclin_readRxData',0,3,12,153,17,19
 	.word	1951
 	.byte	1,1
-.L68:
+.L72:
 	.byte	5
 	.byte	'asclin',0,12,153,17,52
 	.word	17508
-.L70:
+.L74:
 	.byte	6,0
-.L85:
+.L89:
 	.byte	4
 	.byte	'IfxAsclin_writeTxData',0,3,12,181,19,17,1,1
-.L87:
+.L91:
 	.byte	5
 	.byte	'asclin',0,12,181,19,51
 	.word	17508
-.L89:
+.L93:
 	.byte	5
 	.byte	'data',0,12,181,19,66
 	.word	1951
-.L91:
+.L95:
 	.byte	6,0,7
 	.byte	'short int',0,2,5
-.L42:
+.L46:
 	.byte	7
 	.byte	'long int',0,4,5,20,14,57,9,12,13
 	.byte	'count',0
@@ -4066,7 +4104,7 @@ ___io_getc_function_end:
 	.word	1951
 	.byte	14
 	.word	22348
-.L44:
+.L48:
 	.byte	20,17,216,2,9,28,13
 	.byte	'asclin',0
 	.word	17508
@@ -4398,7 +4436,7 @@ ___io_getc_function_end:
 	.byte	'IfxAsclin_ClockSource_noClock',0,0,16
 	.byte	'IfxAsclin_ClockSource_ascFastClock',0,2,16
 	.byte	'IfxAsclin_ClockSource_ascSlowClock',0,4,0
-.L46:
+.L50:
 	.byte	20,17,231,2,9,64,13
 	.byte	'asclin',0
 	.word	17508
@@ -4467,7 +4505,7 @@ ___io_getc_function_end:
 	.byte	'asclin',0,17,208,4,90
 	.word	17508
 	.byte	0
-.L49:
+.L53:
 	.byte	27
 	.word	28985
 	.byte	7
@@ -4505,7 +4543,7 @@ ___io_getc_function_end:
 	.byte	'end',0
 	.word	29706
 	.byte	4,2,35,8,0
-.L53:
+.L57:
 	.byte	3
 	.word	29819
 	.byte	30
@@ -23933,7 +23971,7 @@ ___io_getc_function_end:
 	.byte	1,1,0
 	.sdecl	'.debug_abbrev',debug
 	.sect	'.debug_abbrev'
-.L24:
+.L28:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,16,6,0,0,2,21,0,54,15,39,12,0,0,3,15,0,73,19,0,0,4,46,1,3,8,32,13
 	.byte	58,15,59,15,57,15,54,15,39,12,0,0,5,5,0,3,8,58,15,59,15,57,15,73,19,0,0,6,11,0,0,0,7,36,0,3,8,11,15,62
 	.byte	15,0,0,8,46,1,3,8,32,13,58,15,59,15,57,15,73,19,54,15,39,12,0,0,9,59,0,3,8,0,0,10,19,1,3,8,58,15,59,15
@@ -23947,12 +23985,12 @@ ___io_getc_function_end:
 	.byte	15,73,19,63,12,60,12,0,0,0
 	.sdecl	'.debug_line',debug
 	.sect	'.debug_line'
-.L25:
-	.word	.L97-.L96
-.L96:
+.L29:
+	.word	.L105-.L104
+.L104:
 	.half	3
-	.word	.L99-.L98
-.L98:
+	.word	.L107-.L106
+.L106:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1
 	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg',0
 	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc',0
@@ -24009,432 +24047,484 @@ ___io_getc_function_end:
 	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\StdIf\\IfxStdIf_DPipe.h',0
 	.byte	0,0,0
 	.byte	'..\\serialio.h',0,0,0,0,0
-.L99:
-.L97:
+.L107:
+.L105:
 	.sdecl	'.debug_info',debug,cluster('SERIALIO_Init')
 	.sect	'.debug_info'
-.L26:
+.L30:
 	.word	346
 	.half	3
-	.word	.L27
+	.word	.L31
 	.byte	4,1
 	.byte	'../serialio.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0
 	.byte	12,1
-	.word	.L29,.L28
+	.word	.L33,.L32
 	.byte	2
-	.word	.L22
+	.word	.L26
 	.byte	3
-	.byte	'SERIALIO_Init',0,1,41,6,1,1,1
-	.word	.L17,.L41,.L16
+	.byte	'SERIALIO_Init',0,1,14,6,1,1,1
+	.word	.L21,.L45,.L20
 	.byte	4
-	.byte	'baudrate',0,1,41,28
-	.word	.L42,.L43
-	.byte	5
-	.word	.L17,.L41
-	.byte	6
-	.byte	'ascHandle',0,1,44,19
-	.word	.L44,.L45
-	.byte	6
-	.byte	'ascConfig',0,1,47,26
+	.byte	'baudrate',0,1,14,28
 	.word	.L46,.L47
 	.byte	5
-	.word	.L48,.L41
+	.word	.L21,.L45
 	.byte	6
-	.byte	'pins',0,1,53,30
-	.word	.L49,.L50
+	.byte	'ascHandle',0,1,17,19
+	.word	.L48,.L49
+	.byte	6
+	.byte	'ascConfig',0,1,20,26
+	.word	.L50,.L51
+	.byte	5
+	.word	.L52,.L45
+	.byte	6
+	.byte	'pins',0,1,26,30
+	.word	.L53,.L54
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('SERIALIO_Init')
 	.sect	'.debug_abbrev'
-.L27:
+.L31:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
 	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('SERIALIO_Init')
 	.sect	'.debug_line'
-.L28:
-	.word	.L101-.L100
-.L100:
+.L32:
+	.word	.L109-.L108
+.L108:
 	.half	3
-	.word	.L103-.L102
-.L102:
+	.word	.L111-.L110
+.L110:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../serialio.c',0,0,0,0,0
-.L103:
+.L111:
 	.byte	5,6,7,0,5,2
-	.word	.L17
-	.byte	3,40,1,5,37,9
-	.half	.L94-.L17
+	.word	.L21
+	.byte	3,13,1,5,37,9
+	.half	.L102-.L21
 	.byte	3,7,1,5,48,9
-	.half	.L104-.L94
+	.half	.L112-.L102
 	.byte	1,5,56,9
-	.half	.L105-.L104
-	.byte	1,5,35,9
-	.half	.L93-.L105
-	.byte	3,2,1,5,33,9
-	.half	.L95-.L93
-	.byte	1,5,37,9
-	.half	.L48-.L95
-	.byte	3,3,1,5,35,9
-	.half	.L106-.L48
-	.byte	1,5,9,9
-	.half	.L107-.L106
-	.byte	3,2,1,5,17,9
-	.half	.L108-.L107
-	.byte	1,5,9,9
-	.half	.L109-.L108
-	.byte	1,9
-	.half	.L110-.L109
-	.byte	3,2,1,5,17,9
-	.half	.L111-.L110
-	.byte	1,5,9,9
-	.half	.L112-.L111
-	.byte	1,5,23,9
 	.half	.L113-.L112
-	.byte	3,2,1,5,20,9
-	.half	.L114-.L113
-	.byte	1,5,31,9
+	.byte	1,5,35,9
+	.half	.L101-.L113
+	.byte	3,2,1,5,33,9
+	.half	.L103-.L101
+	.byte	1,5,37,9
+	.half	.L52-.L103
+	.byte	3,3,1,5,35,9
+	.half	.L114-.L52
+	.byte	1,5,9,9
 	.half	.L115-.L114
-	.byte	3,3,1,5,43,9
+	.byte	3,2,1,5,17,9
 	.half	.L116-.L115
-	.byte	1,5,5,9
+	.byte	1,5,9,9
 	.half	.L117-.L116
-	.byte	3,3,1,5,13,9
+	.byte	1,9
 	.half	.L118-.L117
-	.byte	1,5,5,9
+	.byte	3,2,1,5,17,9
 	.half	.L119-.L118
-	.byte	1,5,13,9
+	.byte	1,5,9,9
 	.half	.L120-.L119
-	.byte	1,5,32,9
+	.byte	1,5,23,9
 	.half	.L121-.L120
-	.byte	1,5,38,9
+	.byte	3,2,1,5,20,9
 	.half	.L122-.L121
-	.byte	1,5,1,9
+	.byte	1,5,31,9
 	.half	.L123-.L122
+	.byte	3,3,1,5,43,9
+	.half	.L124-.L123
+	.byte	1,5,5,9
+	.half	.L125-.L124
+	.byte	3,3,1,5,13,9
+	.half	.L126-.L125
+	.byte	1,5,5,9
+	.half	.L127-.L126
+	.byte	1,5,13,9
+	.half	.L128-.L127
+	.byte	1,5,32,9
+	.half	.L129-.L128
+	.byte	1,5,38,9
+	.half	.L130-.L129
+	.byte	1,5,1,9
+	.half	.L131-.L130
 	.byte	3,1,1,7,9
-	.half	.L30-.L123
+	.half	.L34-.L131
 	.byte	0,1,1
-.L101:
+.L109:
 	.sdecl	'.debug_ranges',debug,cluster('SERIALIO_Init')
 	.sect	'.debug_ranges'
-.L29:
-	.word	-1,.L17,0,.L30-.L17,0,0
+.L33:
+	.word	-1,.L21,0,.L34-.L21,0,0
 	.sdecl	'.debug_info',debug,cluster('_io_getc')
 	.sect	'.debug_info'
-.L31:
+.L35:
 	.word	376
 	.half	3
-	.word	.L32
+	.word	.L36
 	.byte	4,1
 	.byte	'../serialio.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0
 	.byte	12,1
-	.word	.L34,.L33
+	.word	.L38,.L37
 	.byte	2
-	.word	.L22
+	.word	.L26
 	.byte	3
-	.byte	'_io_getc',0,1,94,5
-	.word	.L51
+	.byte	'_io_getc',0,1,76,5
+	.word	.L55
 	.byte	1,1,1
-	.word	.L21,.L52,.L20
+	.word	.L25,.L56,.L24
 	.byte	4
-	.byte	'io',0,1,94,26
-	.word	.L53,.L54
-	.byte	5
-	.word	.L21,.L52
-	.byte	6
-	.word	.L55,.L56,.L12
-	.byte	7
+	.byte	'io',0,1,76,26
 	.word	.L57,.L58
-	.byte	8
-	.word	.L59,.L56,.L12
-	.byte	0,6
-	.word	.L60,.L61,.L62
+	.byte	5
+	.word	.L25,.L56
+	.byte	6
+	.word	.L59,.L60,.L16
 	.byte	7
-	.word	.L63,.L64
+	.word	.L61,.L62
 	.byte	8
-	.word	.L65,.L61,.L62
+	.word	.L63,.L60,.L16
 	.byte	0,6
-	.word	.L66,.L67,.L13
+	.word	.L64,.L65,.L66
 	.byte	7
-	.word	.L68,.L69
+	.word	.L67,.L68
 	.byte	8
-	.word	.L70,.L67,.L13
+	.word	.L69,.L65,.L66
+	.byte	0,6
+	.word	.L70,.L71,.L17
+	.byte	7
+	.word	.L72,.L73
+	.byte	8
+	.word	.L74,.L71,.L17
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('_io_getc')
 	.sect	'.debug_abbrev'
-.L32:
+.L36:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
 	.byte	54,15,39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6
 	.byte	29,1,49,16,17,1,18,1,0,0,7,5,0,49,16,2,6,0,0,8,11,0,49,16,17,1,18,1,0,0,0
 	.sdecl	'.debug_line',debug,cluster('_io_getc')
 	.sect	'.debug_line'
-.L33:
-	.word	.L125-.L124
-.L124:
+.L37:
+	.word	.L133-.L132
+.L132:
 	.half	3
-	.word	.L127-.L126
-.L126:
+	.word	.L135-.L134
+.L134:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../serialio.c',0,0,0,0
 	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\Asclin\\Std\\IfxAsclin.h',0
 	.byte	0,0,0,0
-.L127:
+.L135:
 	.byte	5,11,7,0,5,2
-	.word	.L21
-	.byte	3,223,0,1,5,5,9
-	.half	.L128-.L21
+	.word	.L25
+	.byte	3,205,0,1,5,5,9
+	.half	.L136-.L25
 	.byte	1,5,79,7,9
-	.half	.L129-.L128
+	.half	.L137-.L136
 	.byte	3,2,1,5,55,9
-	.half	.L10-.L129
+	.half	.L14-.L137
 	.byte	1,5,63,9
-	.half	.L130-.L10
+	.half	.L138-.L14
 	.byte	1,4,2,5,27,9
-	.half	.L56-.L130
-	.byte	3,166,15,1,5,5,9
-	.half	.L131-.L56
+	.half	.L60-.L138
+	.byte	3,184,15,1,5,5,9
+	.half	.L139-.L60
 	.byte	1,4,1,5,79,9
-	.half	.L12-.L131
-	.byte	3,218,112,1,5,44,7,9
-	.half	.L132-.L12
+	.half	.L16-.L139
+	.byte	3,200,112,1,5,44,7,9
+	.half	.L140-.L16
 	.byte	3,3,1,5,52,9
-	.half	.L133-.L132
+	.half	.L141-.L140
 	.byte	1,4,2,5,25,9
-	.half	.L61-.L133
-	.byte	3,187,12,1,5,31,9
-	.half	.L134-.L61
+	.half	.L65-.L141
+	.byte	3,205,12,1,5,31,9
+	.half	.L142-.L65
 	.byte	1,4,1,5,37,9
-	.half	.L62-.L134
-	.byte	3,200,115,1,5,45,9
-	.half	.L135-.L62
+	.half	.L66-.L142
+	.byte	3,182,115,1,5,45,9
+	.half	.L143-.L66
 	.byte	1,4,2,5,26,9
-	.half	.L67-.L135
-	.byte	3,179,16,1,5,5,9
-	.half	.L136-.L67
+	.half	.L71-.L143
+	.byte	3,197,16,1,5,5,9
+	.half	.L144-.L71
 	.byte	1,4,1,5,9,9
-	.half	.L13-.L136
-	.byte	3,205,111,1,5,16,9
-	.half	.L9-.L13
+	.half	.L17-.L144
+	.byte	3,187,111,1,5,16,9
+	.half	.L13-.L17
 	.byte	3,4,1,5,12,9
-	.half	.L137-.L9
+	.half	.L145-.L13
 	.byte	3,2,1,5,5,9
-	.half	.L138-.L137
+	.half	.L146-.L145
 	.byte	1,5,1,9
-	.half	.L14-.L138
+	.half	.L18-.L146
 	.byte	3,1,1,7,9
-	.half	.L35-.L14
+	.half	.L39-.L18
 	.byte	0,1,1
-.L125:
+.L133:
 	.sdecl	'.debug_ranges',debug,cluster('_io_getc')
 	.sect	'.debug_ranges'
-.L34:
-	.word	-1,.L21,0,.L35-.L21,0,0
+.L38:
+	.word	-1,.L25,0,.L39-.L25,0,0
 	.sdecl	'.debug_info',debug,cluster('_io_putc')
 	.sect	'.debug_info'
-.L36:
-	.word	395
+.L40:
+	.word	512
 	.half	3
-	.word	.L37
+	.word	.L41
 	.byte	4,1
 	.byte	'../serialio.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0
 	.byte	12,1
-	.word	.L39,.L38
+	.word	.L43,.L42
 	.byte	2
-	.word	.L22
+	.word	.L26
 	.byte	3
-	.byte	'_io_putc',0,1,71,6,1,1,1
-	.word	.L19,.L71,.L18
+	.byte	'_io_putc',0,1,44,6,1,1,1
+	.word	.L23,.L75,.L22
 	.byte	4
-	.byte	'c',0,1,71,20
-	.word	.L51,.L72
+	.byte	'c',0,1,44,20
+	.word	.L55,.L76
 	.byte	4
-	.byte	'io',0,1,71,35
-	.word	.L53,.L73
+	.byte	'io',0,1,44,35
+	.word	.L57,.L77
 	.byte	5
-	.word	.L19,.L71
+	.word	.L23,.L75
 	.byte	6
-	.word	.L74,.L75,.L8
+	.word	.L78,.L79,.L9
 	.byte	7
-	.word	.L76,.L77
+	.word	.L80,.L81
 	.byte	8
-	.word	.L78,.L75,.L8
+	.word	.L82,.L79,.L9
 	.byte	0,6
-	.word	.L79,.L80,.L81
+	.word	.L83,.L84,.L85
 	.byte	7
-	.word	.L82,.L83
+	.word	.L86,.L87
 	.byte	8
-	.word	.L84,.L80,.L81
+	.word	.L88,.L84,.L85
 	.byte	0,6
-	.word	.L85,.L86,.L5
+	.word	.L89,.L90,.L6
 	.byte	7
-	.word	.L87,.L88
+	.word	.L91,.L92
 	.byte	7
-	.word	.L89,.L90
+	.word	.L93,.L94
 	.byte	8
-	.word	.L91,.L86,.L5
+	.word	.L95,.L90,.L6
+	.byte	0,6
+	.word	.L78,.L96,.L12
+	.byte	7
+	.word	.L80,.L81
+	.byte	8
+	.word	.L82,.L96,.L12
+	.byte	0,6
+	.word	.L83,.L97,.L98
+	.byte	7
+	.word	.L86,.L87
+	.byte	8
+	.word	.L88,.L97,.L98
+	.byte	0,6
+	.word	.L89,.L99,.L5
+	.byte	7
+	.word	.L91,.L92
+	.byte	7
+	.word	.L93,.L94
+	.byte	8
+	.word	.L95,.L99,.L5
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('_io_putc')
 	.sect	'.debug_abbrev'
-.L37:
+.L41:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,29,1,49
 	.byte	16,17,1,18,1,0,0,7,5,0,49,16,2,6,0,0,8,11,0,49,16,17,1,18,1,0,0,0
 	.sdecl	'.debug_line',debug,cluster('_io_putc')
 	.sect	'.debug_line'
-.L38:
-	.word	.L140-.L139
-.L139:
+.L42:
+	.word	.L148-.L147
+.L147:
 	.half	3
-	.word	.L142-.L141
-.L141:
+	.word	.L150-.L149
+.L149:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../serialio.c',0,0,0,0
 	.byte	'C:\\\\Users\\\\Zbook Firefly14 G8\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\Asclin\\Std\\IfxAsclin.h',0
 	.byte	0,0,0,0
-.L142:
+.L150:
 	.byte	5,11,7,0,5,2
-	.word	.L19
-	.byte	3,200,0,1,5,5,9
-	.half	.L143-.L19
+	.word	.L23
+	.byte	3,45,1,5,5,9
+	.half	.L151-.L23
 	.byte	1,5,15,7,9
-	.half	.L144-.L143
+	.half	.L152-.L151
 	.byte	3,4,1,5,25,9
-	.half	.L145-.L144
+	.half	.L153-.L152
 	.byte	1,5,9,9
-	.half	.L146-.L145
-	.byte	1,5,17,7,9
-	.half	.L147-.L146
-	.byte	3,2,1,5,26,9
-	.half	.L148-.L147
-	.byte	1,5,17,9
-	.half	.L149-.L148
-	.byte	1,5,22,9
-	.half	.L150-.L149
-	.byte	1,5,9,9
-	.half	.L4-.L150
-	.byte	3,126,1,5,79,9
-	.half	.L3-.L4
-	.byte	3,7,1,5,55,9
-	.half	.L6-.L3
-	.byte	1,5,63,9
-	.half	.L151-.L6
-	.byte	1,4,2,5,27,9
-	.half	.L75-.L151
-	.byte	3,234,15,1,5,5,9
-	.half	.L152-.L75
-	.byte	1,4,1,5,79,9
-	.half	.L8-.L152
-	.byte	3,150,112,1,5,44,7,9
-	.half	.L153-.L8
-	.byte	3,3,1,5,52,9
 	.half	.L154-.L153
+	.byte	1,5,17,7,9
+	.half	.L155-.L154
+	.byte	3,2,1,5,26,9
+	.half	.L156-.L155
+	.byte	1,5,17,9
+	.half	.L157-.L156
+	.byte	1,5,22,9
+	.half	.L158-.L157
+	.byte	1,5,9,9
+	.half	.L4-.L158
+	.byte	3,126,1,5,18,9
+	.half	.L3-.L4
+	.byte	3,8,1,5,9,9
+	.half	.L159-.L3
+	.byte	1,5,84,7,9
+	.half	.L160-.L159
+	.byte	3,2,1,5,60,9
+	.half	.L7-.L160
+	.byte	1,5,68,9
+	.half	.L161-.L7
+	.byte	1,4,2,5,27,9
+	.half	.L79-.L161
+	.byte	3,130,16,1,5,5,9
+	.half	.L162-.L79
+	.byte	1,4,1,5,84,9
+	.half	.L9-.L162
+	.byte	3,254,111,1,5,49,7,9
+	.half	.L163-.L9
+	.byte	3,1,1,5,57,9
+	.half	.L164-.L163
 	.byte	1,4,2,5,25,9
-	.half	.L80-.L154
-	.byte	3,237,12,1,5,31,9
-	.half	.L155-.L80
-	.byte	1,4,1,9
-	.half	.L81-.L155
-	.byte	3,150,115,1,5,39,9
-	.half	.L156-.L81
+	.half	.L84-.L164
+	.byte	3,135,13,1,5,31,9
+	.half	.L165-.L84
+	.byte	1,4,1,5,36,9
+	.half	.L85-.L165
+	.byte	3,250,114,1,5,44,9
+	.half	.L166-.L85
+	.byte	1,5,53,9
+	.half	.L167-.L166
 	.byte	1,4,2,5,22,9
-	.half	.L86-.L156
-	.byte	3,221,18,1,4,1,5,1,9
-	.half	.L5-.L86
-	.byte	3,165,109,1,7,9
-	.half	.L40-.L5
+	.half	.L90-.L167
+	.byte	3,249,18,1,4,1,5,79,9
+	.half	.L6-.L90
+	.byte	3,139,109,1,5,55,9
+	.half	.L10-.L6
+	.byte	1,5,63,9
+	.half	.L168-.L10
+	.byte	1,4,2,5,27,9
+	.half	.L96-.L168
+	.byte	3,252,15,1,5,5,9
+	.half	.L169-.L96
+	.byte	1,4,1,5,79,9
+	.half	.L12-.L169
+	.byte	3,132,112,1,5,44,7,9
+	.half	.L170-.L12
+	.byte	3,3,1,5,52,9
+	.half	.L171-.L170
+	.byte	1,4,2,5,25,9
+	.half	.L97-.L171
+	.byte	3,255,12,1,5,31,9
+	.half	.L172-.L97
+	.byte	1,4,1,9
+	.half	.L98-.L172
+	.byte	3,132,115,1,5,39,9
+	.half	.L173-.L98
+	.byte	1,4,2,5,22,9
+	.half	.L99-.L173
+	.byte	3,239,18,1,4,1,5,1,9
+	.half	.L5-.L99
+	.byte	3,147,109,1,7,9
+	.half	.L44-.L5
 	.byte	0,1,1
-.L140:
+.L148:
 	.sdecl	'.debug_ranges',debug,cluster('_io_putc')
 	.sect	'.debug_ranges'
-.L39:
-	.word	-1,.L19,0,.L40-.L19,0,0
+.L43:
+	.word	-1,.L23,0,.L44-.L23,0,0
 	.sdecl	'.debug_loc',debug,cluster('SERIALIO_Init')
 	.sect	'.debug_loc'
-.L16:
-	.word	-1,.L17,0,.L92-.L17
+.L20:
+	.word	-1,.L21,0,.L100-.L21
 	.half	2
 	.byte	138,0
-	.word	.L92-.L17,.L41-.L17
+	.word	.L100-.L21,.L45-.L21
 	.half	3
 	.byte	138,128,1
-	.word	.L41-.L17,.L41-.L17
+	.word	.L45-.L21,.L45-.L21
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L47:
-	.word	-1,.L17,0,.L41-.L17
+.L51:
+	.word	-1,.L21,0,.L45-.L21
 	.half	3
 	.byte	145,156,127
 	.word	0,0
-.L45:
-	.word	-1,.L17,0,.L41-.L17
+.L49:
+	.word	-1,.L21,0,.L45-.L21
 	.half	3
 	.byte	145,128,127
 	.word	0,0
-.L43:
-	.word	-1,.L17,0,.L93-.L17
+.L47:
+	.word	-1,.L21,0,.L101-.L21
 	.half	1
 	.byte	84
-	.word	.L94-.L17,.L95-.L17
+	.word	.L102-.L21,.L103-.L21
 	.half	1
 	.byte	95
 	.word	0,0
-.L50:
-	.word	-1,.L17,0,.L41-.L17
+.L54:
+	.word	-1,.L21,0,.L45-.L21
 	.half	2
 	.byte	145,92
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('_io_getc')
 	.sect	'.debug_loc'
-.L20:
-	.word	-1,.L21,0,.L52-.L21
+.L24:
+	.word	-1,.L25,0,.L56-.L25
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L64:
+.L68:
+	.word	0,0
+.L62:
+	.word	0,0
+.L73:
 	.word	0,0
 .L58:
-	.word	0,0
-.L69:
-	.word	0,0
-.L54:
-	.word	-1,.L21,0,.L52-.L21
+	.word	-1,.L25,0,.L56-.L25
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('_io_putc')
 	.sect	'.debug_loc'
-.L18:
-	.word	-1,.L19,0,.L71-.L19
+.L22:
+	.word	-1,.L23,0,.L75-.L23
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L83:
+.L87:
 	.word	0,0
-.L77:
+.L81:
 	.word	0,0
-.L88:
+.L92:
 	.word	0,0
-.L72:
-	.word	-1,.L19,0,.L71-.L19
+.L76:
+	.word	-1,.L23,0,.L75-.L23
 	.half	1
 	.byte	84
 	.word	0,0
-.L90:
+.L94:
 	.word	0,0
-.L73:
-	.word	-1,.L19,0,.L71-.L19
+.L77:
+	.word	-1,.L23,0,.L75-.L23
 	.half	1
 	.byte	100
 	.word	0,0
 	.sdecl	'.debug_frame',debug
 	.sect	'.debug_frame'
-.L157:
+.L174:
 	.word	48
 	.word	-1
 	.byte	3,0,2,1,27,12,26,0,8,26,8,27,8,30,8,29,8,28,8,16,8,17,8,24,8,25,8,31,8,32,8,33,8,34,8,35,8,36,8,37,8,38
@@ -24442,20 +24532,20 @@ ___io_getc_function_end:
 	.sdecl	'.debug_frame',debug,cluster('SERIALIO_Init')
 	.sect	'.debug_frame'
 	.word	36
-	.word	.L157,.L17,.L41-.L17
+	.word	.L174,.L21,.L45-.L21
 	.byte	4
-	.word	(.L92-.L17)/2
+	.word	(.L100-.L21)/2
 	.byte	19,128,1,22,26,4,19,138,128,1,4
-	.word	(.L41-.L92)/2
+	.word	(.L45-.L100)/2
 	.byte	19,0,8,26
 	.sdecl	'.debug_frame',debug,cluster('_io_putc')
 	.sect	'.debug_frame'
 	.word	24
-	.word	.L157,.L19,.L71-.L19
+	.word	.L174,.L23,.L75-.L23
 	.byte	8,18,8,19,8,21,8,22,8,23,0,0
 	.sdecl	'.debug_frame',debug,cluster('_io_getc')
 	.sect	'.debug_frame'
 	.word	24
-	.word	.L157,.L21,.L52-.L21
+	.word	.L174,.L25,.L56-.L25
 	.byte	8,18,8,19,8,21,8,22,8,23,0,0
 	; Module end

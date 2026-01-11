@@ -1,12 +1,14 @@
 /**********************************************************************************************************************
  * \file foc.c
- * \brief Open Loop Control Implementation
+ * \brief Open Loop Control Implementation using foc_math library
  *********************************************************************************************************************/
 
 #include "foc.h"
 #include "pwm.h"
 #include "IfxPort.h"
+#include "foc_math.h" /* Required for FOC_SVPWM */
 #include <math.h>
+#include <stdio.h>
 
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global Variables--------------------------------------------------*/
@@ -15,40 +17,41 @@
 /* Define the control structure here */
 GtmFocControl g_focControl;
 
-/* ACCESSING EXTERNAL PWM DATA
- * Note: Go to pwm.c and remove "IFX_STATIC" from g_gtmAtom3phInv definition
- * so it is visible here.
- */
-/* OR explicitly define the external struct if shared */
-// extern GtmAtom3phInv g_gtmAtom3phInv;
-
 /*********************************************************************************************************************/
 /*---------------------------------------------Function Implementations----------------------------------------------*/
 /*********************************************************************************************************************/
 
-void initFoc(void)
+void focInit(void)
 {
     /* Initialize default values for open loop */
     g_focControl.electricalAngle = 0.0f;
-    g_focControl.speedRefHz      = 10.0f;  /* Start slow: 10Hz */
-    g_focControl.voltageRef      = 0.10f;  /* Start weak: 10% Voltage */
+    g_focControl.speedRefHz      = 30.0f;  /* Start slow: 10Hz */
+    g_focControl.voltageRef      = 0.10f;  /* Start weak: 10% Voltage to prevent overcurrent */
+
+    /* Zero out vectors */
+    g_focControl.v_ab.alpha = 0.0f;
+    g_focControl.v_ab.beta  = 0.0f;
+    g_focControl.duty_3ph.a = 0.5f;
+    g_focControl.duty_3ph.b = 0.5f;
+    g_focControl.duty_3ph.c = 0.5f;
 }
 
 /* * Main Control Loop
- * Triggered by ADC End-Of-Conversion Interrupt (100kHz)
+ * Triggered by ADC End-Of-Conversion Interrupt (e.g. 20kHz or 100kHz)
  */
-void runCurrentControl(uint16 i_u_raw, uint16 i_v_raw)
+void focCurrentControl(uint16 i_u_raw, uint16 i_v_raw)
 {
-    /* 1. Profiling Start (Set Pin High) */
-    /* Assuming P13.0 for LED/Debug, or use your specific debug pin */
+    /* 1. Profiling Start */
+    /* IfxPort_setPinHigh(&MODULE_P13, 0); */
 
     /* 2. Run Control Algorithm */
-    foc_openloop();
+    focOpenLoop();
 
-    /* 3. Profiling End (Set Pin Low) */
+    /* 3. Profiling End */
+    /* IfxPort_setPinLow(&MODULE_P13, 0); */
 }
 
-void foc_openloop(void)
+void focOpenLoop(void)
 {
     float32 sinVal, cosVal;
 
@@ -65,39 +68,30 @@ void foc_openloop(void)
     {
         g_focControl.electricalAngle += FOC_TWO_PI;
     }
-
-    /* --- 2. Calculate Reference Vector (Alpha/Beta) directly --- */
-    /* In Open Loop, Vd=0. So V_alpha = Vref * cos(theta), V_beta = Vref * sin(theta) */
-    /* Note: optimization - use a Look-Up Table (LUT) for sin/cos in 100kHz loop */
+    /* --- 2. Calculate Reference Vector (Alpha/Beta) --- */
+    /* * In Open Loop FOC, we simulate a rotating voltage vector.
+     * V_alpha = Vref * cos(theta)
+     * V_beta  = Vref * sin(theta)
+     * * Note: for production code, use a lookup table (LUT) or CORDIC
+     * instead of sinf/cosf to save CPU cycles.
+     */
     sinVal = sinf(g_focControl.electricalAngle);
     cosVal = cosf(g_focControl.electricalAngle);
 
     g_focControl.v_ab.alpha = g_focControl.voltageRef * cosVal;
     g_focControl.v_ab.beta  = g_focControl.voltageRef * sinVal;
 
-    /* --- 3. Simple Sine-PWM (Temporary replacement for full SVPWM) --- */
-    /* This generates standard sine waves shifted by 120 degrees */
-    /* Duty = 0.5 + (V_alpha_beta / 2) */
-
-    /* Phase U (0 deg) -> Proportional to Alpha (Cos) */
-    g_focControl.duty_3ph.u = 0.5f + (0.5f * g_focControl.v_ab.alpha);
-
-    /* Phase V (-120 deg) -> -0.5*Alpha + 0.866*Beta */
-    g_focControl.duty_3ph.v = 0.5f + (0.5f * ((-0.5f * g_focControl.v_ab.alpha) + (0.8660254f * g_focControl.v_ab.beta)));
-
-    /* Phase W (+120 deg) -> -0.5*Alpha - 0.866*Beta */
-    g_focControl.duty_3ph.w = 0.5f + (0.5f * ((-0.5f * g_focControl.v_ab.alpha) - (0.8660254f * g_focControl.v_ab.beta)));
+    /* --- 3. Space Vector Modulation (SVPWM) --- */
+    /* * Use the foc_math library to calculate the duty cycles with
+     * Zero Sequence Injection (Min-Max) for better bus utilization.
+     */
+    focSVPWM(&g_focControl.v_ab, &g_focControl.duty_3ph);
 
     /* --- 4. Update Hardware --- */
-    /* We use the function defined in pwm.c to update the global struct and registers */
-    /* We need to pass these values to the PWM module.
-     * Since we don't have direct access to the g_gtmAtom3phInv struct here without circular dependencies,
-     * we will define a setter function in pwm.c usually.
-     * FOR NOW: We assume we can access a setter helper function.
+    /* * Pass the calculated duty cycles to the GTM PWM module.
+     * FOC_SVPWM returns 0.0 to 1.0, updateDutyCycles expects 0.0 to 100.0
      */
-    /*
-    updateDutyCycles(g_focControl.duty_3ph.u * 100.0f,
-                     g_focControl.duty_3ph.v * 100.0f,
-                     g_focControl.duty_3ph.w * 100.0f);
-    */
+    setDutyCycles(g_focControl.duty_3ph.a * 100.0f,
+                         g_focControl.duty_3ph.b * 100.0f,
+                         g_focControl.duty_3ph.c * 100.0f);
 }

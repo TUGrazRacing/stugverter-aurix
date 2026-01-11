@@ -32,8 +32,6 @@
  * On many TC3xx kits, GTM Output 0 maps to Trigger Source 0 or 9.
  * Let's assume Trigger Source 0 (GTM_ADC_TRG0) for this example.
  */
-#define ADC_TRIGGER_SOURCE      IfxEvadc_TriggerSource_0
-
 /*********************************************************************************************************************/
 /*--------------------------------------------------Data Structures--------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -53,7 +51,7 @@ typedef struct
 /**
  * \brief Initializes the EVADC for parallel sampling triggered by GTM.
  */
-void initEvadc(void);
+void phaseAdcInit(void);
 
 /**
  * \brief ISR for ADC End of Conversion.

@@ -128,3 +128,13 @@ pwm.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aur
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Port\\Std\IfxPort.h" :
 pwm.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\_PinMap\IfxPort_Pinmap.h"
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\_PinMap\IfxPort_Pinmap.h" :
+pwm.o :	..\logger.h
+..\logger.h :
+pwm.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
+pwm.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h" :
+pwm.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_reg.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_reg.h" :
+pwm.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h" :

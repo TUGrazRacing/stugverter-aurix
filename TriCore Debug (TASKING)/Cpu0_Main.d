@@ -120,8 +120,6 @@ Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugvert
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf.h" :
 Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\\SysSe\\Bsp\Bsp.h"
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\\SysSe\\Bsp\Bsp.h" :
-Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Port\Io\IfxPort_Io.h"
-"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Port\Io\IfxPort_Io.h" :
 Cpu0_Main.o :	..\pwm.h
 ..\pwm.h :
 Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\_PinMap\IfxPort_Pinmap.h"
@@ -144,3 +142,13 @@ Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugvert
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Evadc\\Adc\IfxEvadc_Adc.h" :
 Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Evadc\Std\IfxEvadc.h"
 "C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Evadc\Std\IfxEvadc.h" :
+Cpu0_Main.o :	..\logger.h
+..\logger.h :
+Cpu0_Main.o :	"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h"
+"C:\\Users\\Zbook Firefly14 G8\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
+Cpu0_Main.o :	..\gate_driver.h
+..\gate_driver.h :
+Cpu0_Main.o :	..\foc.h
+..\foc.h :
+Cpu0_Main.o :	..\foc_math.h
+..\foc_math.h :

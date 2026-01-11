@@ -144,7 +144,7 @@ void FOC_InvParkTransform(const DQ_t *input_dq, AlphaBeta_t *output_ab, float32 
  * @param[out] DutyCycles Pointer to output duty cycles (a, b, c),
  *                         normalized to the range [0.0 – 1.0]
  */
-void FOC_SVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles)
+void focSVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles)
 {
     ThreePhase_t V_phase_raw;
     float32 V_max, V_min;

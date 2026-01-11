@@ -55,6 +55,6 @@ void FOC_ParkTransform(const AlphaBeta_t *input_ab, DQ_t *output_dq, float32 sin
 void FOC_InvParkTransform(const DQ_t *input_dq, AlphaBeta_t *output_ab, float32 sinTheta, float32 cosTheta);
 
 /* Modulation */
-void FOC_SVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles);
+void focSVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles);
 
 #endif /* FOC_MATH_H_ */
