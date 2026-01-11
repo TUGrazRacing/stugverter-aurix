@@ -7,14 +7,69 @@
 
 
 /*********************************************************************************************************************/
-/*-------------------------------------------------Global variables--------------------------------------------------*/
+/*------------------------------------------------Global Variables---------------------------------------------------*/
 /*********************************************************************************************************************/
-uint64 start_ticks = 0;
-uint64 stop_ticks = 0;
+volatile uint64 start_ticks = 0;
+volatile uint64 stop_ticks = 0;
+
+/* Circular Buffer */
+static LogData_t g_logBuffer[LOG_BUFFER_SIZE];
+static volatile uint32 g_writeIdx = 0;
+static volatile uint32 g_readIdx = 0;
 
 /*********************************************************************************************************************/
 /*---------------------------------------------Function Implementations----------------------------------------------*/
 /*********************************************************************************************************************/
+
+void initLogger(void)
+{
+    g_writeIdx = 0;
+    g_readIdx = 0;
+    printf("[Logger] Initialized ring buffer size: %d\n", LOG_BUFFER_SIZE);
+}
+
+boolean logPush(uint16 i_u, uint16 i_v)
+{
+    uint32 nextWriteIdx = (g_writeIdx + 1) % LOG_BUFFER_SIZE;
+
+    /* Check if buffer is full (Next write would catch up to Read) */
+    if (nextWriteIdx == g_readIdx)
+    {
+        /* Buffer Overflow! Drop sample or set an error flag */
+        return FALSE;
+    }
+
+    /* Store Data */
+    g_logBuffer[g_writeIdx].i_u = i_u;
+    g_logBuffer[g_writeIdx].i_v = i_v;
+    /* Optional: Capture timestamp for analysis */
+    // g_logBuffer[g_writeIdx].timestamp_ticks = (uint32)IfxStm_getLower(IFXSTM_DEFAULT_TIMER);
+
+    /* Advance Index */
+    g_writeIdx = nextWriteIdx;
+
+    return TRUE;
+}
+
+void logProcess(void)
+{
+    /* Process chunks of data to allow other main loop tasks to run */
+    uint32 count = 0;
+    const uint32 MAX_PRINT_PER_LOOP = 10;
+
+    while ((g_readIdx != g_writeIdx) && (count < MAX_PRINT_PER_LOOP))
+    {
+        LogData_t *data = &g_logBuffer[g_readIdx];
+
+        /* Print the data (Slow operation) */
+        /* Format: [ADC] U: 1234, V: 2345 */
+        printf("%u;%u\n", data->i_u, data->i_v);
+
+        /* Advance Read Index */
+        g_readIdx = (g_readIdx + 1) % LOG_BUFFER_SIZE;
+        count++;
+    }
+}
 
 void logSysClocks(void)
 {

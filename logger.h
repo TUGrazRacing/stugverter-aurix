@@ -1,6 +1,3 @@
-/*********************************************************************************************************************/
-/*-----------------------------------------------------Includes------------------------------------------------------*/
-/*********************************************************************************************************************/
 #ifndef LOGGER_H
 #define LOGGER_H
 
@@ -8,53 +5,49 @@
 #include "IfxStm.h"
 
 /*********************************************************************************************************************/
-/*-------------------------------------------------Global variables--------------------------------------------------*/
+/*--------------------------------------------------Macros & Types---------------------------------------------------*/
 /*********************************************************************************************************************/
-/* Extern declarations */
-extern uint64 start_ticks;
-extern uint64 stop_ticks;
+#define LOG_BUFFER_SIZE  1024  /* Must be a power of 2 for efficient masking if needed, but simple size is fine */
+
+typedef struct
+{
+    uint16 i_u;
+    uint16 i_v;
+    uint32 timestamp_ticks; /* Optional: store when the sample happened */
+} LogData_t;
+
+/*********************************************************************************************************************/
+/*------------------------------------------------Global Variables---------------------------------------------------*/
+/*********************************************************************************************************************/
+extern volatile uint64 start_ticks;
+extern volatile uint64 stop_ticks;
 
 /*********************************************************************************************************************/
 /*------------------------------------------------Function Prototypes------------------------------------------------*/
 /*********************************************************************************************************************/
 
-/**
- * @brief Logs important system clocks (CPU, STM, ADC) to the console.
- */
+/* Initialization */
 void logSysClocks(void);
+void initLogger(void);
 
-/**
- * @brief Calculates the delta between start/stop ticks, converts to us, and prints.
- */
+/* Real-Time Profiling (Existing) */
 void logTimeDiff(void);
-
-/**
- * @brief Blocking delay in microseconds using the STM.
- * Added based on IfxStm documentation capability.
- * @param delayUs Microseconds to wait
- */
 void logDelayUs(uint32 delayUs);
+static inline void logStart(void) { start_ticks = IfxStm_get(IFXSTM_DEFAULT_TIMER); }
+static inline void logEnd(void)   { stop_ticks  = IfxStm_get(IFXSTM_DEFAULT_TIMER); }
 
-/*********************************************************************************************************************/
-/*---------------------------------------------Inline Implementations------------------------------------------------*/
-/*********************************************************************************************************************/
-
-/**
- * @brief Captures the current STM tick count.
- */
-static inline void logStart(void)
-{
-    /* Use the default timer macro from IfxStm.h */
-    start_ticks = IfxStm_get(IFXSTM_DEFAULT_TIMER);
-}
+/* Data Logging (New) */
 
 /**
- * @brief Captures the current STM tick count.
+ * @brief Push a new sample into the ring buffer. Safe to call from ISR.
+ * @return TRUE if success, FALSE if buffer full.
  */
-static inline void logEnd(void)
-{
-    /* Use the default timer macro from IfxStm.h */
-    stop_ticks = IfxStm_get(IFXSTM_DEFAULT_TIMER);
-}
+boolean logPush(uint16 i_u, uint16 i_v);
+
+/**
+ * @brief Process the buffer and print data. Call this in the Main Loop.
+ * Prints up to 'maxItems' at a time to avoid starving other background tasks.
+ */
+void logProcess(void);
 
 #endif /* LOGGER_H */

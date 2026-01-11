@@ -1,6 +1,7 @@
 /**********************************************************************************************************************
  * \file adc.c
- * \brief EVADC synchronized sampling triggered by GTM (Infineon-example style)
+ * \brief EVADC synchronized sampling triggered by GTM:
+ *        Group0 dummy master triggers + ISR, real measurements in two slave groups in parallel.
  *********************************************************************************************************************/
 
 #include "adc.h"
@@ -15,30 +16,35 @@
 #define DEBUG_PIN    (5)
 
 /* ========================= Example-faithful macros ========================= */
-#define EVADC_MASTER_GROUP      ADC_GROUP_MASTER      /* you define this in adc.h (e.g. IfxEvadc_GroupId_0) */
-#define EVADC_SLAVE_GROUP       ADC_GROUP_SLAVE       /* you define this in adc.h (e.g. IfxEvadc_GroupId_2) */
+#define EVADC_MASTER_GROUP              ADC_GROUP_DUMMY_MASTER
+#define EVADC_SLAVE_GROUP_A             ADC_GROUP_SLAVE_A
+#define EVADC_SLAVE_GROUP_B             ADC_GROUP_SLAVE_B
 
-#define EVADC_REFILL_AND_WAIT_FOR_TRIG   ((1U << IFX_EVADC_G_Q_QINR_RF_OFF) | \
-                                          (1U << IFX_EVADC_G_Q_Q0R_EXTR_OFF))
+#define EVADC_REFILL_AND_WAIT_FOR_TRIG  ((1U << IFX_EVADC_G_Q_QINR_RF_OFF) | \
+                                         (1U << IFX_EVADC_G_Q_Q0R_EXTR_OFF))
 
-/* Infineon example: "GTM ADC trigger 3" */
-#define EVADC_TRIGGER_SOURCE    IfxEvadc_TriggerSource_11
-#define EVADC_TRIGGER_MODE      IfxEvadc_TriggerMode_uponRisingEdge
-#define EVADC_GATING_MODE       IfxEvadc_GatingMode_always
+/* Infineon example: "GTM ADC trigger 3" (keep as you had) */
+#define EVADC_TRIGGER_SOURCE            IfxEvadc_TriggerSource_11
+#define EVADC_TRIGGER_MODE              IfxEvadc_TriggerMode_uponRisingEdge
+#define EVADC_GATING_MODE               IfxEvadc_GatingMode_always
 
 /* ========================= Globals ========================= */
 App_Adc_Type g_adc;
 
 /* For visibility */
-volatile uint16 g_measuredU = 0;
-volatile uint16 g_measuredV = 0;
+volatile uint16 g_measuredA = 0;
+volatile uint16 g_measuredB = 0;
 
 /* ========================= Prototypes (example style) ========================= */
 IFX_STATIC void initEVADCModule(void);
-IFX_STATIC void initEVADCGroupMaster(void);
-IFX_STATIC void initEVADCGroupSlave(void);
-IFX_STATIC void initEVADCChannelU(void);
-IFX_STATIC void initEVADCChannelV(void);
+IFX_STATIC void initEVADCDummyMasterGroup(void);
+IFX_STATIC void initEVADCSlaveGroupA(void);
+IFX_STATIC void initEVADCSlaveGroupB(void);
+
+IFX_STATIC void initEVADCDummyChannel(void);
+IFX_STATIC void initEVADCChannelPhaseA(void);
+IFX_STATIC void initEVADCChannelPhaseB(void);
+
 IFX_STATIC void initQueuesAndStart(void);
 
 /* ========================= ISR ========================= */
@@ -46,17 +52,23 @@ IFX_INTERRUPT(ISR_Adc_EndOfConversion, 0, ISR_PRIORITY_ADC);
 
 void ISR_Adc_EndOfConversion(void)
 {
-    //flag ? logEnd() : logStart();
-    //flag = !flag;
+    /* Optional: scope timing */
+    IfxPort_setPinHigh(DEBUG_PORT, DEBUG_PIN);
+
     focOpenLoop();
-    Ifx_EVADC_G_RES resU = IfxEvadc_Adc_getResult(&g_adc.chnPhaseU);
-    Ifx_EVADC_G_RES resV = IfxEvadc_Adc_getResult(&g_adc.chnPhaseV);
 
-    //g_measuredU = resU.B.RESULT;
-    //g_measuredV = resV.B.RESULT;
-    //logTimeDiff();
+    /* Read the real measurements from the two slave channels */
+    Ifx_EVADC_G_RES resA = IfxEvadc_Adc_getResult(&g_adc.chnPhaseA);
+    Ifx_EVADC_G_RES resB = IfxEvadc_Adc_getResult(&g_adc.chnPhaseB);
+
+    g_measuredA = (uint16)resA.B.RESULT;
+    g_measuredB = (uint16)resB.B.RESULT;
+
+    /* Push to logger (Non-blocking) */
+    logPush(g_measuredA, g_measuredB);
+
+    IfxPort_setPinLow(DEBUG_PORT, DEBUG_PIN);
 }
-
 
 /* ========================= Public init (call this) ========================= */
 void phaseAdcInit(void)
@@ -67,10 +79,18 @@ void phaseAdcInit(void)
 
     /* Example-faithful init order */
     initEVADCModule();
-    initEVADCGroupMaster();
-    initEVADCGroupSlave();
-    initEVADCChannelU();
-    initEVADCChannelV();
+
+    /* Groups */
+    initEVADCDummyMasterGroup();
+    initEVADCSlaveGroupA();
+    initEVADCSlaveGroupB();
+
+    /* Channels */
+    initEVADCDummyChannel();
+    initEVADCChannelPhaseA();
+    initEVADCChannelPhaseB();
+
+    /* Queue + enable converters */
     initQueuesAndStart();
 }
 
@@ -82,8 +102,8 @@ IFX_STATIC void initEVADCModule(void)
     IfxEvadc_Adc_initModule(&g_adc.evadc, &adcConfig);
 }
 
-/* ========================= Group init: Master ========================= */
-IFX_STATIC void initEVADCGroupMaster(void)
+/* ========================= Group init: Dummy Master (Group0) ========================= */
+IFX_STATIC void initEVADCDummyMasterGroup(void)
 {
     IfxEvadc_Adc_GroupConfig groupConfig;
     IfxEvadc_Adc_initGroupConfig(&groupConfig, &g_adc.evadc);
@@ -92,11 +112,10 @@ IFX_STATIC void initEVADCGroupMaster(void)
     groupConfig.master  = EVADC_MASTER_GROUP;
 
     /* Example uses converter OFF at init, enabled later */
-    groupConfig.analogConverterMode = IfxEvadc_AnalogConverterMode_off;
+    groupConfig.analogConverterMode    = IfxEvadc_AnalogConverterMode_off;
     groupConfig.analogFrequency        = IFXEVADC_ANALOG_FREQUENCY_MAX;
-    groupConfig.disablePostCalibration  = TRUE;
-    groupConfig.startupCalibration      = FALSE;
-
+    groupConfig.disablePostCalibration = TRUE;
+    groupConfig.startupCalibration     = FALSE;
 
     /* Enable Queue0 */
     groupConfig.arbiter.requestSlotQueue0Enabled = TRUE;
@@ -106,85 +125,127 @@ IFX_STATIC void initEVADCGroupMaster(void)
     groupConfig.queueRequest[0].requestSlotStartMode = IfxEvadc_RequestSlotStartMode_cancelInjectRepeat;
 
     /* Trigger config (example) */
-    groupConfig.queueRequest[0].triggerConfig.gatingMode   = EVADC_GATING_MODE;
-    groupConfig.queueRequest[0].triggerConfig.triggerMode  = EVADC_TRIGGER_MODE;
-    groupConfig.queueRequest[0].triggerConfig.triggerSource= EVADC_TRIGGER_SOURCE;
+    groupConfig.queueRequest[0].triggerConfig.gatingMode    = EVADC_GATING_MODE;
+    groupConfig.queueRequest[0].triggerConfig.triggerMode   = EVADC_TRIGGER_MODE;
+    groupConfig.queueRequest[0].triggerConfig.triggerSource = EVADC_TRIGGER_SOURCE;
 
-    IfxEvadc_Adc_initGroup(&g_adc.groupMaster, &groupConfig);
+    IfxEvadc_Adc_initGroup(&g_adc.groupDummy, &groupConfig);
 }
 
-/* ========================= Group init: Slave ========================= */
-IFX_STATIC void initEVADCGroupSlave(void)
+/* ========================= Group init: Slave A ========================= */
+IFX_STATIC void initEVADCSlaveGroupA(void)
 {
     IfxEvadc_Adc_GroupConfig groupConfig;
     IfxEvadc_Adc_initGroupConfig(&groupConfig, &g_adc.evadc);
 
-    groupConfig.groupId = EVADC_SLAVE_GROUP;
+    groupConfig.groupId = EVADC_SLAVE_GROUP_A;
     groupConfig.master  = EVADC_MASTER_GROUP;
 
-    groupConfig.analogConverterMode = IfxEvadc_AnalogConverterMode_off;
+    groupConfig.analogConverterMode    = IfxEvadc_AnalogConverterMode_off;
+    groupConfig.analogFrequency        = IFXEVADC_ANALOG_FREQUENCY_MAX;
+    groupConfig.disablePostCalibration = TRUE;
+    groupConfig.startupCalibration     = FALSE;
 
-    /* In the Infineon example, slaves are initialized without configuring trigger/queue */
-    /* (We still keep default config; master provides synchronization) */
-    IfxEvadc_Adc_initGroup(&g_adc.groupSlave, &groupConfig);
+    /* Slaves: do not configure queue/trigger here (master provides synchronization) */
+    IfxEvadc_Adc_initGroup(&g_adc.groupSlaveA, &groupConfig);
 }
 
-/* ========================= Channel U (Master) ========================= */
-IFX_STATIC void initEVADCChannelU(void)
+/* ========================= Group init: Slave B ========================= */
+IFX_STATIC void initEVADCSlaveGroupB(void)
+{
+    IfxEvadc_Adc_GroupConfig groupConfig;
+    IfxEvadc_Adc_initGroupConfig(&groupConfig, &g_adc.evadc);
+
+    groupConfig.groupId = EVADC_SLAVE_GROUP_B;
+    groupConfig.master  = EVADC_MASTER_GROUP;
+
+    groupConfig.analogConverterMode    = IfxEvadc_AnalogConverterMode_off;
+    groupConfig.analogFrequency        = IFXEVADC_ANALOG_FREQUENCY_MAX;
+    groupConfig.disablePostCalibration = TRUE;
+    groupConfig.startupCalibration     = FALSE;
+
+    /* Slaves: do not configure queue/trigger here (master provides synchronization) */
+    IfxEvadc_Adc_initGroup(&g_adc.groupSlaveB, &groupConfig);
+}
+
+/* ========================= Dummy Channel (Master ISR source) ========================= */
+IFX_STATIC void initEVADCDummyChannel(void)
 {
     IfxEvadc_Adc_ChannelConfig chConfig;
-    IfxEvadc_Adc_initChannelConfig(&chConfig, &g_adc.groupMaster);
+    IfxEvadc_Adc_initChannelConfig(&chConfig, &g_adc.groupDummy);
 
-    chConfig.channelId        = ADC_CHN_PHASE_U;
-    chConfig.resultRegister   = IfxEvadc_ChannelResult_0;
+    chConfig.channelId           = ADC_CHN_DUMMY;
+    chConfig.resultRegister      = IfxEvadc_ChannelResult_0;
     chConfig.rightAlignedStorage = FALSE;
 
-    /* Interrupt on master channel */
+    /* Interrupt on dummy master channel */
     chConfig.resultServProvider = ISR_PROVIDER_ADC;
     chConfig.resultPriority     = ISR_PRIORITY_ADC;
     chConfig.resultSrcNr        = IfxEvadc_SrcNr_group0;
 
-    /* Example: synchronize enabled on master channel */
+    /* Enable synchronization on the master trigger channel */
     chConfig.synchonize = TRUE;
 
-    IfxEvadc_Adc_initChannel(&g_adc.chnPhaseU, &chConfig);
+    IfxEvadc_Adc_initChannel(&g_adc.chnDummy, &chConfig);
 }
 
-/* ========================= Channel V (Slave) ========================= */
-IFX_STATIC void initEVADCChannelV(void)
+/* ========================= Phase A Channel (Slave A) ========================= */
+IFX_STATIC void initEVADCChannelPhaseA(void)
 {
     IfxEvadc_Adc_ChannelConfig chConfig;
-    IfxEvadc_Adc_initChannelConfig(&chConfig, &g_adc.groupSlave);
+    IfxEvadc_Adc_initChannelConfig(&chConfig, &g_adc.groupSlaveA);
 
-    chConfig.channelId        = ADC_CHN_PHASE_V;
-    chConfig.resultRegister   = IfxEvadc_ChannelResult_0;
+    chConfig.channelId           = ADC_CHN_PHASE_U;
+    chConfig.resultRegister      = IfxEvadc_ChannelResult_0;
     chConfig.rightAlignedStorage = FALSE;
 
-    /* No interrupt from slave channel (we read it in master ISR) */
+    /* No interrupt from slave channel */
     chConfig.resultPriority = 0;
 
-    /* Keep default sync (example does not set sync here) */
-    /* If you later need stricter sync behavior, we can set synchonize=TRUE here too */
+    /* Participate in synchronized conversion */
+    chConfig.synchonize = TRUE;
 
-    IfxEvadc_Adc_initChannel(&g_adc.chnPhaseV, &chConfig);
+    IfxEvadc_Adc_initChannel(&g_adc.chnPhaseA, &chConfig);
+}
+
+/* ========================= Phase B Channel (Slave B) ========================= */
+IFX_STATIC void initEVADCChannelPhaseB(void)
+{
+    IfxEvadc_Adc_ChannelConfig chConfig;
+    IfxEvadc_Adc_initChannelConfig(&chConfig, &g_adc.groupSlaveB);
+
+    chConfig.channelId           = ADC_CHN_PHASE_V;
+    chConfig.resultRegister      = IfxEvadc_ChannelResult_0;
+    chConfig.rightAlignedStorage = FALSE;
+
+    /* No interrupt from slave channel */
+    chConfig.resultPriority = 0;
+
+    /* Participate in synchronized conversion */
+    chConfig.synchonize = TRUE;
+
+    IfxEvadc_Adc_initChannel(&g_adc.chnPhaseB, &chConfig);
 }
 
 /* ========================= Queue + start (example style) ========================= */
 IFX_STATIC void initQueuesAndStart(void)
 {
-    /* Example only adds the MASTER channel to queue0 with refill + wait-for-trigger */
-    IfxEvadc_Adc_addToQueue(&g_adc.chnPhaseU,
+    /* Only add the DUMMY MASTER channel to queue0 with refill + wait-for-trigger */
+    IfxEvadc_Adc_addToQueue(&g_adc.chnDummy,
                             IfxEvadc_RequestSource_queue0,
                             EVADC_REFILL_AND_WAIT_FOR_TRIG);
 
-    /* Enable analog converter (example does master only here) */
+    /* Enable analog converter for all groups so slaves are awake and can sync */
     IfxEvadc_Adc_setAnalogConvertControl(&MODULE_EVADC,
-                                         &g_adc.groupMaster,
+                                         &g_adc.groupDummy,
                                          IfxEvadc_AnalogConverterMode_normalOperation);
 
-    /* Enable slave analog converter too (helps ensure it’s awake when synced) */
     IfxEvadc_Adc_setAnalogConvertControl(&MODULE_EVADC,
-                                         &g_adc.groupSlave,
+                                         &g_adc.groupSlaveA,
+                                         IfxEvadc_AnalogConverterMode_normalOperation);
+
+    IfxEvadc_Adc_setAnalogConvertControl(&MODULE_EVADC,
+                                         &g_adc.groupSlaveB,
                                          IfxEvadc_AnalogConverterMode_normalOperation);
 
     /* Settling time (example uses ~3us) */
