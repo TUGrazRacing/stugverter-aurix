@@ -1,12 +1,12 @@
+#include "adc.h"
+#include <inverter/pwm/phase_pwm.h>
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
 #include "serialio.h"
 #include "Bsp.h"
-#include "pwm.h"
 #include "IfxPort_Pinmap.h"
 #include "stdio.h"
-#include "adc.h"
 #include "logger.h"
 #include "gate_driver.h"
 #include "foc.h"
@@ -41,8 +41,8 @@ void core0_main(void)
 
     focInit();
     gatedriverInit();
+    adcInit();
     inverterInit();
-    phaseAdcInit();
 
     gatedriverReadyMode();
     gatedriverEnable();
