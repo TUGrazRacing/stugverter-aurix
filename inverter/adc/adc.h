@@ -13,4 +13,7 @@ extern IfxEvadc_Adc g_evadc;
 void adcInit(void);
 void adcSoftwareTriggerConversion(void);
 
+void Inverter_ADC_Read(uint16* i_u, uint16* i_v);
+void Resolver_ADC_Read(uint16* sin, uint16* cos);
+
 #endif /* ADC_H */

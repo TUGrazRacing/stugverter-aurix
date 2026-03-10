@@ -6,21 +6,6 @@
 
 IfxEvadc_Adc g_evadc;
 
-IFX_INTERRUPT(ISR_Adc_EndOfConversion, 0, ISR_PRIORITY_ADC);
-
-void ISR_Adc_EndOfConversion(void)
-{
-    Ifx_EVADC_G_RES results[4];
-    Resolver_ADC_Read(&results[0], &results[1]);
-    Inverter_ADC_Read(&results[2], &results[3]);
-
-    for(int i = 0; i < 4; i++)
-    {
-        printf("%d ", results[i].U & 0xFFFF);
-    }
-    printf("\n");
-}
-
 void adcInit(void)
 {
     /* 1. Initialize the core EVADC module ONCE */

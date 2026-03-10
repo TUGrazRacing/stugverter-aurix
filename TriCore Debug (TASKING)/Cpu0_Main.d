@@ -148,7 +148,7 @@ Cpu0_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\L
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
 Cpu0_Main.o :	..\gate_driver.h
 ..\gate_driver.h :
-Cpu0_Main.o :	..\foc.h
-..\foc.h :
-Cpu0_Main.o :	..\foc_math.h
-..\foc_math.h :
+Cpu0_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\control\foc.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\control\foc.h" :
+Cpu0_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\math\foc_math.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\math\foc_math.h" :

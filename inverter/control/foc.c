@@ -6,7 +6,7 @@
 #include "foc.h"
 #include "phase_pwm.h"
 #include "IfxPort.h"
-#include "foc_math.h" /* Required for FOC_SVPWM */
+#include "foc_math.h"
 #include <math.h>
 #include <stdio.h>
 

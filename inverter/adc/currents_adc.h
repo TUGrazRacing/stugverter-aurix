@@ -5,6 +5,5 @@
 
 void Inverter_ADC_InitGroups(void);
 void Inverter_ADC_InitChannels(void);
-void Inverter_ADC_Read(Ifx_EVADC_G_RES* resultU, Ifx_EVADC_G_RES* resultV);
 
 #endif

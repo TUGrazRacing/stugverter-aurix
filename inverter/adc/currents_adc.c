@@ -44,8 +44,9 @@ void Inverter_ADC_InitChannels(void)
     IfxEvadc_Adc_initChannel(&adc_channel_v, &adcChannelConfig);
 }
 
-void Inverter_ADC_Read(Ifx_EVADC_G_RES* resultU, Ifx_EVADC_G_RES* resultV)
+void Inverter_ADC_Read(uint16* i_u, uint16* i_v)
 {
-    do { *resultU = IfxEvadc_Adc_getResult(&adc_channel_u); } while(!resultU->B.VF);
-    do { *resultV = IfxEvadc_Adc_getResult(&adc_channel_v); } while(!resultV->B.VF);
+    // The ISR guarantees the conversion is done, so we just read the result directly.
+    *i_u = IfxEvadc_Adc_getResult(&adc_channel_u).B.RESULT;
+    *i_v = IfxEvadc_Adc_getResult(&adc_channel_v).B.RESULT;
 }

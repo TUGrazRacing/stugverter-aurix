@@ -76,8 +76,8 @@ void Resolver_ADC_StartQueue(void)
     IfxEvadc_Adc_startQueue(&adc_group_sin, IfxEvadc_RequestSource_queue0);
 }
 
-void Resolver_ADC_Read(Ifx_EVADC_G_RES* resultSin, Ifx_EVADC_G_RES* resultCos)
+void Resolver_ADC_Read(uint16* sin, uint16* cos)
 {
-    do { *resultSin = IfxEvadc_Adc_getResult(&adc_channel_sin); } while(!resultSin->B.VF);
-    do { *resultCos = IfxEvadc_Adc_getResult(&adc_channel_cos); } while(!resultCos->B.VF);
+    *sin = IfxEvadc_Adc_getResult(&adc_channel_sin).B.RESULT;
+    *cos = IfxEvadc_Adc_getResult(&adc_channel_cos).B.RESULT;
 }

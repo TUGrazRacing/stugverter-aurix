@@ -8,11 +8,9 @@ C_SRCS += \
 "../Cpu1_Main.c" \
 "../Cpu2_Main.c" \
 "../Cpu3_Main.c" \
-"../foc.c" \
-"../foc_math.c" \
 "../gate_driver.c" \
 "../logger.c" \
-"../lut.c" \
+"../motor_control.c" \
 "../serialio.c" 
 
 COMPILED_SRCS += \
@@ -20,11 +18,9 @@ COMPILED_SRCS += \
 "Cpu1_Main.src" \
 "Cpu2_Main.src" \
 "Cpu3_Main.src" \
-"foc.src" \
-"foc_math.src" \
 "gate_driver.src" \
 "logger.src" \
-"lut.src" \
+"motor_control.src" \
 "serialio.src" 
 
 C_DEPS += \
@@ -32,11 +28,9 @@ C_DEPS += \
 "./Cpu1_Main.d" \
 "./Cpu2_Main.d" \
 "./Cpu3_Main.d" \
-"./foc.d" \
-"./foc_math.d" \
 "./gate_driver.d" \
 "./logger.d" \
-"./lut.d" \
+"./motor_control.d" \
 "./serialio.d" 
 
 OBJS += \
@@ -44,11 +38,9 @@ OBJS += \
 "Cpu1_Main.o" \
 "Cpu2_Main.o" \
 "Cpu3_Main.o" \
-"foc.o" \
-"foc_math.o" \
 "gate_driver.o" \
 "logger.o" \
-"lut.o" \
+"motor_control.o" \
 "serialio.o" 
 
 
@@ -69,14 +61,6 @@ OBJS += \
 	cctc -cs --dep-file="$*.d" --misrac-version=2012 -D__CPU__=tc38x "-fC:/Users/probstn/AURIX-v1.10.28-workspace/stugverter-aurix/TriCore Debug (TASKING)/TASKING_C_C___Compiler-Include_paths__-I_.opt" --iso=99 --c++14 --language=+volatile --exceptions --anachronisms --fp-model=3 -O0 --tradeoff=4 --compact-max-size=200 -g -Wc-w544 -Wc-w557 -Ctc38x -Y0 -N0 -Z0 -o "$@" "$<"
 "Cpu3_Main.o":"Cpu3_Main.src" "subdir.mk"
 	astc -Og -Os --no-warnings= --error-limit=42 -o  "$@" "$<"
-"foc.src":"../foc.c" "subdir.mk"
-	cctc -cs --dep-file="$*.d" --misrac-version=2012 -D__CPU__=tc38x "-fC:/Users/probstn/AURIX-v1.10.28-workspace/stugverter-aurix/TriCore Debug (TASKING)/TASKING_C_C___Compiler-Include_paths__-I_.opt" --iso=99 --c++14 --language=+volatile --exceptions --anachronisms --fp-model=3 -O0 --tradeoff=4 --compact-max-size=200 -g -Wc-w544 -Wc-w557 -Ctc38x -Y0 -N0 -Z0 -o "$@" "$<"
-"foc.o":"foc.src" "subdir.mk"
-	astc -Og -Os --no-warnings= --error-limit=42 -o  "$@" "$<"
-"foc_math.src":"../foc_math.c" "subdir.mk"
-	cctc -cs --dep-file="$*.d" --misrac-version=2012 -D__CPU__=tc38x "-fC:/Users/probstn/AURIX-v1.10.28-workspace/stugverter-aurix/TriCore Debug (TASKING)/TASKING_C_C___Compiler-Include_paths__-I_.opt" --iso=99 --c++14 --language=+volatile --exceptions --anachronisms --fp-model=3 -O0 --tradeoff=4 --compact-max-size=200 -g -Wc-w544 -Wc-w557 -Ctc38x -Y0 -N0 -Z0 -o "$@" "$<"
-"foc_math.o":"foc_math.src" "subdir.mk"
-	astc -Og -Os --no-warnings= --error-limit=42 -o  "$@" "$<"
 "gate_driver.src":"../gate_driver.c" "subdir.mk"
 	cctc -cs --dep-file="$*.d" --misrac-version=2012 -D__CPU__=tc38x "-fC:/Users/probstn/AURIX-v1.10.28-workspace/stugverter-aurix/TriCore Debug (TASKING)/TASKING_C_C___Compiler-Include_paths__-I_.opt" --iso=99 --c++14 --language=+volatile --exceptions --anachronisms --fp-model=3 -O0 --tradeoff=4 --compact-max-size=200 -g -Wc-w544 -Wc-w557 -Ctc38x -Y0 -N0 -Z0 -o "$@" "$<"
 "gate_driver.o":"gate_driver.src" "subdir.mk"
@@ -85,9 +69,9 @@ OBJS += \
 	cctc -cs --dep-file="$*.d" --misrac-version=2012 -D__CPU__=tc38x "-fC:/Users/probstn/AURIX-v1.10.28-workspace/stugverter-aurix/TriCore Debug (TASKING)/TASKING_C_C___Compiler-Include_paths__-I_.opt" --iso=99 --c++14 --language=+volatile --exceptions --anachronisms --fp-model=3 -O0 --tradeoff=4 --compact-max-size=200 -g -Wc-w544 -Wc-w557 -Ctc38x -Y0 -N0 -Z0 -o "$@" "$<"
 "logger.o":"logger.src" "subdir.mk"
 	astc -Og -Os --no-warnings= --error-limit=42 -o  "$@" "$<"
-"lut.src":"../lut.c" "subdir.mk"
+"motor_control.src":"../motor_control.c" "subdir.mk"
 	cctc -cs --dep-file="$*.d" --misrac-version=2012 -D__CPU__=tc38x "-fC:/Users/probstn/AURIX-v1.10.28-workspace/stugverter-aurix/TriCore Debug (TASKING)/TASKING_C_C___Compiler-Include_paths__-I_.opt" --iso=99 --c++14 --language=+volatile --exceptions --anachronisms --fp-model=3 -O0 --tradeoff=4 --compact-max-size=200 -g -Wc-w544 -Wc-w557 -Ctc38x -Y0 -N0 -Z0 -o "$@" "$<"
-"lut.o":"lut.src" "subdir.mk"
+"motor_control.o":"motor_control.src" "subdir.mk"
 	astc -Og -Os --no-warnings= --error-limit=42 -o  "$@" "$<"
 "serialio.src":"../serialio.c" "subdir.mk"
 	cctc -cs --dep-file="$*.d" --misrac-version=2012 -D__CPU__=tc38x "-fC:/Users/probstn/AURIX-v1.10.28-workspace/stugverter-aurix/TriCore Debug (TASKING)/TASKING_C_C___Compiler-Include_paths__-I_.opt" --iso=99 --c++14 --language=+volatile --exceptions --anachronisms --fp-model=3 -O0 --tradeoff=4 --compact-max-size=200 -g -Wc-w544 -Wc-w557 -Ctc38x -Y0 -N0 -Z0 -o "$@" "$<"
@@ -97,7 +81,7 @@ OBJS += \
 clean: clean--2e-
 
 clean--2e-:
-	-$(RM) ./Cpu0_Main.d ./Cpu0_Main.o ./Cpu0_Main.src ./Cpu1_Main.d ./Cpu1_Main.o ./Cpu1_Main.src ./Cpu2_Main.d ./Cpu2_Main.o ./Cpu2_Main.src ./Cpu3_Main.d ./Cpu3_Main.o ./Cpu3_Main.src ./foc.d ./foc.o ./foc.src ./foc_math.d ./foc_math.o ./foc_math.src ./gate_driver.d ./gate_driver.o ./gate_driver.src ./logger.d ./logger.o ./logger.src ./lut.d ./lut.o ./lut.src ./serialio.d ./serialio.o ./serialio.src
+	-$(RM) ./Cpu0_Main.d ./Cpu0_Main.o ./Cpu0_Main.src ./Cpu1_Main.d ./Cpu1_Main.o ./Cpu1_Main.src ./Cpu2_Main.d ./Cpu2_Main.o ./Cpu2_Main.src ./Cpu3_Main.d ./Cpu3_Main.o ./Cpu3_Main.src ./gate_driver.d ./gate_driver.o ./gate_driver.src ./logger.d ./logger.o ./logger.src ./motor_control.d ./motor_control.o ./motor_control.src ./serialio.d ./serialio.o ./serialio.src
 
 .PHONY: clean--2e-
 
