@@ -21,6 +21,8 @@ typedef struct {
 
 Resolver_Config_t config;
 
+//check for (edsadc) resolver module on aurix chips if available a lot better
+
 void Resolver_Math_UpdateCalibration(uint16 sin_val, uint16 cos_val)
 {
     // 1. Track the Maximums

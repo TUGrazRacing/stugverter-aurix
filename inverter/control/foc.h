@@ -36,7 +36,7 @@ extern GtmFocControl g_focControl;
 /*------------------------------------------------Function Prototypes------------------------------------------------*/
 /*********************************************************************************************************************/
 void focInit(void);
-void focCurrentControl(uint16 i_u_raw, uint16 i_v_raw);
 void focOpenLoop(void);
+static inline focCurrentControlClosedLoop(float32 theta, uint16 iu_raw, uint16 iv_raw);
 
 #endif /* FOC_H */

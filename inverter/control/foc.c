@@ -9,12 +9,12 @@
 #include "foc_math.h"
 #include <math.h>
 #include <stdio.h>
+#include "pi.h"
 
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global Variables--------------------------------------------------*/
 /*********************************************************************************************************************/
 
-/* Define the control structure here */
 GtmFocControl g_focControl;
 
 /*********************************************************************************************************************/
@@ -34,21 +34,6 @@ void focInit(void)
     g_focControl.duty_3ph.a = 0.5f;
     g_focControl.duty_3ph.b = 0.5f;
     g_focControl.duty_3ph.c = 0.5f;
-}
-
-/* * Main Control Loop
- * Triggered by ADC End-Of-Conversion Interrupt (e.g. 20kHz or 100kHz)
- */
-void focCurrentControl(uint16 i_u_raw, uint16 i_v_raw)
-{
-    /* 1. Profiling Start */
-    /* IfxPort_setPinHigh(&MODULE_P13, 0); */
-
-    /* 2. Run Control Algorithm */
-    focOpenLoop();
-
-    /* 3. Profiling End */
-    /* IfxPort_setPinLow(&MODULE_P13, 0); */
 }
 
 void focOpenLoop(void)
@@ -72,9 +57,8 @@ void focOpenLoop(void)
     /* * In Open Loop FOC, we simulate a rotating voltage vector.
      * V_alpha = Vref * cos(theta)
      * V_beta  = Vref * sin(theta)
-     * * Note: for production code, use a lookup table (LUT) or CORDIC
-     * instead of sinf/cosf to save CPU cycles.
      */
+    //replace with IfxCpu_sinCosF32()
     sinVal = sinf(g_focControl.electricalAngle);
     cosVal = cosf(g_focControl.electricalAngle);
 
@@ -94,4 +78,39 @@ void focOpenLoop(void)
     setDutyCycles(g_focControl.duty_3ph.a * 100.0f,
                          g_focControl.duty_3ph.b * 100.0f,
                          g_focControl.duty_3ph.c * 100.0f);
+}
+
+static inline focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
+{
+    float32 sinVal, cosVal;
+
+    /* 1. Clarke Transform (abc -> alpha beta) */
+    ThreePhase_t i_abc;
+
+    i_abc.a = iu;
+    i_abc.b = iv;
+    i_abc.c = -(iu + iv);
+
+    FOC_ClarkeTransform(&i_abc, &g_focControl.i_ab);
+
+
+    /* 2. Park Transform (alpha beta -> dq) */
+    sinVal = sinf(theta);
+    cosVal = cosf(theta);
+    FOC_ParkTransform(&g_focControl.i_ab, sinVal, cosVal, &g_focControl.i_dq);
+
+    /* 3. Current Control (PI) */
+    g_focControl.v_dq.d = PI_Run(&g_focControl.pi_d, g_focControl.id_ref, g_focControl.i_dq.d);
+    g_focControl.v_dq.q = PI_Run(&g_focControl.pi_q, g_focControl.iq_ref, g_focControl.i_dq.q);
+
+    /* 4. Inverse Park (dq -> alpha beta) */
+    focInvPark(&g_focControl.v_dq, sinVal, cosVal, &g_focControl.v_ab);
+
+    /* 5. SVPWM */
+    focSVPWM(&g_focControl.v_ab, &g_focControl.duty_3ph);
+
+    /* 6. Update PWM */
+    setDutyCycles(g_focControl.duty_3ph.a * 100.0f,
+                  g_focControl.duty_3ph.b * 100.0f,
+                  g_focControl.duty_3ph.c * 100.0f);
 }
