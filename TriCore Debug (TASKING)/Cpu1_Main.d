@@ -90,3 +90,35 @@ Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\L
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_reg.h" :
 Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h" :
+Cpu1_Main.o :	..\serialio.h
+..\serialio.h :
+Cpu1_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h" :
+Cpu1_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h" :
+Cpu1_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\inttypes.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\inttypes.h" :
+Cpu1_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdint.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdint.h" :
+Cpu1_Main.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\typeinfo.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\typeinfo.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Asclin\\Asc\IfxAsclin_Asc.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Asclin\\Asc\IfxAsclin_Asc.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Asclin\Std\IfxAsclin.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Asclin\Std\IfxAsclin.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxAsclin_cfg.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxAsclin_cfg.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxAsclin_reg.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxAsclin_reg.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxAsclin_regdef.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxAsclin_regdef.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_PinMap\IfxAsclin_PinMap.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_PinMap\IfxAsclin_PinMap.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Lib\DataHandling\Ifx_Fifo.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Lib\DataHandling\Ifx_Fifo.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Stm\Std\IfxStm.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\Stm\Std\IfxStm.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf_DPipe.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf_DPipe.h" :
+Cpu1_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf.h" :

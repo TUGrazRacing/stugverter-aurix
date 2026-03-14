@@ -1,18 +1,6 @@
 #include "pi.h"
 
-typedef struct
-{
-  float32 Kp;
-  float32 Ki;
-
-  float32 integral;
-
-  float32 outMax;
-  float32 outMin;
-
-} PI_Controller;
-
-void PI_Init(PI_Controller *pi, float32 kp, float32 ki, float32 min, float32 max)
+void PI_Init(PI_Controller_t* pi, float32 kp, float32 ki, float32 min, float32 max)
 {
   pi->Kp = kp;
   pi->Ki = ki;
@@ -23,7 +11,7 @@ void PI_Init(PI_Controller *pi, float32 kp, float32 ki, float32 min, float32 max
   pi->outMin = min;
 }
 
-static inline float32 PI_Run(PI_Controller *pi, float32 setpoint, float32 current)
+float32 PI_Run(PI_Controller_t* pi, float32 setpoint, float32 current)
 {
   float32 error;
   float32 output;

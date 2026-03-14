@@ -1,0 +1,18 @@
+pi.o :	../inverter/control/pi.c
+../inverter/control/pi.c :
+pi.o :	..\inverter\control\pi.h
+..\inverter\control\pi.h :
+pi.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_Types.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_Types.h" :
+pi.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Platform\Tricore\Compilers\Compilers.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Platform\Tricore\Compilers\Compilers.h" :
+pi.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Configurations\Ifx_Cfg.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Configurations\Ifx_Cfg.h" :
+pi.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Platform\Tricore\Compilers\CompilerTasking.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Platform\Tricore\Compilers\CompilerTasking.h" :
+pi.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stddef.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stddef.h" :
+pi.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Platform_Types.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Platform_Types.h" :
+pi.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_TypesTasking.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_TypesTasking.h" :

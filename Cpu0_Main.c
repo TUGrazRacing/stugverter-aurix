@@ -3,13 +3,11 @@
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
-#include "serialio.h"
 #include "Bsp.h"
 #include "IfxPort_Pinmap.h"
 #include "stdio.h"
 #include "logger.h"
 #include "gate_driver.h"
-#include "foc.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -18,14 +16,6 @@
 
 
 IFX_ALIGN(4) IfxCpu_syncEvent g_cpuSyncEvent = 0;
-
-SERIALIO_t SERIALIO =
-{
-  .asclin = &MODULE_ASCLIN0,
-  .tx_pin = &IfxAsclin0_TX_P14_0_OUT,
-  .rx_pin = &IfxAsclin0_RXA_P14_1_IN
-};
-
 
 void core0_main(void)
 {
@@ -37,12 +27,10 @@ void core0_main(void)
     IfxCpu_emitEvent(&g_cpuSyncEvent);
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
 
-    SERIALIO_Init(115200);
-
-    focInit();
     gatedriverInit();
     adcInit();
     inverterInit();
+    controller_init();
 
     gatedriverReadyMode();
     gatedriverEnable();

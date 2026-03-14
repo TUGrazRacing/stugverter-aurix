@@ -11,8 +11,9 @@
 
 typedef struct
 {
-    uint16 i_u;
-    uint16 i_v;
+    float32 i_u;
+    float32 i_v;
+    float32 theta;
     uint32 timestamp_ticks; /* Optional: store when the sample happened */
 } LogData_t;
 
@@ -42,7 +43,7 @@ static inline void logEnd(void)   { stop_ticks  = IfxStm_get(IFXSTM_DEFAULT_TIME
  * @brief Push a new sample into the ring buffer. Safe to call from ISR.
  * @return TRUE if success, FALSE if buffer full.
  */
-boolean logPush(uint16 i_u, uint16 i_v);
+boolean logPush(const LogData_t *log);
 
 /**
  * @brief Process the buffer and print data. Call this in the Main Loop.

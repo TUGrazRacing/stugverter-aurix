@@ -28,7 +28,7 @@ void initLogger(void)
     printf("[Logger] Initialized ring buffer size: %d\n", LOG_BUFFER_SIZE);
 }
 
-boolean logPush(uint16 i_u, uint16 i_v)
+boolean logPush(const LogData_t *log)
 {
     uint32 nextWriteIdx = (g_writeIdx + 1) % LOG_BUFFER_SIZE;
 
@@ -38,14 +38,8 @@ boolean logPush(uint16 i_u, uint16 i_v)
         /* Buffer Overflow! Drop sample or set an error flag */
         return FALSE;
     }
+    g_logBuffer[g_writeIdx] = *log;
 
-    /* Store Data */
-    g_logBuffer[g_writeIdx].i_u = i_u;
-    g_logBuffer[g_writeIdx].i_v = i_v;
-    /* Optional: Capture timestamp for analysis */
-    // g_logBuffer[g_writeIdx].timestamp_ticks = (uint32)IfxStm_getLower(IFXSTM_DEFAULT_TIMER);
-
-    /* Advance Index */
     g_writeIdx = nextWriteIdx;
 
     return TRUE;
@@ -63,7 +57,7 @@ void logProcess(void)
 
         /* Print the data (Slow operation) */
         /* Format: [ADC] U: 1234, V: 2345 */
-        printf("%u;%u\n", data->i_u, data->i_v);
+        printf("%.2f;%.2f;%.3f\n", data->i_u, data->i_v, data->theta);
 
         /* Advance Read Index */
         g_readIdx = (g_readIdx + 1) % LOG_BUFFER_SIZE;

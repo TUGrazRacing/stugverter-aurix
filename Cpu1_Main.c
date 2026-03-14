@@ -28,8 +28,17 @@
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
 #include "logger.h"
+#include "serialio.h"
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
+
+SERIALIO_t SERIALIO =
+{
+  .asclin = &MODULE_ASCLIN0,
+  .tx_pin = &IfxAsclin0_TX_P14_0_OUT,
+  .rx_pin = &IfxAsclin0_RXA_P14_1_IN
+};
+
 
 void core1_main(void)
 {
@@ -43,6 +52,8 @@ void core1_main(void)
     /* Wait for CPU sync event */
     IfxCpu_emitEvent(&g_cpuSyncEvent);
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
+
+    SERIALIO_Init(115200);
 
     while(1)
     {

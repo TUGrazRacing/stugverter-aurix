@@ -1,12 +1,23 @@
 #ifndef RESOLVER_MATH_H
 #define RESOLVER_MATH_H
 
-#include "Ifx_Types.h" // Gives us float32, uint16, etc.
+#include "Ifx_Types.h"
 
-/* Initialization function */
-void Resolver_Math_Init(Resolver_Config_t* config, uint16 zero_offset_sin, uint16 zero_offset_cos);
+/* * Structure to hold calibration and state data.
+ * Keeps variables context-specific so you can support multiple resolvers.
+ */
+typedef struct {
+    uint16  sin_max;
+    uint16  sin_min;
+    uint16  cos_max;
+    uint16  cos_min;
+    uint16  offset_sin;
+    uint16  offset_cos;
+} Resolver_Config_t;
 
-/* The high-speed ISR calculation function */
-float32 Resolver_Math_GetAngle(const Resolver_Config_t* config, uint16 sin_val, uint16 cos_val);
+/* Function prototypes */
+void resolverInit(Resolver_Config_t* config);
+void resolverUpdateCalibration(Resolver_Config_t* config, uint16 sin_val, uint16 cos_val);
+float32 resolverGetAngle(const Resolver_Config_t* config, uint16 sin_val, uint16 cos_val);
 
 #endif /* RESOLVER_MATH_H */

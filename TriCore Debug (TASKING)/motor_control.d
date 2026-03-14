@@ -104,3 +104,15 @@ motor_control.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r
 "C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h" :
 motor_control.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h"
 "C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h" :
+motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\control\foc.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\control\foc.h" :
+motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\math\foc_math.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\math\foc_math.h" :
+motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\control\pi.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\control\pi.h" :
+motor_control.o :	..\logger.h
+..\logger.h :
+motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
+motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h" :

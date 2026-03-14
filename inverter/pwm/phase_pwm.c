@@ -49,9 +49,9 @@
 #define PHASE_W_LS              &IfxGtm_ATOM1_2N_TOUT5_P02_5_OUT       /* Pin which will be driven by the PWM, P02.5 */
 #define TRG_OUT                 &IfxGtm_ATOM1_3_TOUT3_P02_3_OUT        /* Pin which will be driven by the pin*/
 
-#define PHASE_U_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
-#define PHASE_V_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
-#define PHASE_W_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
+#define PHASE_U_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
+#define PHASE_V_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
+#define PHASE_W_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
 #define TRG_DUTY                (1.0f) //close to 0
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global variables--------------------------------------------------*/
