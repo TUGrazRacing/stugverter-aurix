@@ -6,12 +6,12 @@ space	mpe:tc2:abs24	302	8
 space	mpe:tc2:abs18	303	8
 space	mpe:tc2:csa	304	8
 space	mpe:tc0:linear	101	8
-space	mpe:vtc:abs24	2	8
 space	mpe:vtc:linear	1	8
-space	mpe:tc3:abs24	402	8
+space	mpe:vtc:abs24	2	8
 space	mpe:vtc:abs18	3	8
-space	mpe:tc3:csa	404	8
 space	mpe:tc3:abs18	403	8
+space	mpe:tc3:abs24	402	8
+space	mpe:tc3:csa	404	8
 space	mpe:tc1:linear	201	8
 space	mpe:tc1:abs24	202	8
 space	mpe:tc1:abs18	203	8

@@ -19,11 +19,14 @@ void ISR_Adc_EndOfConversion(void)
     float32 theta_resolver_mech = resolverGetMechanicalAngle(&resolver_cfg, sin_raw, cos_raw);
 
     /* 3. Currents */
-    float32 curr_u = ((curr_u_raw * 5.0f/4096.0f) - 1.65f) / 0.01f;
-    float32 curr_v = ((curr_v_raw * 5.0f/4096.0f) - 1.65f) / 0.01f;
 
 
-    focRun(theta_resolver_mech, curr_u, curr_v);
+    float32 curr_u = (curr_u_raw * 5.0f/4096.0f);
+    float32 curr_v = (curr_v_raw * 5.0f/4096.0f);
+
+    logPush(&(LogData_t){curr_u, curr_v, 0.0f});
+
+//    focRun(theta_resolver_mech, curr_u, curr_v);
 }
 
 void controller_init(void)

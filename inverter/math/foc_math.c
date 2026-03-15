@@ -35,8 +35,8 @@ void FOC_ClarkeTransform(const ThreePhase_t *input_abc, AlphaBeta_t *output_ab)
      * Alpha = Ia
      * Beta  = (Ia + 2*Ib) / sqrt(3)
      */
-    output_ab->alpha = input_abc->a;
-    output_ab->beta  = FOC_ONE_BY_SQRT3 * (input_abc->a + (2.0f * input_abc->b));
+    output_ab->alpha = input_abc->u;
+    output_ab->beta  = FOC_ONE_BY_SQRT3 * (input_abc->u + (2.0f * input_abc->v));
 }
 
 /**
@@ -63,9 +63,9 @@ void FOC_InvClarkeTransform(const AlphaBeta_t *input_ab, ThreePhase_t *output_ab
     float32 term_beta = FOC_SQRT3_BY_2 * input_ab->beta;
     float32 term_alpha = -FOC_ONE_HALF * input_ab->alpha;
 
-    output_abc->a = input_ab->alpha;
-    output_abc->b = term_alpha + term_beta;
-    output_abc->c = term_alpha - term_beta;
+    output_abc->u = input_ab->alpha;
+    output_abc->v = term_alpha + term_beta;
+    output_abc->w = term_alpha - term_beta;
 }
 
 /**
@@ -155,10 +155,10 @@ void focSVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles)
 
     /* 2. Determine Min and Max voltages to calculate Zero Sequence Offset */
     /* Find Max */
-    V_max = Ifx__maxf(Ifx__maxf(V_phase_raw.a, V_phase_raw.b), V_phase_raw.c); //aurix assembly max instruction
+    V_max = Ifx__maxf(Ifx__maxf(V_phase_raw.u, V_phase_raw.v), V_phase_raw.w); //aurix assembly max instruction
 
     /* Find Min */
-    V_min = Ifx__minf(Ifx__minf(V_phase_raw.a, V_phase_raw.b), V_phase_raw.c); //aurix assembly min instruction
+    V_min = Ifx__minf(Ifx__minf(V_phase_raw.u, V_phase_raw.v), V_phase_raw.w); //aurix assembly min instruction
 
     /* * 3. Calculate Zero Sequence Offset
      * Offset = -0.5 * (Min + Max)
@@ -168,16 +168,16 @@ void focSVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles)
     /* 4. Apply offset, Scale, and Add 50% Bias
      * Map [-1.0 ... 1.0] range to [0.0 ... 1.0] duty cycle
      */
-    float32 V_a_mod = (V_phase_raw.a + V_offset);
-    float32 V_b_mod = (V_phase_raw.b + V_offset);
-    float32 V_c_mod = (V_phase_raw.c + V_offset);
+    float32 V_a_mod = (V_phase_raw.u + V_offset);
+    float32 V_b_mod = (V_phase_raw.v + V_offset);
+    float32 V_c_mod = (V_phase_raw.w + V_offset);
 
     /* * NOTE: Multiply by 0.5 if inputs are range -1.0 to 1.0.
      * Add 0.5 to center the AC waveform at 50% duty cycle.
      */
-    DutyCycles->a = Ifx__saturatef((V_a_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
-    DutyCycles->b = Ifx__saturatef((V_b_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
-    DutyCycles->c = Ifx__saturatef((V_c_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
+    DutyCycles->u = Ifx__saturatef((V_a_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
+    DutyCycles->v = Ifx__saturatef((V_b_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
+    DutyCycles->w = Ifx__saturatef((V_c_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
 }
 
 float32 focWrapAngle(float32 angle)

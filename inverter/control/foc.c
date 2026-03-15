@@ -41,9 +41,9 @@ void focInit(void)
     foc.v_ab.alpha = 0.0f;
     foc.v_ab.beta  = 0.0f;
 
-    foc.duty_3ph.a = 0.0f;
-    foc.duty_3ph.b = 0.0f;
-    foc.duty_3ph.c = 0.0f;
+    foc.duty_3ph.u = 0.0f;
+    foc.duty_3ph.v = 0.0f;
+    foc.duty_3ph.w = 0.0f;
 
     foc.id_ref = 0.0f;
     foc.iq_ref = 0.01f;   // nonzero torque command for testing
@@ -56,7 +56,7 @@ void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
 {
     float32 sinVal, cosVal;
     float32 theta_corr;
-    ThreePhase_t i_abc;
+    ThreePhase_t i_uvw;
 
     if(foc.calibrated)
     {
@@ -64,12 +64,12 @@ void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
         theta_corr = focGetMotorElecAngle(theta_resolver_mech);
 
         /* 2. Map the phase currents */
-        i_abc.a = iu;
-        i_abc.b = iv;
-        i_abc.c = -(iu + iv);
+        i_uvw.u = iu;
+        i_uvw.v = iv;
+        i_uvw.w = -(iu + iv);
 
         /* 3. Execute Clarke Transform (abc -> alpha/beta) */
-        FOC_ClarkeTransform(&i_abc, &foc.i_ab);
+        FOC_ClarkeTransform(&i_uvw, &foc.i_ab);
 
         /* 4. Execute Park Transform (alpha/beta -> dq) */
         sinVal = sinf(theta_corr);
@@ -77,7 +77,7 @@ void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
         FOC_ParkTransform(&foc.i_ab, &foc.i_dq, sinVal, cosVal);
 
         /* 5. Log measured Id, measured Iq, and the electrical angle */
-        logPush(&(LogData_t){foc.i_dq.d, foc.i_dq.q, theta_corr});
+//        logPush(&(LogData_t){iu, iv, theta_corr});
 
         /* 6. Run Open Loop Control (applies V/f voltage, ignores the currents above) */
         focOpenLoop();
@@ -119,9 +119,9 @@ void focOpenLoop(void)
     focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
     /* --- 4. Update Hardware --- */
-    setDutyCycles(foc.duty_3ph.a * 100.0f,
-                  foc.duty_3ph.b * 100.0f,
-                  foc.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.u * 100.0f,
+                  foc.duty_3ph.v * 100.0f,
+                  foc.duty_3ph.w * 100.0f);
 }
 
 void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
@@ -134,9 +134,9 @@ void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
     theta_corr = focGetMotorElecAngle(theta);
 
     /* 1. Clarke Transform (abc -> alpha beta) */
-    i_abc.a = iu;
-    i_abc.b = iv;
-    i_abc.c = -(iu + iv);
+    i_abc.u = iu;
+    i_abc.v = iv;
+    i_abc.w = -(iu + iv);
 
     FOC_ClarkeTransform(&i_abc, &foc.i_ab);
 
@@ -158,9 +158,9 @@ void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
     focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
     /* 7. Update PWM */
-    setDutyCycles(foc.duty_3ph.a * 100.0f,
-                  foc.duty_3ph.b * 100.0f,
-                  foc.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.u * 100.0f,
+                  foc.duty_3ph.v * 100.0f,
+                  foc.duty_3ph.w * 100.0f);
 }
 
 void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv)
@@ -195,9 +195,9 @@ void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv)
     isrCount++;
 
     /* 2. Clarke transform */
-    i_abc.a = iu;
-    i_abc.b = iv;
-    i_abc.c = -(iu + iv);
+    i_abc.u = iu;
+    i_abc.v = iv;
+    i_abc.w = -(iu + iv);
 
     FOC_ClarkeTransform(&i_abc, &foc.i_ab);
 
@@ -233,9 +233,9 @@ void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv)
     focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
     /* 8. Update PWM */
-    setDutyCycles(foc.duty_3ph.a * 100.0f,
-                  foc.duty_3ph.b * 100.0f,
-                  foc.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.u * 100.0f,
+                  foc.duty_3ph.v * 100.0f,
+                  foc.duty_3ph.w * 100.0f);
 }
 
 float32 focGetMotorElecAngle(float32 theta_resolver)
@@ -270,9 +270,9 @@ void focCalibrateZeroOffset(float32 theta_measured)
 
     focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
-    setDutyCycles(foc.duty_3ph.a * 100.0f,
-                  foc.duty_3ph.b * 100.0f,
-                  foc.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.u * 100.0f,
+                  foc.duty_3ph.v * 100.0f,
+                  foc.duty_3ph.w * 100.0f);
 
     /* 2. Wait for rotor to physically settle at motor electrical zero */
     if(current_time - starttime > foc.calibration_ticks)
