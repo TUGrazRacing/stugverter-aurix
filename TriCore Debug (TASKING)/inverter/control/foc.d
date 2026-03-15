@@ -20,6 +20,8 @@ foc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverte
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\math\foc_math.h" :
 foc.o :	..\inverter\control\pi.h
 ..\inverter\control\pi.h :
+foc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdbool.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdbool.h" :
 foc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\pwm\phase_pwm.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\pwm\phase_pwm.h" :
 foc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Port\\Std\IfxPort.h"

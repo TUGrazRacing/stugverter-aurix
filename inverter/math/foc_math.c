@@ -179,3 +179,17 @@ void focSVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles)
     DutyCycles->b = Ifx__saturatef((V_b_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
     DutyCycles->c = Ifx__saturatef((V_c_mod * 0.5f) + 0.5f, FOC_DUTY_MIN, FOC_DUTY_MAX);
 }
+
+float32 focWrapAngle(float32 angle)
+{
+    while (angle >= FOC_TWO_PI)
+    {
+        angle -= FOC_TWO_PI;
+    }
+    while (angle < 0.0f)
+    {
+        angle += FOC_TWO_PI;
+    }
+    return angle;
+}
+

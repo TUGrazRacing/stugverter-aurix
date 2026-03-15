@@ -28,8 +28,11 @@ void initLogger(void)
     printf("[Logger] Initialized ring buffer size: %d\n", LOG_BUFFER_SIZE);
 }
 
+//int sample_nr = 0;
+
 boolean logPush(const LogData_t *log)
 {
+//    if(sample_nr++ < 100) return FALSE;
     uint32 nextWriteIdx = (g_writeIdx + 1) % LOG_BUFFER_SIZE;
 
     /* Check if buffer is full (Next write would catch up to Read) */
@@ -41,6 +44,7 @@ boolean logPush(const LogData_t *log)
     g_logBuffer[g_writeIdx] = *log;
 
     g_writeIdx = nextWriteIdx;
+//    sample_nr = 0;
 
     return TRUE;
 }

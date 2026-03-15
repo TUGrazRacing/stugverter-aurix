@@ -1,6 +1,6 @@
 	; Module start
 	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
-	.compiler_invocation	"ctc -f cc15420a --dep-file=logger.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\control -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\math -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\pwm -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o logger.src ../logger.c"
+	.compiler_invocation	"ctc -f cc13604a --dep-file=logger.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\control -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\math -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\pwm -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o logger.src ../logger.c"
 	.compiler_name		"ctc"
 	;source	'../logger.c'
 
@@ -22049,18 +22049,18 @@ g_readIdx:	.type	object
 	.byte	2
 	.word	.L37
 	.byte	3
-	.byte	'logSysClocks',0,1,68,6,1,1,1
+	.byte	'logSysClocks',0,1,72,6,1,1,1
 	.word	.L32,.L81,.L31
 	.byte	4
 	.word	.L32,.L81
 	.byte	5
-	.byte	'cpuFreqHz',0,1,71,11
+	.byte	'cpuFreqHz',0,1,75,11
 	.word	.L82,.L83
 	.byte	5
-	.byte	'stmFreqHz',0,1,72,11
+	.byte	'stmFreqHz',0,1,76,11
 	.word	.L82,.L84
 	.byte	5
-	.byte	'adcFreqHz',0,1,73,11
+	.byte	'adcFreqHz',0,1,77,11
 	.word	.L82,.L85
 	.byte	6
 	.word	.L86,.L87,.L11
@@ -22111,7 +22111,7 @@ g_readIdx:	.type	object
 .L180:
 	.byte	5,6,7,0,5,2
 	.word	.L32
-	.byte	3,195,0,1,5,56,9
+	.byte	3,199,0,1,5,56,9
 	.half	.L162-.L32
 	.byte	3,3,1,5,21,9
 	.half	.L163-.L162
@@ -22119,7 +22119,7 @@ g_readIdx:	.type	object
 	.half	.L165-.L163
 	.byte	3,1,1,4,2,5,5,9
 	.half	.L87-.L165
-	.byte	3,141,4,1,4,3,5,41,7,9
+	.byte	3,137,4,1,4,3,5,41,7,9
 	.half	.L9-.L87
 	.byte	3,129,9,1,5,77,9
 	.half	.L164-.L9
@@ -22135,7 +22135,7 @@ g_readIdx:	.type	object
 	.half	.L183-.L11
 	.byte	1,4,1,5,12,9
 	.half	.L12-.L183
-	.byte	3,226,115,1,5,55,9
+	.byte	3,230,115,1,5,55,9
 	.half	.L184-.L12
 	.byte	3,1,1,5,53,9
 	.half	.L185-.L184
@@ -22244,18 +22244,18 @@ g_readIdx:	.type	object
 	.byte	2
 	.word	.L37
 	.byte	3
-	.byte	'logTimeDiff',0,1,82,6,1,1,1
+	.byte	'logTimeDiff',0,1,86,6,1,1,1
 	.word	.L34,.L101,.L33
 	.byte	4
 	.word	.L34,.L101
 	.byte	5
-	.byte	'ticksTaken',0,1,87,12
+	.byte	'ticksTaken',0,1,91,12
 	.word	.L102,.L103
 	.byte	5
-	.byte	'stmFreqHz',0,1,90,11
+	.byte	'stmFreqHz',0,1,94,11
 	.word	.L82,.L104
 	.byte	5
-	.byte	'timeInUs',0,1,93,11
+	.byte	'timeInUs',0,1,97,11
 	.word	.L82,.L105
 	.byte	6
 	.word	.L86,.L106,.L15
@@ -22302,7 +22302,7 @@ g_readIdx:	.type	object
 .L209:
 	.byte	5,6,7,0,5,2
 	.word	.L34
-	.byte	3,209,0,1,5,25,9
+	.byte	3,213,0,1,5,25,9
 	.half	.L166-.L34
 	.byte	3,5,1,5,38,9
 	.half	.L210-.L166
@@ -22312,7 +22312,7 @@ g_readIdx:	.type	object
 	.half	.L167-.L211
 	.byte	3,3,1,4,2,5,5,9
 	.half	.L106-.L167
-	.byte	3,251,3,1,4,3,5,41,7,9
+	.byte	3,247,3,1,4,3,5,41,7,9
 	.half	.L13-.L106
 	.byte	3,129,9,1,5,77,9
 	.half	.L212-.L13
@@ -22324,7 +22324,7 @@ g_readIdx:	.type	object
 	.half	.L14-.L214
 	.byte	3,132,119,1,4,1,5,23,9
 	.half	.L15-.L14
-	.byte	3,131,124,1,5,41,9
+	.byte	3,135,124,1,5,41,9
 	.half	.L109-.L15
 	.byte	1,5,56,9
 	.half	.L110-.L109
@@ -22362,15 +22362,15 @@ g_readIdx:	.type	object
 	.byte	2
 	.word	.L37
 	.byte	3
-	.byte	'logDelayUs',0,1,99,6,1,1,1
+	.byte	'logDelayUs',0,1,103,6,1,1,1
 	.word	.L36,.L112,.L35
 	.byte	4
-	.byte	'delayUs',0,1,99,24
+	.byte	'delayUs',0,1,103,24
 	.word	.L113,.L114
 	.byte	5
 	.word	.L36,.L112
 	.byte	6
-	.byte	'ticksToWait',0,1,105,12
+	.byte	'ticksToWait',0,1,109,12
 	.word	.L115,.L116
 	.byte	7
 	.word	.L117,.L118,.L19
@@ -22447,11 +22447,11 @@ g_readIdx:	.type	object
 .L222:
 	.byte	5,6,7,0,5,2
 	.word	.L36
-	.byte	3,226,0,1,5,58,9
+	.byte	3,230,0,1,5,58,9
 	.half	.L170-.L36
 	.byte	3,6,1,4,2,5,5,9
 	.half	.L118-.L170
-	.byte	3,236,3,1,4,3,5,41,7,9
+	.byte	3,232,3,1,4,3,5,41,7,9
 	.half	.L16-.L118
 	.byte	3,129,9,1,5,77,9
 	.half	.L223-.L16
@@ -22473,11 +22473,11 @@ g_readIdx:	.type	object
 	.half	.L171-.L172
 	.byte	1,4,1,9
 	.half	.L19-.L171
-	.byte	3,214,123,1,5,26,7,9
+	.byte	3,218,123,1,5,26,7,9
 	.half	.L227-.L19
 	.byte	3,2,1,4,2,5,21,9
 	.half	.L129-.L227
-	.byte	3,243,3,1,5,5,9
+	.byte	3,239,3,1,5,5,9
 	.half	.L228-.L129
 	.byte	1,5,54,9
 	.half	.L21-.L228
@@ -22491,7 +22491,7 @@ g_readIdx:	.type	object
 	.half	.L230-.L24
 	.byte	1,4,1,5,1,7,9
 	.half	.L20-.L230
-	.byte	3,149,123,1,7,9
+	.byte	3,153,123,1,7,9
 	.half	.L60-.L20
 	.byte	0,1,1
 .L220:
@@ -22513,17 +22513,17 @@ g_readIdx:	.type	object
 	.byte	2
 	.word	.L37
 	.byte	3
-	.byte	'logPush',0,1,31,9
+	.byte	'logPush',0,1,33,9
 	.word	.L140
 	.byte	1,1,1
 	.word	.L28,.L141,.L27
 	.byte	4
-	.byte	'log',0,1,31,34
+	.byte	'log',0,1,33,34
 	.word	.L142,.L143
 	.byte	5
 	.word	.L28,.L141
 	.byte	6
-	.byte	'nextWriteIdx',0,1,33,12
+	.byte	'nextWriteIdx',0,1,36,12
 	.word	.L113,.L144
 	.byte	0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('logPush')
@@ -22545,7 +22545,7 @@ g_readIdx:	.type	object
 .L234:
 	.byte	5,28,7,0,5,2
 	.word	.L28
-	.byte	3,32,1,5,39,9
+	.byte	3,35,1,5,39,9
 	.half	.L235-.L28
 	.byte	1,5,46,9
 	.half	.L236-.L235
@@ -22577,7 +22577,7 @@ g_readIdx:	.type	object
 	.half	.L247-.L246
 	.byte	1,5,12,9
 	.half	.L248-.L247
-	.byte	3,2,1,5,5,9
+	.byte	3,3,1,5,5,9
 	.half	.L249-.L248
 	.byte	1,5,1,9
 	.half	.L3-.L249
@@ -22603,20 +22603,20 @@ g_readIdx:	.type	object
 	.byte	2
 	.word	.L37
 	.byte	3
-	.byte	'logProcess',0,1,48,6,1,1,1
+	.byte	'logProcess',0,1,52,6,1,1,1
 	.word	.L30,.L145,.L29
 	.byte	4
 	.word	.L30,.L145
 	.byte	5
-	.byte	'count',0,1,51,12
+	.byte	'count',0,1,55,12
 	.word	.L113,.L146
 	.byte	5
-	.byte	'MAX_PRINT_PER_LOOP',0,1,52,18
+	.byte	'MAX_PRINT_PER_LOOP',0,1,56,18
 	.word	.L147,.L148
 	.byte	4
 	.word	.L7,.L6
 	.byte	5
-	.byte	'data',0,1,56,20
+	.byte	'data',0,1,60,20
 	.word	.L149,.L150
 	.byte	0,0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('logProcess')
@@ -22637,7 +22637,7 @@ g_readIdx:	.type	object
 .L253:
 	.byte	5,6,7,0,5,2
 	.word	.L30
-	.byte	3,47,1,5,18,9
+	.byte	3,51,1,5,18,9
 	.half	.L158-.L30
 	.byte	3,3,1,5,69,9
 	.half	.L159-.L158

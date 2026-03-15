@@ -13,11 +13,15 @@ typedef struct {
     uint16  cos_min;
     uint16  offset_sin;
     uint16  offset_cos;
+
+    float32 prev_elec_angle;
+    sint8   sector;
+    uint8   pole_pairs;
 } Resolver_Config_t;
 
 /* Function prototypes */
 void resolverInit(Resolver_Config_t* config);
 void resolverUpdateCalibration(Resolver_Config_t* config, uint16 sin_val, uint16 cos_val);
-float32 resolverGetAngle(const Resolver_Config_t* config, uint16 sin_val, uint16 cos_val);
+float32 resolverGetMechanicalAngle(Resolver_Config_t* config, uint16 sin_val, uint16 cos_val);
 
 #endif /* RESOLVER_MATH_H */

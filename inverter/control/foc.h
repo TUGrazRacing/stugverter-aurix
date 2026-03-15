@@ -4,10 +4,10 @@
 #include "Ifx_Types.h"
 #include "foc_math.h"
 #include "pi.h"
+#include <stdbool.h>
 
 #define FOC_PWM_FREQ            (20000.0f)
 #define FOC_PWM_PERIOD          (1.0f / FOC_PWM_FREQ)
-#define FOC_TWO_PI              (6.28318530718f)
 
 typedef struct
 {
@@ -15,7 +15,9 @@ typedef struct
     float32         speedRefHz;
     float32         voltageRef;
 
-    float32         angle_offset;
+    bool            calibrated;
+    uint64          calibration_ticks;
+    float32         resolver_offset;
 
     AlphaBeta_t     v_ab;
     ThreePhase_t    duty_3ph;
@@ -29,14 +31,11 @@ typedef struct
     PI_Controller_t pi_d;
     PI_Controller_t pi_q;
 
-} GtmFocControl;
+} FocControl;
 
-extern GtmFocControl g_focControl;
+extern FocControl foc;
 
 void focInit(void);
-void focOpenLoop(void);
-void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv);
-void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv);
-void focGetZeroOffset(float32 theta_measured);
+void focRun(float32 theta_resolver_electrical, float32 iu, float32 iv);
 
 #endif

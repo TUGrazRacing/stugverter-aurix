@@ -10,50 +10,45 @@
 #include "pi.h"
 #include <math.h>
 #include "logger.h"
+#include <stdbool.h>
 
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global Variables--------------------------------------------------*/
 /*********************************************************************************************************************/
+#define FOC_MOTOR_POLE_PAIRS      (7.0f)
+#define FOC_SENSOR_TO_MOTOR_RATIO (FOC_MOTOR_POLE_PAIRS / FOC_RESOLVER_POLE_PAIRS)
 
-GtmFocControl g_focControl;
+FocControl foc;
 
 /*********************************************************************************************************************/
 /*---------------------------------------------Function Implementations----------------------------------------------*/
 /*********************************************************************************************************************/
 
+float32 focGetMotorElecAngle(float32 theta_resolver);
+void focCalibrateZeroOffset(float32 theta_measured);
+void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv);
+
 void focInit(void)
 {
-    g_focControl.electricalAngle = 0.0f;
-    g_focControl.speedRefHz      = 20.0f;
-    g_focControl.voltageRef      = 0.007f;
+    foc.electricalAngle = 0.0f;
+    foc.speedRefHz      = 20.0f;
+    foc.voltageRef      = 0.007f;
 
-    g_focControl.angle_offset    = 2.485f;
+    foc.resolver_offset = 0.0f;
+    foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL;
 
-    g_focControl.v_ab.alpha = 0.0f;
-    g_focControl.v_ab.beta  = 0.0f;
+    foc.v_ab.alpha = 0.0f;
+    foc.v_ab.beta  = 0.0f;
 
-    g_focControl.duty_3ph.a = 0.0f;
-    g_focControl.duty_3ph.b = 0.0f;
-    g_focControl.duty_3ph.c = 0.0f;
+    foc.duty_3ph.a = 0.0f;
+    foc.duty_3ph.b = 0.0f;
+    foc.duty_3ph.c = 0.0f;
 
-    g_focControl.id_ref = 0.0f;
-    g_focControl.iq_ref = 1.0f;   // nonzero torque command for testing
+    foc.id_ref = 0.0f;
+    foc.iq_ref = 0.01f;   // nonzero torque command for testing
 
-    PI_Init(&g_focControl.pi_d, 0.2f, 0.001f, -0.5f, 0.5f);
-    PI_Init(&g_focControl.pi_q, 0.2f, 0.001f, -0.5f, 0.5f);
-}
-
-static float32 wrapAngle_0_2pi(float32 angle)
-{
-    while (angle >= FOC_TWO_PI)
-    {
-        angle -= FOC_TWO_PI;
-    }
-    while (angle < 0.0f)
-    {
-        angle += FOC_TWO_PI;
-    }
-    return angle;
+    PI_Init(&foc.pi_d, 0.2f, 0.001f, -0.5f, 0.5f);
+    PI_Init(&foc.pi_q, 0.2f, 0.001f, -0.5f, 0.5f);
 }
 
 void focOpenLoop(void)
@@ -62,34 +57,47 @@ void focOpenLoop(void)
 
     /* --- 1. Update Electrical Angle --- */
     /* Angle = Angle + (2 * PI * Freq * Period) */
-    g_focControl.electricalAngle += (g_focControl.speedRefHz * FOC_TWO_PI * FOC_PWM_PERIOD);
+    foc.electricalAngle += (foc.speedRefHz * FOC_TWO_PI * FOC_PWM_PERIOD);
 
     /* Wrap Angle (0 to 2PI) */
-    if (g_focControl.electricalAngle >= FOC_TWO_PI)
+    if (foc.electricalAngle >= FOC_TWO_PI)
     {
-        g_focControl.electricalAngle -= FOC_TWO_PI;
+        foc.electricalAngle -= FOC_TWO_PI;
     }
-    else if (g_focControl.electricalAngle < 0.0f)
+    else if (foc.electricalAngle < 0.0f)
     {
-        g_focControl.electricalAngle += FOC_TWO_PI;
+        foc.electricalAngle += FOC_TWO_PI;
     }
 
     /* --- 2. Calculate Reference Vector (Alpha/Beta) --- */
     /* Note: IfxCpu_sinCosF32() or Ifx_Math_SinCosF32 can be used here
        if you include the proper Infineon iLLD math headers */
-    sinVal = sinf(g_focControl.electricalAngle);
-    cosVal = cosf(g_focControl.electricalAngle);
+    sinVal = sinf(foc.electricalAngle);
+    cosVal = cosf(foc.electricalAngle);
 
-    g_focControl.v_ab.alpha = g_focControl.voltageRef * cosVal;
-    g_focControl.v_ab.beta  = g_focControl.voltageRef * sinVal;
+    foc.v_ab.alpha = foc.voltageRef * cosVal;
+    foc.v_ab.beta  = foc.voltageRef * sinVal;
 
     /* --- 3. Space Vector Modulation (SVPWM) --- */
-    focSVPWM(&g_focControl.v_ab, &g_focControl.duty_3ph);
+    focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
     /* --- 4. Update Hardware --- */
-    setDutyCycles(g_focControl.duty_3ph.a * 100.0f,
-                  g_focControl.duty_3ph.b * 100.0f,
-                  g_focControl.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.a * 100.0f,
+                  foc.duty_3ph.b * 100.0f,
+                  foc.duty_3ph.c * 100.0f);
+}
+
+void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
+{
+    if(foc.calibrated)
+    {
+        focCurrentControlClosedLoop(theta_resolver_mech, iu, iv);
+    }
+    else
+    {
+        focCalibrateZeroOffset(theta_resolver_mech);
+    }
+
 }
 
 void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
@@ -99,40 +107,36 @@ void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
     ThreePhase_t i_abc;
 
     /* Apply resolver electrical zero offset */
-    theta_corr = wrapAngle_0_2pi(theta - g_focControl.angle_offset);
+    theta_corr = focGetMotorElecAngle(theta);
 
     /* 1. Clarke Transform (abc -> alpha beta) */
     i_abc.a = iu;
     i_abc.b = iv;
     i_abc.c = -(iu + iv);
 
-    FOC_ClarkeTransform(&i_abc, &g_focControl.i_ab);
+    FOC_ClarkeTransform(&i_abc, &foc.i_ab);
 
     /* 2. Park Transform (alpha beta -> dq) */
     sinVal = sinf(theta_corr);
     cosVal = cosf(theta_corr);
-    FOC_ParkTransform(&g_focControl.i_ab, &g_focControl.i_dq, sinVal, cosVal);
+    FOC_ParkTransform(&foc.i_ab, &foc.i_dq, sinVal, cosVal);
 
     /* 3. Current Control (PI) */
-    g_focControl.v_dq.d = PI_Run(&g_focControl.pi_d, g_focControl.id_ref, g_focControl.i_dq.d);
-    g_focControl.v_dq.q = PI_Run(&g_focControl.pi_q, g_focControl.iq_ref, g_focControl.i_dq.q);
+    foc.v_dq.d = PI_Run(&foc.pi_d, foc.id_ref, foc.i_dq.d);
+    foc.v_dq.q = PI_Run(&foc.pi_q, foc.iq_ref, foc.i_dq.q);
 
-    logPush(&(LogData_t){
-        theta_corr,
-        g_focControl.i_dq.d,
-        g_focControl.i_dq.q
-    });
+    logPush(&(LogData_t){theta, theta_corr, 0.0f});
 
     /* 5. Inverse Park (dq -> alpha beta) */
-    FOC_InvParkTransform(&g_focControl.v_dq, &g_focControl.v_ab, sinVal, cosVal);
+    FOC_InvParkTransform(&foc.v_dq, &foc.v_ab, sinVal, cosVal);
 
     /* 6. SVPWM */
-    focSVPWM(&g_focControl.v_ab, &g_focControl.duty_3ph);
+    focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
     /* 7. Update PWM */
-    setDutyCycles(g_focControl.duty_3ph.a * 100.0f,
-                  g_focControl.duty_3ph.b * 100.0f,
-                  g_focControl.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.a * 100.0f,
+                  foc.duty_3ph.b * 100.0f,
+                  foc.duty_3ph.c * 100.0f);
 }
 
 void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv)
@@ -150,18 +154,18 @@ void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv)
     const float32 iqStepHigh    = 0.2f;    /* start small for safety */
 
     /* 0. Apply resolver offset */
-    theta_corr = wrapAngle_0_2pi(theta - g_focControl.angle_offset);
+    theta_corr = focGetMotorElecAngle(theta);
 
     /* 1. Step reference generation */
-    g_focControl.id_ref = 0.0f;
+    foc.id_ref = 0.0f;
 
     if (isrCount < stepDelayTicks)
     {
-        g_focControl.iq_ref = iqStepLow;
+        foc.iq_ref = iqStepLow;
     }
     else
     {
-        g_focControl.iq_ref = iqStepHigh;
+        foc.iq_ref = iqStepHigh;
     }
 
     isrCount++;
@@ -171,21 +175,21 @@ void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv)
     i_abc.b = iv;
     i_abc.c = -(iu + iv);
 
-    FOC_ClarkeTransform(&i_abc, &g_focControl.i_ab);
+    FOC_ClarkeTransform(&i_abc, &foc.i_ab);
 
     /* 3. Park transform */
     sinVal = sinf(theta_corr);
     cosVal = cosf(theta_corr);
-    FOC_ParkTransform(&g_focControl.i_ab, &g_focControl.i_dq, sinVal, cosVal);
+    FOC_ParkTransform(&foc.i_ab, &foc.i_dq, sinVal, cosVal);
 
     /* 4. PI current controllers */
-    g_focControl.v_dq.d = PI_Run(&g_focControl.pi_d,
-                                 g_focControl.id_ref,
-                                 g_focControl.i_dq.d);
+    foc.v_dq.d = PI_Run(&foc.pi_d,
+                                 foc.id_ref,
+                                 foc.i_dq.d);
 
-    g_focControl.v_dq.q = PI_Run(&g_focControl.pi_q,
-                                 g_focControl.iq_ref,
-                                 g_focControl.i_dq.q);
+    foc.v_dq.q = PI_Run(&foc.pi_q,
+                                 foc.iq_ref,
+                                 foc.i_dq.q);
 
     /* 5. Log for step response visualization
        field1 = iq_ref setpoint
@@ -193,52 +197,75 @@ void focCurrentControlPiStepTest(float32 theta, float32 iu, float32 iv)
        field3 = measured id
     */
     logPush(&(LogData_t){
-        g_focControl.iq_ref,
-        g_focControl.v_dq.q,
-        g_focControl.i_dq.q
+        foc.iq_ref,
+        foc.v_dq.q,
+        foc.i_dq.q
     });
 
     /* 6. Inverse Park */
-    FOC_InvParkTransform(&g_focControl.v_dq, &g_focControl.v_ab, sinVal, cosVal);
+    FOC_InvParkTransform(&foc.v_dq, &foc.v_ab, sinVal, cosVal);
 
     /* 7. SVPWM */
-    focSVPWM(&g_focControl.v_ab, &g_focControl.duty_3ph);
+    focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
     /* 8. Update PWM */
-    setDutyCycles(g_focControl.duty_3ph.a * 100.0f,
-                  g_focControl.duty_3ph.b * 100.0f,
-                  g_focControl.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.a * 100.0f,
+                  foc.duty_3ph.b * 100.0f,
+                  foc.duty_3ph.c * 100.0f);
 }
 
-void focGetZeroOffset(float32 theta_measured)
+float32 focGetMotorElecAngle(float32 theta_resolver)
 {
-    float32 alignTheta = 0.0f;    /* electrical angle to lock to */
-    float32 alignVoltage = 0.002f; /* increase a bit if rotor does not hold */
-    float32 sinVal;
-    float32 cosVal;
+    return focWrapAngle((theta_resolver-foc.resolver_offset) * FOC_MOTOR_POLE_PAIRS);
+}
 
-    /* Fixed d-axis alignment voltage, no torque command */
-    g_focControl.v_dq.d = alignVoltage;
-    g_focControl.v_dq.q = 0.0f;
+void focCalibrateZeroOffset(float32 theta_measured)
+{
+    const float32 alignTheta   = 0.0f;   /* motor electrical angle we want to lock to */
+    const float32 alignVoltage = 0.15f;  /* increase carefully if needed */
 
-    /* Lock rotor to a fixed electrical angle */
+    float32 sinVal, cosVal;
+
+    /* Fix 1: Correct static initialization for the timer */
+    static uint64 starttime = 0;
+    uint64 current_time = IfxStm_get(&MODULE_STM0);
+
+    if (starttime == 0)
+    {
+        starttime = current_time;
+    }
+
+    /* 1. Apply fixed d-axis alignment voltage */
+    foc.v_dq.d = alignVoltage;
+    foc.v_dq.q = 0.0f;
+
     sinVal = sinf(alignTheta);
     cosVal = cosf(alignTheta);
 
-    FOC_InvParkTransform(&g_focControl.v_dq, &g_focControl.v_ab, sinVal, cosVal);
+    FOC_InvParkTransform(&foc.v_dq, &foc.v_ab, sinVal, cosVal);
 
-    /* Generate PWM */
-    focSVPWM(&g_focControl.v_ab, &g_focControl.duty_3ph);
+    focSVPWM(&foc.v_ab, &foc.duty_3ph);
 
-    setDutyCycles(g_focControl.duty_3ph.a * 100.0f,
-                  g_focControl.duty_3ph.b * 100.0f,
-                  g_focControl.duty_3ph.c * 100.0f);
+    setDutyCycles(foc.duty_3ph.a * 100.0f,
+                  foc.duty_3ph.b * 100.0f,
+                  foc.duty_3ph.c * 100.0f);
 
-    /* Continuously log measured resolver angle */
-    logPush(&(LogData_t){
-        theta_measured,
-        0.0f,
-        0.0f
-    });
+    /* 2. Wait for rotor to physically settle at motor electrical zero */
+    if(current_time - starttime > foc.calibration_ticks)
+    {
+        /* Fix 2: Zero out the unwrapper AT THIS PHYSICAL POSITION.
+         * By setting resolver_unwrapped to 0.0f here, we guarantee that
+         * (0.0f * 1.75) = 0.0f motor electrical angle.
+         */
+        foc.resolver_offset = theta_measured;
+        foc.calibrated = true;
+        starttime = 0;
+
+        /* Log raw sensor angle and the newly zeroed state */
+        logPush(&(LogData_t){
+            theta_measured, /* Raw resolver position at lock */
+            focGetMotorElecAngle(theta_measured),           /* Unwrapped is now exactly 0 */
+            0.0f,
+        });
+    }
 }
-

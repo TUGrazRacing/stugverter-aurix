@@ -15,7 +15,7 @@
 /*------------------------------------------------------Macros-------------------------------------------------------*/
 /*********************************************************************************************************************/
 /* Math Constants */
-#define FOC_PI              (6.283185307f)
+#define FOC_TWO_PI          (6.28318530718f)
 #define FOC_SQRT3           (1.732050808f)
 #define FOC_ONE_BY_SQRT3    (0.577350269f)  /* 1 / sqrt(3) */
 #define FOC_SQRT3_BY_2      (0.866025404f)  /* sqrt(3) / 2 */
@@ -53,6 +53,7 @@ void FOC_ClarkeTransform(const ThreePhase_t *input_abc, AlphaBeta_t *output_ab);
 void FOC_InvClarkeTransform(const AlphaBeta_t *input_ab, ThreePhase_t *output_abc);
 void FOC_ParkTransform(const AlphaBeta_t *input_ab, DQ_t *output_dq, float32 sinTheta, float32 cosTheta);
 void FOC_InvParkTransform(const DQ_t *input_dq, AlphaBeta_t *output_ab, float32 sinTheta, float32 cosTheta);
+float32 focWrapAngle(float32 angle);
 
 /* Modulation */
 void focSVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles);
