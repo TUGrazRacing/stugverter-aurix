@@ -27,12 +27,13 @@ FocControl foc;
 float32 focGetMotorElecAngle(float32 theta_resolver);
 void focCalibrateZeroOffset(float32 theta_measured);
 void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv);
+void focOpenLoop(void);
 
 void focInit(void)
 {
     foc.electricalAngle = 0.0f;
-    foc.speedRefHz      = 20.0f;
-    foc.voltageRef      = 0.007f;
+    foc.speedRefHz      = 15.0f;
+    foc.voltageRef      = 0.125f;
 
     foc.resolver_offset = 0.0f;
     foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL;
@@ -49,6 +50,42 @@ void focInit(void)
 
     PI_Init(&foc.pi_d, 0.2f, 0.001f, -0.5f, 0.5f);
     PI_Init(&foc.pi_q, 0.2f, 0.001f, -0.5f, 0.5f);
+}
+
+void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
+{
+    float32 sinVal, cosVal;
+    float32 theta_corr;
+    ThreePhase_t i_abc;
+
+    if(foc.calibrated)
+    {
+        /* 1. Get the electrical angle from the sensor */
+        theta_corr = focGetMotorElecAngle(theta_resolver_mech);
+
+        /* 2. Map the phase currents */
+        i_abc.a = iu;
+        i_abc.b = iv;
+        i_abc.c = -(iu + iv);
+
+        /* 3. Execute Clarke Transform (abc -> alpha/beta) */
+        FOC_ClarkeTransform(&i_abc, &foc.i_ab);
+
+        /* 4. Execute Park Transform (alpha/beta -> dq) */
+        sinVal = sinf(theta_corr);
+        cosVal = cosf(theta_corr);
+        FOC_ParkTransform(&foc.i_ab, &foc.i_dq, sinVal, cosVal);
+
+        /* 5. Log measured Id, measured Iq, and the electrical angle */
+        logPush(&(LogData_t){foc.i_dq.d, foc.i_dq.q, theta_corr});
+
+        /* 6. Run Open Loop Control (applies V/f voltage, ignores the currents above) */
+        focOpenLoop();
+    }
+    else
+    {
+        focCalibrateZeroOffset(theta_resolver_mech);
+    }
 }
 
 void focOpenLoop(void)
@@ -87,19 +124,6 @@ void focOpenLoop(void)
                   foc.duty_3ph.c * 100.0f);
 }
 
-void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
-{
-    if(foc.calibrated)
-    {
-        focCurrentControlClosedLoop(theta_resolver_mech, iu, iv);
-    }
-    else
-    {
-        focCalibrateZeroOffset(theta_resolver_mech);
-    }
-
-}
-
 void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
 {
     float32 sinVal, cosVal;
@@ -125,7 +149,7 @@ void focCurrentControlClosedLoop(float32 theta, float32 iu, float32 iv)
     foc.v_dq.d = PI_Run(&foc.pi_d, foc.id_ref, foc.i_dq.d);
     foc.v_dq.q = PI_Run(&foc.pi_q, foc.iq_ref, foc.i_dq.q);
 
-    logPush(&(LogData_t){theta, theta_corr, 0.0f});
+    logPush(&(LogData_t){foc.i_dq.d, foc.i_dq.q, theta});
 
     /* 5. Inverse Park (dq -> alpha beta) */
     FOC_InvParkTransform(&foc.v_dq, &foc.v_ab, sinVal, cosVal);
