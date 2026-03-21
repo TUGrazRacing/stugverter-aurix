@@ -98,10 +98,6 @@ adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Librari
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_reg.h" :
 adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Sfr\\TC38A\\_Reg\IfxCbs_regdef.h" :
-adc.o :	..\inverter\adc\currents_adc.h
-..\inverter\adc\currents_adc.h :
-adc.o :	..\inverter\adc\resolver_adc.h
-..\inverter\adc\resolver_adc.h :
 adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\serialio.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\serialio.h" :
 adc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h"
@@ -136,3 +132,13 @@ adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Librari
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf_DPipe.h" :
 adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Service\\CpuGeneric\StdIf\IfxStdIf.h" :
+adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Irq\IfxCpu_Irq.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Irq\IfxCpu_Irq.h" :
+adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\IfxCpu.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\IfxCpu.h" :
+adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Src\\Std\IfxSrc.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Src\\Std\IfxSrc.h" :
+adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
+adc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Scu\\Std\IfxScuWdt.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Scu\\Std\IfxScuWdt.h" :

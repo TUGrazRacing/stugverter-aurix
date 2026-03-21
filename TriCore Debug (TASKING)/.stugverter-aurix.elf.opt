@@ -33,8 +33,6 @@
 "inverter/control/foc.o"
 "inverter/control/pi.o"
 "inverter/adc/adc.o"
-"inverter/adc/currents_adc.o"
-"inverter/adc/resolver_adc.o"
 "Libraries/iLLD/TC38A/Tricore/_PinMap/IfxAsclin_PinMap.o"
 "Libraries/iLLD/TC38A/Tricore/_PinMap/IfxCan_PinMap.o"
 "Libraries/iLLD/TC38A/Tricore/_PinMap/IfxCcu6_PinMap.o"

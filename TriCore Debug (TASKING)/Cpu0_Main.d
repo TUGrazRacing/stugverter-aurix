@@ -122,3 +122,5 @@ Cpu0_Main.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\L
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
 Cpu0_Main.o :	..\gate_driver.h
 ..\gate_driver.h :
+Cpu0_Main.o :	..\motor_control.h
+..\motor_control.h :

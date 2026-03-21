@@ -7,13 +7,14 @@
 #define ISR_PRIORITY_ADC           10
 #define ISR_PROVIDER_ADC           IfxSrc_Tos_cpu0
 
-/* Global handle so sub-modules can reference the EVADC */
-extern IfxEvadc_Adc g_evadc;
+typedef void (*Adc_IsrCallback)(void);
 
 void adcInit(void);
-void adcSoftwareTriggerConversion(void);
+void adcRegisterIsrCallback(Adc_IsrCallback cb);
 
-void Inverter_ADC_Read(uint16* i_u, uint16* i_v);
-void Resolver_ADC_Read(uint16* sin, uint16* cos);
+void readAdc(uint16 *g0, uint16 *g1, uint16 *g2, uint16 *g3);
+
+boolean adcIsConversionDone(void);
+void adcClearConversionDone(void);
 
 #endif /* ADC_H */

@@ -8,6 +8,7 @@
 #include "stdio.h"
 #include "logger.h"
 #include "gate_driver.h"
+#include "motor_control.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -28,9 +29,9 @@ void core0_main(void)
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
 
     gatedriverInit();
+    controller_init();
     adcInit();
     inverterInit();
-    controller_init();
 
     gatedriverReadyMode();
     gatedriverEnable();
