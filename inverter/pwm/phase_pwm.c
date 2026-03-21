@@ -265,6 +265,7 @@ void inverterInit(void)
 /* Input ranges: 0.0f to 100.0f */
 void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW)
 {
+//    logPush(&(LogData_t){dutyU, dutyV, dutyW});
     /* 1. Map inputs to the global structure based on your init config:
      * Channel 0 = Phase V
      * Channel 1 = Phase U

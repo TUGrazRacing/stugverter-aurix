@@ -1,6 +1,7 @@
 #include "gate_driver.h"
 #include <Port/Io/IfxPort_Io.h>
 #include "IfxPort_Pinmap.h"
+#include "IfxStm.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -63,13 +64,14 @@ void gatedriverReadyMode(void)
     IfxPort_setPinHigh(GATEDRIVER_NRST_W->port, GATEDRIVER_NRST_W->pinIndex);
 
     /* Add a small delay if required by your specific Gate Driver datasheet here */
-
+    IfxStm_wait(IfxStm_getTicksFromMicroseconds(&MODULE_STM0, 5));
     /* Set Low (Reset active) */
     IfxPort_setPinLow(GATEDRIVER_NRST_U->port, GATEDRIVER_NRST_U->pinIndex);
     IfxPort_setPinLow(GATEDRIVER_NRST_V->port, GATEDRIVER_NRST_V->pinIndex);
     IfxPort_setPinLow(GATEDRIVER_NRST_W->port, GATEDRIVER_NRST_W->pinIndex);
 
     /* Add delay if required */
+    IfxStm_wait(IfxStm_getTicksFromMicroseconds(&MODULE_STM0, 5));
 
     /* Set High (Release Reset) */
     IfxPort_setPinHigh(GATEDRIVER_NRST_U->port, GATEDRIVER_NRST_U->pinIndex);

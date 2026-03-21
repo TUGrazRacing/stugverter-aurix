@@ -12,6 +12,8 @@
 #include "logger.h"
 #include <stdbool.h>
 
+#define CLOSED_LOOP
+
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global Variables--------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -47,7 +49,7 @@ void focInit(void)
     foc.duty_3ph.w = 0.0f;
 
     foc.id_ref = 0.0f;
-    foc.iq_ref = 0.01f;   // nonzero torque command for testing
+    foc.iq_ref = 5.0f;   // nonzero torque command for testing
 
     PI_Init(&foc.pi_d, 0.2f, 0.001f, -0.5f, 0.5f);
     PI_Init(&foc.pi_q, 0.2f, 0.001f, -0.5f, 0.5f);
@@ -61,27 +63,30 @@ void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
 
     if(foc.calibrated)
     {
-        /* 1. Get the electrical angle from the sensor */
-        theta_corr = focGetMotorElecAngle(theta_resolver_mech);
+        #ifndef CLOSED_LOOP
+            //1. Get the electrical angle from the sensor
+            theta_corr = focGetMotorElecAngle(theta_resolver_mech);
 
-        /* 2. Map the phase currents */
-        i_uvw.u = iu;
-        i_uvw.v = iv;
-        i_uvw.w = -(iu + iv);
+            //2. Map the phase currents
+            i_uvw.u = iu;
+            i_uvw.v = iv;
+            i_uvw.w = -(iu + iv);
 
-        /* 3. Execute Clarke Transform (abc -> alpha/beta) */
-        FOC_ClarkeTransform(&i_uvw, &foc.i_ab);
+            //3. Execute Clarke Transform (abc -> alpha/beta)
+            FOC_ClarkeTransform(&i_uvw, &foc.i_ab);
 
-        /* 4. Execute Park Transform (alpha/beta -> dq) */
-        sinVal = sinf(theta_corr);
-        cosVal = cosf(theta_corr);
-        FOC_ParkTransform(&foc.i_ab, &foc.i_dq, sinVal, cosVal);
+            //4. Execute Park Transform (alpha/beta -> dq)
+            sinVal = sinf(theta_corr);
+            cosVal = cosf(theta_corr);
+            FOC_ParkTransform(&foc.i_ab, &foc.i_dq, sinVal, cosVal);
 
-        /* 5. Log measured Id, measured Iq, and the electrical angle */
-        logPush(&(LogData_t){iu, iv, theta_corr});
-
-        /* 6. Run Open Loop Control (applies V/f voltage, ignores the currents above) */
-        focOpenLoop();
+            //5. Log measured Id, measured Iq, and the electrical angle
+            logPush(&(LogData_t){iu, iv, theta_corr});
+            focOpenLoop();
+        #else
+            //6. Run Open Loop Control (applies V/f voltage, ignores the currents above)
+            focCurrentControlClosedLoop(theta_resolver_mech, iu, iv);
+        #endif
     }
     else
     {
