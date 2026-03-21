@@ -61,7 +61,7 @@ void logProcess(void)
 
         /* Print the data (Slow operation) */
         /* Format: [ADC] U: 1234, V: 2345 */
-        printf("%d %d %d %d\n", data->v0, data->v1, data->v2, data->v3);
+        printf("%.2f;%.2f;%.3f\n", data->i_u, data->i_v, data->theta);
 
         /* Advance Read Index */
         g_readIdx = (g_readIdx + 1) % LOG_BUFFER_SIZE;

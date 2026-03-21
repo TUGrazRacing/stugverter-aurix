@@ -37,6 +37,7 @@ void focInit(void)
 
     foc.resolver_offset = 0.0f;
     foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL;
+    foc.calibrated = FALSE;
 
     foc.v_ab.alpha = 0.0f;
     foc.v_ab.beta  = 0.0f;
@@ -77,7 +78,7 @@ void focRun(float32 theta_resolver_mech, float32 iu, float32 iv)
         FOC_ParkTransform(&foc.i_ab, &foc.i_dq, sinVal, cosVal);
 
         /* 5. Log measured Id, measured Iq, and the electrical angle */
-//        logPush(&(LogData_t){iu, iv, theta_corr});
+        logPush(&(LogData_t){iu, iv, theta_corr});
 
         /* 6. Run Open Loop Control (applies V/f voltage, ignores the currents above) */
         focOpenLoop();
