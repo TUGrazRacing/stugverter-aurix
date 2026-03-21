@@ -24,7 +24,7 @@
 #define EVADC_GATING_MODE        1u   /* always */
 
 #define EVADC_QINR_RF            (1u << 5)
-#define EVADC_QINR_EXTR          (1u << 7)   /* FIXED */
+#define EVADC_QINR_EXTR          (1u << 7)
 
 static void wait_us(uint32 us)
 {
@@ -45,30 +45,41 @@ static void initGroup(uint32 group)
     MODULE_EVADC.G[group].CHCTR[CHANNEL].B.RESREG = RESREG0;
     MODULE_EVADC.G[group].CHCTR[CHANNEL].B.RESTGT = 0;
     MODULE_EVADC.G[group].CHCTR[CHANNEL].B.SYNC   = 1;
+
+    // ONLY the master channel should drive the SYNC bus
+    if (group == MASTER_GROUP) {
+        MODULE_EVADC.G[group].CHCTR[CHANNEL].B.SYNC = 1;
+    } else {
+        MODULE_EVADC.G[group].CHCTR[CHANNEL].B.SYNC = 0;
+    }
 }
 
 static void initSync(void)
 {
+    // G1 follows G0 (Master)
     MODULE_EVADC.G[G1_GROUP].SYNCTR.U = 0;
-    MODULE_EVADC.G[G1_GROUP].SYNCTR.B.STSEL  = 0;
+    MODULE_EVADC.G[G1_GROUP].SYNCTR.B.STSEL  = 0; // 0 = Group 0 is Master
     MODULE_EVADC.G[G1_GROUP].SYNCTR.B.EVALR1 = 1;
     MODULE_EVADC.G[G1_GROUP].SYNCTR.B.EVALR2 = 1;
     MODULE_EVADC.G[G1_GROUP].SYNCTR.B.EVALR3 = 1;
 
+    // G0 is Master (No need to follow another group)
     MODULE_EVADC.G[G0_GROUP].SYNCTR.U = 0;
-    MODULE_EVADC.G[G0_GROUP].SYNCTR.B.STSEL  = 1;
+    MODULE_EVADC.G[G0_GROUP].SYNCTR.B.STSEL  = 0;
     MODULE_EVADC.G[G0_GROUP].SYNCTR.B.EVALR1 = 1;
     MODULE_EVADC.G[G0_GROUP].SYNCTR.B.EVALR2 = 1;
     MODULE_EVADC.G[G0_GROUP].SYNCTR.B.EVALR3 = 1;
 
+    // G2 follows G0 (Master)
     MODULE_EVADC.G[G2_GROUP].SYNCTR.U = 0;
-    MODULE_EVADC.G[G2_GROUP].SYNCTR.B.STSEL  = 2;
+    MODULE_EVADC.G[G2_GROUP].SYNCTR.B.STSEL  = 0; // Changed from 2 to 0
     MODULE_EVADC.G[G2_GROUP].SYNCTR.B.EVALR1 = 1;
     MODULE_EVADC.G[G2_GROUP].SYNCTR.B.EVALR2 = 1;
     MODULE_EVADC.G[G2_GROUP].SYNCTR.B.EVALR3 = 1;
 
+    // G3 follows G0 (Master)
     MODULE_EVADC.G[G3_GROUP].SYNCTR.U = 0;
-    MODULE_EVADC.G[G3_GROUP].SYNCTR.B.STSEL  = 2;
+    MODULE_EVADC.G[G3_GROUP].SYNCTR.B.STSEL  = 0; // Changed from 2 to 0
     MODULE_EVADC.G[G3_GROUP].SYNCTR.B.EVALR1 = 1;
     MODULE_EVADC.G[G3_GROUP].SYNCTR.B.EVALR2 = 1;
     MODULE_EVADC.G[G3_GROUP].SYNCTR.B.EVALR3 = 1;
@@ -80,19 +91,18 @@ static void initInterrupt(void)
     MODULE_EVADC.G[MASTER_GROUP].RCR[RESREG0].B.SRGEN = 1;
     MODULE_EVADC.G[MASTER_GROUP].REVNP0.B.REV0NP = 0;
 
-    IfxSrc_init(&SRC_VADC_G1_SR0, ISR_PROVIDER_ADC, ISR_PRIORITY_ADC);
-    IfxSrc_enable(&SRC_VADC_G1_SR0);
+    IfxSrc_init(&SRC_VADC_G0_SR0, ISR_PROVIDER_ADC, ISR_PRIORITY_ADC);
+    IfxSrc_enable(&SRC_VADC_G0_SR0);
 }
 
 static void initQueue(void)
 {
-    MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QMR.U   = 0;
-    MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QCTRL.U = 0;
-
-    /* allow writing trigger selection fields */
-    MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QCTRL.B.XTWC = 1;
-    MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QCTRL.B.XTSEL  = EVADC_TRIGGER_SOURCE;
-    MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QCTRL.B.XTMODE = EVADC_TRIGGER_MODE;
+    Ifx_EVADC_G_Q_QCTRL qctrl;
+    qctrl.U = 0; // Clear temp variable
+    qctrl.B.XTWC   = 1;                    // Unlock write
+    qctrl.B.XTSEL  = EVADC_TRIGGER_SOURCE; // 11
+    qctrl.B.XTMODE = EVADC_TRIGGER_MODE;   // Rising edge
+    MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QCTRL.U = qctrl.U; // Write everything at once in a single instruction!
 
     /* always enabled queue, but conversion request waits for external trigger */
     MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QMR.B.ENGT = EVADC_GATING_MODE;
@@ -151,6 +161,8 @@ void adcInit(void)
 
     initQueue();
     initInterrupt();
+
+//    MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QMR.B.TREV = 1;
 }
 
 void readAdc(uint16 *g0, uint16 *g1, uint16 *g2, uint16 *g3)

@@ -36,7 +36,7 @@ void core0_main(void)
     gatedriverReadyMode();
     gatedriverEnable();
 
-    logSysClocks();
+//    logSysClocks();
     while(1)
     {
        /* Print a keep-alive message every ~1 second (assuming loop runs fast)
