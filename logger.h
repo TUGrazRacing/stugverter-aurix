@@ -11,10 +11,10 @@
 
 typedef struct
 {
-    float32 i_u;
-    float32 i_v;
-    float32 theta;
-    uint32 timestamp_ticks; /* Optional: store when the sample happened */
+    uint16 v0;
+    uint16 v1;
+    uint16 v2;
+    uint16 v3;
 } LogData_t;
 
 /*********************************************************************************************************************/
