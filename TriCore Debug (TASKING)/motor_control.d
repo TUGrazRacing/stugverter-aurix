@@ -124,3 +124,9 @@ motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-auri
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\control\pi.h" :
 motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\driver\gate_driver.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\driver\gate_driver.h" :
+motor_control.o :	..\logger.h
+..\logger.h :
+motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Stm\\Std\IfxStm.h" :
+motor_control.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h"
+"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\_Impl\IfxStm_cfg.h" :

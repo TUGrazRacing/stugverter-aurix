@@ -86,7 +86,6 @@ void interruptGtmAtom(void)
 /* Period interrupt callback function */
 void IfxGtm_periodEventFunction(void *data)
 {
-
 }
 
 /* This function initializes the ATOM */
@@ -220,7 +219,7 @@ void pwmInit(PwmConfig* pconfig)
     config.syncStart              = TRUE;                              /* Start all channels after init              */
     config.numChannels            = NUM_OF_CHANNELS;                   /* Number of channels configured              */
     config.channels               = channelConfig;                     /* Attach Channel configuration               */
-    config.frequency              = pwm_config->frequency;             /* PWM frequency                              */
+    config.frequency              = (float32)pwm_config->frequency;             /* PWM frequency                              */
     config.clockSource.atom       = IfxGtm_Cmu_Clk_0;                  /* Clock source for atom                      */
     config.dtmClockSource         = IfxGtm_Dtm_ClockSource_cmuClock0;  /* Clock source for dtm                       */
     config.syncUpdateEnabled      = TRUE;                              /* TRUE: Update compare registers from shadow

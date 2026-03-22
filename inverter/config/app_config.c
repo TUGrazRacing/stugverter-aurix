@@ -6,7 +6,7 @@
 AppConfig app_config;
 AppState  app_state;
 
-#define ADC_STEPS 4096
+#define ADC_STEPS 4096U
 
 void initConfig(void)
 {
@@ -36,6 +36,7 @@ void initConfig(void)
     /* Current sensor offsets */
     app_config.current.offset_u_adcsteps = 1361U;
     app_config.current.offset_v_adcsteps = 1366U;
+    app_config.current.current_sense_factor = 0.01; //V/A
 
     /* FOC defaults */
     app_config.foc.motor_polepairs   = 7U;
@@ -53,10 +54,10 @@ void initConfig(void)
     app_config.foc.pi_config_id.outMin = -0.5f;
 
     //PI Controller IQ
-    app_config.foc.pi_config_id.Kp    = 0.2f;
-    app_config.foc.pi_config_id.Ki    = 0.001f;
-    app_config.foc.pi_config_id.outMax = 0.5f;
-    app_config.foc.pi_config_id.outMin = -0.5f;
+    app_config.foc.pi_config_iq.Kp    = 0.2f;
+    app_config.foc.pi_config_iq.Ki    = 0.001f;
+    app_config.foc.pi_config_iq.outMax = 0.5f;
+    app_config.foc.pi_config_iq.outMin = -0.5f;
 
     /* State defaults */
     app_state.foc.electricalAngle = 0.0f;

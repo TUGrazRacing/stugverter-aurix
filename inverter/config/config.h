@@ -13,7 +13,7 @@
 
 typedef struct
 {
-  uint8 steps; //4096 = 12bit
+  uint16 steps; //4096 = 12bit
   float supply; //5.0V
 } AdcConfig;
 
@@ -21,6 +21,7 @@ typedef struct
 {
   uint16 offset_u_adcsteps;
   uint16 offset_v_adcsteps;
+  float32 current_sense_factor;
 } CurrentConfig;
 
 typedef struct

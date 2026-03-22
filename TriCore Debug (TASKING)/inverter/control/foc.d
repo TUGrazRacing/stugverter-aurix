@@ -112,3 +112,7 @@ foc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverte
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\inverter\\pwm\pwm.h" :
 foc.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\logger.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\logger.h" :
+foc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdio.h" :
+foc.o :	"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h"
+"C:\Infineon\AURIX-Studio-1.10.28\tools\Compilers\Tasking_1.1r8\ctc\include\stdarg.h" :
