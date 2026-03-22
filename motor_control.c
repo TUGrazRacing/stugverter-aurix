@@ -21,10 +21,7 @@ void controllerStep(void)
     theta_resolver_mech = resolverGetMechanicalAngle(sin_raw, cos_raw);
 
     static ThreePhaseCurrents currents;
-//    currentsGet(&currents, curr_u_raw, curr_v_raw);
-    currents.u = ((float32)curr_u_raw - 1361.0f) * ADC_TO_CURR;
-    currents.v = ((float32)curr_v_raw - 1366.0f) * ADC_TO_CURR;
-    currents.w = -(currents.u + currents.v);
+    currentsGet(&currents, curr_u_raw, curr_v_raw);
     static ThreePhaseDuty dutycycles;
     focStep(&dutycycles, theta_resolver_mech, &currents);
     setDutyCycles(dutycycles.u * 100.0f, dutycycles.v * 100.0f, dutycycles.w * 100.0f);
