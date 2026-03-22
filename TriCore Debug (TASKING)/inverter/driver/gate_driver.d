@@ -1,7 +1,7 @@
-gate_driver.o :	../gate_driver.c
-../gate_driver.c :
-gate_driver.o :	..\gate_driver.h
-..\gate_driver.h :
+gate_driver.o :	../inverter/driver/gate_driver.c
+../inverter/driver/gate_driver.c :
+gate_driver.o :	..\inverter\driver\gate_driver.h
+..\inverter\driver\gate_driver.h :
 gate_driver.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_Types.h"
 "C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\iLLD\\TC38A\\Tricore\\Cpu\\Std\Ifx_Types.h" :
 gate_driver.o :	"C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\Libraries\\Infra\\Platform\Tricore\Compilers\Compilers.h"

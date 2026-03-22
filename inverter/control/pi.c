@@ -1,41 +1,45 @@
 #include "pi.h"
 
-void PI_Init(PI_Controller_t* pi, float32 kp, float32 ki, float32 min, float32 max)
+void PI_Init(PiConfig *config, PiState *state, float32 kp, float32 ki, float32 min, float32 max)
 {
-  pi->Kp = kp;
-  pi->Ki = ki;
+    if ((config == NULL_PTR) || (state == NULL_PTR))
+    {
+        return;
+    }
 
-  pi->integral = 0.0f;
+    config->Kp     = kp;
+    config->Ki     = ki;
+    config->outMin = min;
+    config->outMax = max;
 
-  pi->outMax = max;
-  pi->outMin = min;
+    state->integral = 0.0f;
 }
 
-float32 PI_Run(PI_Controller_t* pi, float32 setpoint, float32 current)
+float32 PI_Run(const PiConfig *config, PiState *state, float32 setpoint, float32 current)
 {
-  float32 error;
-  float32 output;
+    float32 error;
+    float32 output;
 
-  /* Error */
-  error = setpoint - current;
+    if ((config == NULL_PTR) || (state == NULL_PTR))
+    {
+        return 0.0f;
+    }
 
-  /* Integrator */
-  pi->integral += pi->Ki * error;
+    error = setpoint - current;
 
-  /* PI Output */
-  output = (pi->Kp * error) + pi->integral;
+    state->integral += config->Ki * error;
+    output = (config->Kp * error) + state->integral;
 
-  /* Saturation + Anti-windup */
-  if (output > pi->outMax)
-  {
-    output = pi->outMax;
-    pi->integral -= pi->Ki * error;
-  }
-  else if (output < pi->outMin)
-  {
-    output = pi->outMin;
-    pi->integral -= pi->Ki * error;
-  }
+    if (output > config->outMax)
+    {
+        output = config->outMax;
+        state->integral -= config->Ki * error;
+    }
+    else if (output < config->outMin)
+    {
+        output = config->outMin;
+        state->integral -= config->Ki * error;
+    }
 
-  return output;
+    return output;
 }

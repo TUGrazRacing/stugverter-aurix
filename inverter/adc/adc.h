@@ -3,6 +3,7 @@
 
 #include "Ifx_Types.h"
 #include "IfxEvadc_Adc.h"
+#include "config.h"
 
 #define ISR_PRIORITY_ADC           10
 #define ISR_PROVIDER_ADC           IfxSrc_Tos_cpu0

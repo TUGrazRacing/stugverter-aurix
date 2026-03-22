@@ -10,7 +10,9 @@ RM := rm -rf
 -include sources.mk
 -include inverter/pwm/subdir.mk
 -include inverter/math/subdir.mk
+-include inverter/driver/subdir.mk
 -include inverter/control/subdir.mk
+-include inverter/config/subdir.mk
 -include inverter/adc/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/_PinMap/subdir.mk
 -include Libraries/iLLD/TC38A/Tricore/_Lib/DataHandling/subdir.mk

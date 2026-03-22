@@ -1,2 +1,1 @@
-
-void controller_init(void);
+#include "app_config.h"

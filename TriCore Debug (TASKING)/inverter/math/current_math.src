@@ -1,0 +1,614 @@
+	; Module start
+	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
+	.compiler_invocation	"ctc -f cc53088a --dep-file=inverter/math/current_math.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\config -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\control -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\driver -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\math -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\pwm -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o inverter/math/current_math.src ../inverter/math/current_math.c"
+	.compiler_name		"ctc"
+	;source	'../inverter/math/current_math.c'
+
+	
+$TC162
+	
+	.sdecl	'.text.current_math.currentsGet',code,cluster('currentsGet')
+	.sect	'.text.current_math.currentsGet'
+	.align	2
+	
+	.global	currentsGet
+; Function currentsGet
+.L7:
+currentsGet:	.type	func
+	jz.a	a4,.L2
+.L51:
+	movh.a	a15,#@his(current_config)
+	lea	a15,[a15]@los(current_config)
+	ld.w	d15,[a15]
+.L52:
+	jeq	d15,#0,.L3
+.L53:
+	movh.a	a15,#@his(adc_config)
+	lea	a15,[a15]@los(adc_config)
+	ld.w	d15,[a15]
+.L54:
+	jne	d15,#0,.L4
+.L3:
+.L2:
+	j	.L5
+.L4:
+	movh.a	a15,#@his(adc_config)
+	lea	a15,[a15]@los(adc_config)
+	ld.a	a15,[a15]
+.L55:
+	ld.w	d15,[a15]2
+.L56:
+	movh.a	a15,#@his(adc_config)
+	lea	a15,[a15]@los(adc_config)
+	ld.a	a15,[a15]
+.L57:
+	ld.bu	d0,[a15]
+.L58:
+	utof	d0,d0
+.L59:
+	div.f	d15,d15,d0
+.L41:
+	utof	d0,d4
+.L60:
+	movh.a	a15,#@his(current_config)
+	lea	a15,[a15]@los(current_config)
+	ld.a	a15,[a15]
+.L61:
+	ld.hu	d1,[a15]0
+	utof	d1,d1
+.L62:
+	sub.f	d0,d0,d1
+.L63:
+	div.f	d0,d0,d15
+.L64:
+	st.w	[a4],d0
+.L65:
+	utof	d0,d5
+.L66:
+	movh.a	a15,#@his(current_config)
+	lea	a15,[a15]@los(current_config)
+	ld.a	a15,[a15]
+.L67:
+	ld.hu	d1,[a15]2
+	utof	d1,d1
+.L68:
+	sub.f	d0,d0,d1
+.L69:
+	div.f	d15,d0,d15
+.L42:
+	st.w	[a4]4,d15
+.L70:
+	ld.w	d0,[a4]
+.L71:
+	ld.w	d15,[a4]4
+.L72:
+	add.f	d15,d0,d15
+.L73:
+	insn.t	d15,d15:31,d15:31
+.L74:
+	st.w	[a4]8,d15
+.L5:
+	ret
+.L28:
+	
+__currentsGet_function_end:
+	.size	currentsGet,__currentsGet_function_end-currentsGet
+.L18:
+	; End of function
+	
+	.sdecl	'.text.current_math.initCurrents',code,cluster('initCurrents')
+	.sect	'.text.current_math.initCurrents'
+	.align	2
+	
+	.global	initCurrents
+; Function initCurrents
+.L9:
+initCurrents:	.type	func
+	movh.a	a15,#@his(current_config)
+	lea	a15,[a15]@los(current_config)
+.L79:
+	st.a	[a15],a4
+.L80:
+	movh.a	a15,#@his(adc_config)
+	lea	a15,[a15]@los(adc_config)
+.L81:
+	st.a	[a15],a5
+.L82:
+	ret
+.L36:
+	
+__initCurrents_function_end:
+	.size	initCurrents,__initCurrents_function_end-initCurrents
+.L23:
+	; End of function
+	
+	.sdecl	'.data.current_math.current_config',data,cluster('current_config')
+	.sect	'.data.current_math.current_config'
+	.align	4
+current_config:	.type	object
+	.size	current_config,4
+	.space	4
+	.sdecl	'.data.current_math.adc_config',data,cluster('adc_config')
+	.sect	'.data.current_math.adc_config'
+	.align	4
+adc_config:	.type	object
+	.size	adc_config,4
+	.space	4
+	.calls	'currentsGet','',0
+	.calls	'initCurrents','',0
+	.sdecl	'.debug_info',debug
+	.sect	'.debug_info'
+.L11:
+	.word	1140
+	.half	3
+	.word	.L12
+	.byte	4
+.L10:
+	.byte	1
+	.byte	'../inverter/math/current_math.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
+	.word	.L13
+.L34:
+	.byte	2
+	.byte	'float',0,4,4,3,1,36,9,12,4
+	.byte	'u',0
+	.word	211
+	.byte	4,2,35,0,4
+	.byte	'v',0
+	.word	211
+	.byte	4,2,35,4,4
+	.byte	'w',0
+	.word	211
+	.byte	4,2,35,8,0
+.L29:
+	.byte	5
+	.word	220
+.L31:
+	.byte	2
+	.byte	'unsigned short int',0,2,7,3,2,20,9,4,4
+	.byte	'offset_u_adcsteps',0
+	.word	264
+	.byte	2,2,35,0,4
+	.byte	'offset_v_adcsteps',0
+	.word	264
+	.byte	2,2,35,2,0
+.L37:
+	.byte	5
+	.word	286
+	.byte	2
+	.byte	'unsigned char',0,1,8,3,2,14,9,6,4
+	.byte	'steps',0
+	.word	351
+	.byte	1,2,35,0,4
+	.byte	'supply',0
+	.word	211
+	.byte	4,2,35,2,0
+.L39:
+	.byte	5
+	.word	368
+	.byte	2
+	.byte	'short int',0,2,5,6
+	.byte	'__wchar_t',0,3,1,1
+	.word	410
+	.byte	2
+	.byte	'unsigned int',0,4,7,6
+	.byte	'__size_t',0,3,1,1
+	.word	441
+	.byte	2
+	.byte	'int',0,4,5,6
+	.byte	'__ptrdiff_t',0,3,1,1
+	.word	474
+	.byte	7,1,5
+	.word	501
+	.byte	6
+	.byte	'__codeptr',0,3,1,1
+	.word	503
+	.byte	6
+	.byte	'uint8',0,4,108,29
+	.word	351
+	.byte	6
+	.byte	'uint16',0,4,112,29
+	.word	264
+	.byte	2
+	.byte	'unsigned long int',0,4,7,6
+	.byte	'uint32',0,4,116,29
+	.word	555
+	.byte	2
+	.byte	'unsigned long long int',0,8,7,6
+	.byte	'uint64',0,4,121,29
+	.word	591
+	.byte	2
+	.byte	'char',0,1,6,6
+	.byte	'sint8',0,4,125,29
+	.word	632
+	.byte	6
+	.byte	'sint16',0,4,129,1,29
+	.word	410
+	.byte	2
+	.byte	'long int',0,4,5,6
+	.byte	'sint32',0,4,134,1,29
+	.word	670
+	.byte	2
+	.byte	'long long int',0,8,5,6
+	.byte	'sint64',0,4,141,1,29
+	.word	698
+	.byte	6
+	.byte	'float32',0,4,170,1,29
+	.word	211
+	.byte	8
+	.byte	'void',0,5
+	.word	748
+	.byte	6
+	.byte	'pvoid',0,5,54,28
+	.word	754
+	.byte	6
+	.byte	'Ifx_TickTime',0,5,76,28
+	.word	698
+	.byte	6
+	.byte	'AdcConfig',0,2,18,3
+	.word	368
+	.byte	6
+	.byte	'CurrentConfig',0,2,24,3
+	.word	286
+	.byte	3,2,26,9,16,4
+	.byte	'Kp',0
+	.word	211
+	.byte	4,2,35,0,4
+	.byte	'Ki',0
+	.word	211
+	.byte	4,2,35,4,4
+	.byte	'outMax',0
+	.word	211
+	.byte	4,2,35,8,4
+	.byte	'outMin',0
+	.word	211
+	.byte	4,2,35,12,0,6
+	.byte	'PiConfig',0,2,32,3
+	.word	834
+	.byte	3,1,17,9,8,4
+	.byte	'alpha',0
+	.word	211
+	.byte	4,2,35,0,4
+	.byte	'beta',0
+	.word	211
+	.byte	4,2,35,4,0,6
+	.byte	'CurrentsAB',0,1,21,3
+	.word	913
+	.byte	3,1,23,9,8,4
+	.byte	'd',0
+	.word	211
+	.byte	4,2,35,0,4
+	.byte	'q',0
+	.word	211
+	.byte	4,2,35,4,0,6
+	.byte	'CurrentsDQ',0,1,27,3
+	.word	967
+	.byte	3,1,29,9,12,4
+	.byte	'u',0
+	.word	211
+	.byte	4,2,35,0,4
+	.byte	'v',0
+	.word	211
+	.byte	4,2,35,4,4
+	.byte	'w',0
+	.word	211
+	.byte	4,2,35,8,0,6
+	.byte	'ThreePhaseDuty',0,1,34,3
+	.word	1014
+	.byte	6
+	.byte	'ThreePhaseCurrents',0,1,41,3
+	.word	220
+	.byte	3,6,8,9,4,4
+	.byte	'integral',0
+	.word	211
+	.byte	4,2,35,0,0,6
+	.byte	'PiState',0,6,11,3
+	.word	1103
+	.byte	0
+	.sdecl	'.debug_abbrev',debug
+	.sect	'.debug_abbrev'
+.L12:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,16,6,0,0,2,36,0,3,8,11,15,62,15,0,0,3,19,1,58,15,59,15,57,15,11,15
+	.byte	0,0,4,13,0,3,8,73,19,11,15,56,9,0,0,5,15,0,73,19,0,0,6,22,0,3,8,58,15,59,15,57,15,73,19,0,0,7,21,0,54
+	.byte	15,0,0,8,59,0,3,8,0,0,0
+	.sdecl	'.debug_line',debug
+	.sect	'.debug_line'
+.L13:
+	.word	.L44-.L43
+.L43:
+	.half	3
+	.word	.L46-.L45
+.L45:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1
+	.byte	'C:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\math',0
+	.byte	'C:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\config',0
+	.byte	'C:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std',0
+	.byte	0
+	.byte	'foc_types.h',0,1,0,0
+	.byte	'config.h',0,2,0,0
+	.byte	'../inverter/math/current_math.c',0,0,0,0
+	.byte	'Platform_Types.h',0,3,0,0
+	.byte	'Ifx_Types.h',0,3,0,0
+	.byte	'state.h',0,2,0,0,0
+.L46:
+.L44:
+	.sdecl	'.debug_info',debug,cluster('currentsGet')
+	.sect	'.debug_info'
+.L14:
+	.word	335
+	.half	3
+	.word	.L15
+	.byte	4,1
+	.byte	'../inverter/math/current_math.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
+	.word	.L17,.L16
+	.byte	2
+	.word	.L10
+	.byte	3
+	.byte	'currentsGet',0,1,6,6,1,1,1
+	.word	.L7,.L28,.L6
+	.byte	4
+	.byte	'currents',0,1,6,38
+	.word	.L29,.L30
+	.byte	4
+	.byte	'adc_u',0,1,6,55
+	.word	.L31,.L32
+	.byte	4
+	.byte	'adc_v',0,1,6,69
+	.word	.L31,.L33
+	.byte	5
+	.word	.L7,.L28
+	.byte	6
+	.byte	'factor',0,1,8,13
+	.word	.L34,.L35
+	.byte	0,0,0
+	.sdecl	'.debug_abbrev',debug,cluster('currentsGet')
+	.sect	'.debug_abbrev'
+.L15:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
+	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
+	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
+	.sdecl	'.debug_line',debug,cluster('currentsGet')
+	.sect	'.debug_line'
+.L16:
+	.word	.L48-.L47
+.L47:
+	.half	3
+	.word	.L50-.L49
+.L49:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'../inverter/math/current_math.c',0,0,0,0,0
+.L50:
+	.byte	5,9,7,0,5,2
+	.word	.L7
+	.byte	3,9,1,5,36,7,9
+	.half	.L51-.L7
+	.byte	1,5,51,9
+	.half	.L52-.L51
+	.byte	1,5,68,7,9
+	.half	.L53-.L52
+	.byte	1,5,79,9
+	.half	.L54-.L53
+	.byte	1,5,9,7,9
+	.half	.L2-.L54
+	.byte	3,2,1,5,15,9
+	.half	.L4-.L2
+	.byte	3,3,1,5,25,9
+	.half	.L55-.L4
+	.byte	1,5,45,9
+	.half	.L56-.L55
+	.byte	1,5,55,9
+	.half	.L57-.L56
+	.byte	1,5,36,9
+	.half	.L58-.L57
+	.byte	1,5,34,9
+	.half	.L59-.L58
+	.byte	1,5,20,9
+	.half	.L41-.L59
+	.byte	3,2,1,5,37,9
+	.half	.L60-.L41
+	.byte	1,5,51,9
+	.half	.L61-.L60
+	.byte	1,5,35,9
+	.half	.L62-.L61
+	.byte	1,5,72,9
+	.half	.L63-.L62
+	.byte	1,5,17,9
+	.half	.L64-.L63
+	.byte	1,5,20,9
+	.half	.L65-.L64
+	.byte	3,1,1,5,37,9
+	.half	.L66-.L65
+	.byte	1,5,51,9
+	.half	.L67-.L66
+	.byte	1,5,35,9
+	.half	.L68-.L67
+	.byte	1,5,72,9
+	.half	.L69-.L68
+	.byte	1,5,17,9
+	.half	.L42-.L69
+	.byte	1,5,29,9
+	.half	.L70-.L42
+	.byte	3,1,1,5,43,9
+	.half	.L71-.L70
+	.byte	1,5,33,9
+	.half	.L72-.L71
+	.byte	1,5,19,9
+	.half	.L73-.L72
+	.byte	1,5,17,9
+	.half	.L74-.L73
+	.byte	1,5,1,9
+	.half	.L5-.L74
+	.byte	3,1,1,7,9
+	.half	.L18-.L5
+	.byte	0,1,1
+.L48:
+	.sdecl	'.debug_ranges',debug,cluster('currentsGet')
+	.sect	'.debug_ranges'
+.L17:
+	.word	-1,.L7,0,.L18-.L7,0,0
+	.sdecl	'.debug_info',debug,cluster('initCurrents')
+	.sect	'.debug_info'
+.L19:
+	.word	299
+	.half	3
+	.word	.L20
+	.byte	4,1
+	.byte	'../inverter/math/current_math.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
+	.word	.L22,.L21
+	.byte	2
+	.word	.L10
+	.byte	3
+	.byte	'initCurrents',0,1,22,6,1,1,1
+	.word	.L9,.L36,.L8
+	.byte	4
+	.byte	'cconfig',0,1,22,34
+	.word	.L37,.L38
+	.byte	4
+	.byte	'aconfig',0,1,22,54
+	.word	.L39,.L40
+	.byte	5
+	.word	.L9,.L36
+	.byte	0,0
+	.sdecl	'.debug_abbrev',debug,cluster('initCurrents')
+	.sect	'.debug_abbrev'
+.L20:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
+	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
+	.sdecl	'.debug_line',debug,cluster('initCurrents')
+	.sect	'.debug_line'
+.L21:
+	.word	.L76-.L75
+.L75:
+	.half	3
+	.word	.L78-.L77
+.L77:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'../inverter/math/current_math.c',0,0,0,0,0
+.L78:
+	.byte	5,5,7,0,5,2
+	.word	.L9
+	.byte	3,23,1,5,20,9
+	.half	.L79-.L9
+	.byte	1,5,5,9
+	.half	.L80-.L79
+	.byte	3,1,1,5,20,9
+	.half	.L81-.L80
+	.byte	1,5,1,9
+	.half	.L82-.L81
+	.byte	3,1,1,7,9
+	.half	.L23-.L82
+	.byte	0,1,1
+.L76:
+	.sdecl	'.debug_ranges',debug,cluster('initCurrents')
+	.sect	'.debug_ranges'
+.L22:
+	.word	-1,.L9,0,.L23-.L9,0,0
+	.sdecl	'.debug_info',debug,cluster('current_config')
+	.sect	'.debug_info'
+.L24:
+	.word	238
+	.half	3
+	.word	.L25
+	.byte	4,1
+	.byte	'../inverter/math/current_math.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1,2
+	.word	.L10
+	.byte	3
+	.byte	'current_config',0,3,3,23
+	.word	.L37
+	.byte	5,3
+	.word	current_config
+	.byte	0
+	.sdecl	'.debug_abbrev',debug,cluster('current_config')
+	.sect	'.debug_abbrev'
+.L25:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,0,0,2,61,0,24,16,0,0,3,52,0,3,8,58,15,59,15,57,15,73,16,2,9,0,0,0
+	.sdecl	'.debug_info',debug,cluster('adc_config')
+	.sect	'.debug_info'
+.L26:
+	.word	234
+	.half	3
+	.word	.L27
+	.byte	4,1
+	.byte	'../inverter/math/current_math.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1,2
+	.word	.L10
+	.byte	3
+	.byte	'adc_config',0,3,4,23
+	.word	.L39
+	.byte	5,3
+	.word	adc_config
+	.byte	0
+	.sdecl	'.debug_abbrev',debug,cluster('adc_config')
+	.sect	'.debug_abbrev'
+.L27:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,0,0,2,61,0,24,16,0,0,3,52,0,3,8,58,15,59,15,57,15,73,16,2,9,0,0,0
+	.sdecl	'.debug_loc',debug,cluster('currentsGet')
+	.sect	'.debug_loc'
+.L32:
+	.word	-1,.L7,0,.L28-.L7
+	.half	1
+	.byte	84
+	.word	0,0
+.L33:
+	.word	-1,.L7,0,.L28-.L7
+	.half	1
+	.byte	85
+	.word	0,0
+.L30:
+	.word	-1,.L7,0,.L28-.L7
+	.half	1
+	.byte	100
+	.word	0,0
+.L6:
+	.word	-1,.L7,0,.L28-.L7
+	.half	2
+	.byte	138,0
+	.word	0,0
+.L35:
+	.word	-1,.L7,.L41-.L7,.L42-.L7
+	.half	1
+	.byte	95
+	.word	0,0
+	.sdecl	'.debug_loc',debug,cluster('initCurrents')
+	.sect	'.debug_loc'
+.L40:
+	.word	-1,.L9,0,.L36-.L9
+	.half	1
+	.byte	101
+	.word	0,0
+.L38:
+	.word	-1,.L9,0,.L36-.L9
+	.half	1
+	.byte	100
+	.word	0,0
+.L8:
+	.word	-1,.L9,0,.L36-.L9
+	.half	2
+	.byte	138,0
+	.word	0,0
+	.sdecl	'.debug_frame',debug
+	.sect	'.debug_frame'
+.L83:
+	.word	48
+	.word	-1
+	.byte	3,0,2,1,27,12,26,0,8,26,8,27,8,30,8,29,8,28,8,16,8,17,8,24,8,25,8,31,8,32,8,33,8,34,8,35,8,36,8,37,8,38
+	.byte	8,39
+	.sdecl	'.debug_frame',debug,cluster('currentsGet')
+	.sect	'.debug_frame'
+	.word	24
+	.word	.L83,.L7,.L28-.L7
+	.byte	8,18,8,19,8,21,8,22,8,23,0,0
+	.sdecl	'.debug_frame',debug,cluster('initCurrents')
+	.sect	'.debug_frame'
+	.word	20
+	.word	.L83,.L9,.L36-.L9
+	.byte	8,18,8,19,8,22,8,23
+	; Module end

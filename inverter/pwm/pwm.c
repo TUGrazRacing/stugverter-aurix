@@ -28,7 +28,7 @@
 /*********************************************************************************************************************/
 /*-----------------------------------------------------Includes------------------------------------------------------*/
 /*********************************************************************************************************************/
-#include <inverter/pwm/phase_pwm.h>
+#include <pwm.h>
 #include "IfxGtm_Pwm.h"
 #include "IfxPort.h"
 #include "IfxPort_Pinmap.h"
@@ -38,7 +38,6 @@
 /*------------------------------------------------------Macros-------------------------------------------------------*/
 /*********************************************************************************************************************/
 #define NUM_OF_CHANNELS         (4)                                    /* Number of PWM complementary pairs          */
-#define PWM_FREQUENCY           (20.0E3)                               /* PWM frequency in [Hz]                      */
 #define ISR_PRIORITY_ATOM       (20)                                   /* Interrupt priority number                  */
 
 #define PHASE_U_HS              &IfxGtm_ATOM1_0_TOUT0_P02_0_OUT        /* Pin which will be driven by the PWM, P02.0 */
@@ -66,6 +65,8 @@ typedef struct
 
 IFX_STATIC GtmAtom3phInv g_gtmAtom3phInv;
 
+PwmConfig* pwm_config;
+
 /*********************************************************************************************************************/
 /*-----------------------------------------------Function Prototypes-------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -89,8 +90,9 @@ void IfxGtm_periodEventFunction(void *data)
 }
 
 /* This function initializes the ATOM */
-void inverterInit(void)
+void pwmInit(PwmConfig* pconfig)
 {
+    pwm_config = pconfig;
     /* Configuration variables
      * Neither application (in most of the cases) nor the PWM driver need configuration variables post initialization.
      * It is recommended to define such variables within the function (local), alternatively such structures could
@@ -218,7 +220,7 @@ void inverterInit(void)
     config.syncStart              = TRUE;                              /* Start all channels after init              */
     config.numChannels            = NUM_OF_CHANNELS;                   /* Number of channels configured              */
     config.channels               = channelConfig;                     /* Attach Channel configuration               */
-    config.frequency              = PWM_FREQUENCY;                     /* PWM frequency                              */
+    config.frequency              = pwm_config->frequency;             /* PWM frequency                              */
     config.clockSource.atom       = IfxGtm_Cmu_Clk_0;                  /* Clock source for atom                      */
     config.dtmClockSource         = IfxGtm_Dtm_ClockSource_cmuClock0;  /* Clock source for dtm                       */
     config.syncUpdateEnabled      = TRUE;                              /* TRUE: Update compare registers from shadow

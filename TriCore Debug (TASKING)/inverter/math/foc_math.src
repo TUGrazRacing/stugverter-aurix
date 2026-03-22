@@ -1,6 +1,6 @@
 	; Module start
 	.compiler_version	"TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler v1.1r8 Build 22011964"
-	.compiler_invocation	"ctc -f cc49292a --dep-file=inverter/math/foc_math.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\control -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\math -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\pwm -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o inverter/math/foc_math.src ../inverter/math/foc_math.c"
+	.compiler_invocation	"ctc -f cc30776a --dep-file=inverter/math/foc_math.d -c99 --fp-model=3cflnrSTz -D__CPU__=tc38x -D__CPU_TC38X__ --core=tc1.6.2 --fp-model=+float -D__CPU__=tc38x -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Configurations -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Platform\\\\Tricore\\\\Compilers -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Sfr\\\\TC38A\\\\_Reg -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Infra\\\\Ssw\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\StdIf -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\SysSe\\\\Bsp -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\Service\\\\CpuGeneric\\\\_Utilities -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Asc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Asclin\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Irq -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Trap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Evadc\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Pwm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Gtm\\\\Trig -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Mtu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Pms\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Io -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Port\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Scu\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Src\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Stm\\\\Std -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Impl -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_Lib\\\\DataHandling -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\_PinMap -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\adc -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\config -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\control -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\driver -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\math -IC:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\pwm -g2 -w544 -w557 -t4 --language=+volatile -N0 -O0 -Y0 -Z0 --compact-max-size=200 --misrac-version=2012 -o inverter/math/foc_math.src ../inverter/math/foc_math.c"
 	.compiler_name		"ctc"
 	;source	'../inverter/math/foc_math.c'
 
@@ -13,33 +13,33 @@ $TC162
 	
 	.global	FOC_ClarkeTransform
 ; Function FOC_ClarkeTransform
-.L38:
+.L39:
 FOC_ClarkeTransform:	.type	func
 	ld.w	d15,[a4]
-.L141:
+.L157:
 	st.w	[a5],d15
-.L142:
+.L158:
 	ld.w	d15,[a4]4
-.L143:
+.L159:
 	movh	d0,#16384
-.L144:
+.L160:
 	ld.w	d1,[a4]
-.L145:
+.L161:
 	madd.f	d15,d1,d15,d0
-.L146:
+.L162:
 	mov.u	d0,#52538
 	addih	d0,d0,#16147
-.L147:
+.L163:
 	mul.f	d15,d15,d0
-.L148:
+.L164:
 	st.w	[a5]4,d15
-.L149:
+.L165:
 	ret
-.L83:
+.L91:
 	
 __FOC_ClarkeTransform_function_end:
 	.size	FOC_ClarkeTransform,__FOC_ClarkeTransform_function_end-FOC_ClarkeTransform
-.L57:
+.L60:
 	; End of function
 	
 	.sdecl	'.text.foc_math.FOC_InvClarkeTransform',code,cluster('FOC_InvClarkeTransform')
@@ -48,39 +48,39 @@ __FOC_ClarkeTransform_function_end:
 	
 	.global	FOC_InvClarkeTransform
 ; Function FOC_InvClarkeTransform
-.L40:
+.L41:
 FOC_InvClarkeTransform:	.type	func
 	ld.w	d15,[a4]4
-.L154:
+.L170:
 	mov.u	d0,#46039
 	addih	d0,d0,#16221
-.L155:
+.L171:
 	mul.f	d0,d15,d0
-.L122:
+.L135:
 	ld.w	d15,[a4]
-.L156:
+.L172:
 	movh	d1,#48896
-.L157:
+.L173:
 	mul.f	d1,d15,d1
-.L123:
+.L136:
 	ld.w	d15,[a4]
-.L158:
+.L174:
 	st.w	[a5],d15
-.L159:
+.L175:
 	add.f	d15,d1,d0
-.L160:
+.L176:
 	st.w	[a5]4,d15
-.L161:
+.L177:
 	sub.f	d15,d1,d0
-.L162:
+.L178:
 	st.w	[a5]8,d15
-.L163:
+.L179:
 	ret
-.L88:
+.L96:
 	
 __FOC_InvClarkeTransform_function_end:
 	.size	FOC_InvClarkeTransform,__FOC_InvClarkeTransform_function_end-FOC_InvClarkeTransform
-.L62:
+.L65:
 	; End of function
 	
 	.sdecl	'.text.foc_math.FOC_ParkTransform',code,cluster('FOC_ParkTransform')
@@ -89,36 +89,36 @@ __FOC_InvClarkeTransform_function_end:
 	
 	.global	FOC_ParkTransform
 ; Function FOC_ParkTransform
-.L42:
+.L43:
 FOC_ParkTransform:	.type	func
 	ld.w	d0,[a4]
-.L168:
+.L184:
 	ld.w	d15,[a4]4
-.L169:
+.L185:
 	mul.f	d15,d15,d4
-.L170:
+.L186:
 	madd.f	d15,d15,d0,d5
-.L171:
+.L187:
 	st.w	[a5],d15
-.L172:
+.L188:
 	ld.w	d15,[a4]
-.L173:
+.L189:
 	insn.t	d0,d15:31,d15:31
-.L174:
+.L190:
 	ld.w	d15,[a4]4
-.L175:
+.L191:
 	mul.f	d15,d15,d5
-.L176:
+.L192:
 	madd.f	d15,d15,d0,d4
-.L177:
+.L193:
 	st.w	[a5]4,d15
-.L178:
+.L194:
 	ret
-.L96:
+.L104:
 	
 __FOC_ParkTransform_function_end:
 	.size	FOC_ParkTransform,__FOC_ParkTransform_function_end-FOC_ParkTransform
-.L67:
+.L70:
 	; End of function
 	
 	.sdecl	'.text.foc_math.FOC_InvParkTransform',code,cluster('FOC_InvParkTransform')
@@ -127,34 +127,34 @@ __FOC_ParkTransform_function_end:
 	
 	.global	FOC_InvParkTransform
 ; Function FOC_InvParkTransform
-.L44:
+.L45:
 FOC_InvParkTransform:	.type	func
 	ld.w	d15,[a4]
-.L183:
+.L199:
 	mul.f	d0,d15,d5
-.L184:
+.L200:
 	ld.w	d15,[a4]4
-.L185:
+.L201:
 	msub.f	d15,d0,d15,d4
-.L186:
+.L202:
 	st.w	[a5],d15
-.L187:
+.L203:
 	ld.w	d0,[a4]
-.L188:
+.L204:
 	ld.w	d15,[a4]4
-.L189:
+.L205:
 	mul.f	d15,d15,d5
-.L190:
+.L206:
 	madd.f	d15,d15,d0,d4
-.L191:
+.L207:
 	st.w	[a5]4,d15
-.L192:
+.L208:
 	ret
-.L102:
+.L110:
 	
 __FOC_InvParkTransform_function_end:
 	.size	FOC_InvParkTransform,__FOC_InvParkTransform_function_end-FOC_InvParkTransform
-.L72:
+.L75:
 	; End of function
 	
 	.sdecl	'.text.foc_math.focSVPWM',code,cluster('focSVPWM')
@@ -163,16 +163,16 @@ __FOC_InvParkTransform_function_end:
 	
 	.global	focSVPWM
 ; Function focSVPWM
-.L46:
+.L47:
 focSVPWM:	.type	func
 	sub.a	a10,#16
-.L124:
+.L137:
 	mov.aa	a15,a5
-.L127:
+.L140:
 	lea	a5,[a10]0
-.L125:
+.L138:
 	call	FOC_InvClarkeTransform
-.L126:
+.L139:
 	ld.w	d0,[a10]
 	ld.w	d15,[a10]4
 	cmp.f	d15,d0,d15
@@ -226,26 +226,26 @@ focSVPWM:	.type	func
 	ld.w	d15,[a10]8
 .L13:
 	add.f	d15,d0,d15
-.L208:
+.L230:
 	movh	d0,#48896
-.L209:
+.L231:
 	mul.f	d0,d15,d0
-.L118:
+.L141:
 	ld.w	d15,[a10]
-.L210:
+.L232:
 	add.f	d1,d15,d0
-.L129:
+.L143:
 	ld.w	d15,[a10]4
-.L211:
+.L233:
 	add.f	d2,d15,d0
-.L130:
+.L144:
 	ld.w	d15,[a10]8
-.L212:
+.L234:
 	add.f	d3,d15,d0
-.L131:
+.L145:
 	movh	d15,#16128
 	movh	d0,#16128
-.L128:
+.L142:
 	madd.f	d15,d0,d1,d15
 	mov	d0,#0
 	cmp.f	d15,d15,d0
@@ -279,7 +279,7 @@ focSVPWM:	.type	func
 	movh	d15,#16256
 .L19:
 	st.w	[a15],d15
-.L213:
+.L235:
 	movh	d15,#16128
 	movh	d0,#16128
 	madd.f	d15,d0,d2,d15
@@ -315,7 +315,7 @@ focSVPWM:	.type	func
 	movh	d15,#16256
 .L25:
 	st.w	[a15]4,d15
-.L214:
+.L236:
 	movh	d15,#16128
 	movh	d0,#16128
 	madd.f	d15,d0,d3,d15
@@ -351,13 +351,13 @@ focSVPWM:	.type	func
 	movh	d15,#16256
 .L31:
 	st.w	[a15]8,d15
-.L215:
+.L237:
 	ret
-.L110:
+.L123:
 	
 __focSVPWM_function_end:
 	.size	focSVPWM,__focSVPWM_function_end-focSVPWM
-.L82:
+.L90:
 	; End of function
 	
 	.sdecl	'.text.foc_math.focWrapAngle',code,cluster('focWrapAngle')
@@ -366,68 +366,96 @@ __focSVPWM_function_end:
 	
 	.global	focWrapAngle
 ; Function focWrapAngle
-.L48:
+.L49:
 focWrapAngle:	.type	func
 	j	.L32
 .L33:
 	mov	d15,#4059
 	addih	d15,d15,#16585
-.L197:
+.L213:
 	sub.f	d4,d4,d15
 .L32:
 	mov	d15,#4059
 	addih	d15,d15,#16585
-.L198:
+.L214:
 	cmp.f	d15,d4,d15
 	and	d15,#6
 	ne	d15,d15,#0
-.L199:
+.L215:
 	jne	d15,#0,.L33
-.L200:
+.L216:
 	j	.L34
 .L35:
 	mov	d15,#4059
 	addih	d15,d15,#16585
-.L201:
+.L217:
 	add.f	d4,d4,d15
 .L34:
 	mov	d15,#0
-.L202:
+.L218:
 	cmp.f	d15,d4,d15
 	jnz.t	d15:0,.L35
-.L203:
+.L219:
 	mov	d2,d4
-.L132:
+.L146:
 	j	.L36
 .L36:
 	ret
-.L108:
+.L116:
 	
 __focWrapAngle_function_end:
 	.size	focWrapAngle,__focWrapAngle_function_end-focWrapAngle
-.L77:
+.L80:
+	; End of function
+	
+	.sdecl	'.text.foc_math.focGetMotorElecAngle',code,cluster('focGetMotorElecAngle')
+	.sect	'.text.foc_math.focGetMotorElecAngle'
+	.align	2
+	
+	.global	focGetMotorElecAngle
+; Function focGetMotorElecAngle
+.L51:
+focGetMotorElecAngle:	.type	func
+	sub.f	d15,d4,d5
+.L224:
+	utof	d0,d6
+.L225:
+	mul.f	d4,d15,d0
+.L148:
+	call	focWrapAngle
+.L147:
+	j	.L37
+.L37:
+	ret
+.L118:
+	
+__focGetMotorElecAngle_function_end:
+	.size	focGetMotorElecAngle,__focGetMotorElecAngle_function_end-focGetMotorElecAngle
+.L85:
 	; End of function
 	
 	.calls	'focSVPWM','FOC_InvClarkeTransform'
+	.calls	'focGetMotorElecAngle','focWrapAngle'
 	.calls	'FOC_ClarkeTransform','',0
 	.calls	'FOC_InvClarkeTransform','',0
 	.calls	'FOC_ParkTransform','',0
 	.calls	'FOC_InvParkTransform','',0
 	.calls	'focSVPWM','',16
 	.calls	'focWrapAngle','',0
+	.calls	'focGetMotorElecAngle','',0
 	.sdecl	'.debug_info',debug
 	.sect	'.debug_info'
-.L50:
-	.word	1074
+.L53:
+	.word	1273
 	.half	3
-	.word	.L51
+	.word	.L54
 	.byte	4
-.L49:
+.L52:
 	.byte	1
 	.byte	'../inverter/math/foc_math.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
-	.word	.L52
+	.word	.L55
 	.byte	2,1,1,3
 	.word	207
 	.byte	4
@@ -436,7 +464,7 @@ __focWrapAngle_function_end:
 	.word	210
 	.byte	6,0,7
 	.byte	'__fract',0,4,128,1
-.L93:
+.L101:
 	.byte	7
 	.byte	'float',0,4,4,8
 	.byte	'Ifx__float_to_fract',0,3,1,149,2,18
@@ -462,8 +490,8 @@ __focWrapAngle_function_end:
 	.byte	'value',0,2,140,1,43
 	.word	321
 	.byte	6,0
-.L113:
-	.byte	10,3,31,9,12,11
+.L127:
+	.byte	10,3,36,9,12,11
 	.byte	'u',0
 	.word	267
 	.byte	4,2,35,0,11
@@ -474,42 +502,57 @@ __focWrapAngle_function_end:
 	.word	267
 	.byte	4,2,35,8,0,12
 	.word	439
-.L84:
+.L92:
 	.byte	3
 	.word	478
-	.byte	10,3,37,9,8,11
+	.byte	10,3,17,9,8,11
 	.byte	'alpha',0
 	.word	267
 	.byte	4,2,35,0,11
 	.byte	'beta',0
 	.word	267
 	.byte	4,2,35,4,0
-.L86:
+.L94:
 	.byte	3
 	.word	488
 	.byte	12
 	.word	488
-.L89:
+.L97:
 	.byte	3
 	.word	528
-.L91:
+.L99:
 	.byte	3
 	.word	439
-	.byte	10,3,42,9,8,11
+	.byte	10,3,23,9,8,11
 	.byte	'd',0
 	.word	267
 	.byte	4,2,35,0,11
 	.byte	'q',0
 	.word	267
 	.byte	4,2,35,4,0
-.L98:
+.L106:
 	.byte	3
 	.word	543
 	.byte	12
 	.word	543
-.L103:
+.L111:
 	.byte	3
 	.word	576
+.L121:
+	.byte	7
+	.byte	'unsigned char',0,1,8,10,3,29,9,12,11
+	.byte	'u',0
+	.word	267
+	.byte	4,2,35,0,11
+	.byte	'v',0
+	.word	267
+	.byte	4,2,35,4,11
+	.byte	'w',0
+	.word	267
+	.byte	4,2,35,8,0
+.L125:
+	.byte	3
+	.word	603
 	.byte	13
 	.word	215
 	.byte	14
@@ -531,46 +574,49 @@ __focWrapAngle_function_end:
 	.byte	6,0,7
 	.byte	'short int',0,2,5,15
 	.byte	'__wchar_t',0,4,1,1
-	.word	639
+	.word	700
 	.byte	7
 	.byte	'unsigned int',0,4,7,15
 	.byte	'__size_t',0,4,1,1
-	.word	670
+	.word	731
 	.byte	7
 	.byte	'int',0,4,5,15
 	.byte	'__ptrdiff_t',0,4,1,1
-	.word	703
+	.word	764
 	.byte	16,1,3
-	.word	730
+	.word	791
 	.byte	15
 	.byte	'__codeptr',0,4,1,1
-	.word	732
-	.byte	7
-	.byte	'unsigned char',0,1,8,15
+	.word	793
+	.byte	15
 	.byte	'uint8',0,5,108,29
-	.word	755
+	.word	586
 	.byte	7
 	.byte	'unsigned short int',0,2,7,15
 	.byte	'uint16',0,5,112,29
-	.word	786
+	.word	830
 	.byte	7
 	.byte	'unsigned long int',0,4,7,15
 	.byte	'uint32',0,5,116,29
-	.word	823
+	.word	867
 	.byte	15
 	.byte	'uint64',0,5,121,29
 	.word	321
+	.byte	7
+	.byte	'char',0,1,6,15
+	.byte	'sint8',0,5,125,29
+	.word	918
 	.byte	15
 	.byte	'sint16',0,5,129,1,29
-	.word	639
+	.word	700
 	.byte	7
 	.byte	'long int',0,4,5,15
 	.byte	'sint32',0,5,134,1,29
-	.word	890
+	.word	956
 	.byte	7
 	.byte	'long long int',0,8,5,15
 	.byte	'sint64',0,5,141,1,29
-	.word	918
+	.word	984
 	.byte	15
 	.byte	'float32',0,5,170,1,29
 	.word	267
@@ -579,23 +625,44 @@ __focWrapAngle_function_end:
 	.word	353
 	.byte	15
 	.byte	'Ifx_TickTime',0,6,76,28
-	.word	918
+	.word	984
+	.byte	10,7,26,9,16,11
+	.byte	'Kp',0
+	.word	267
+	.byte	4,2,35,0,11
+	.byte	'Ki',0
+	.word	267
+	.byte	4,2,35,4,11
+	.byte	'outMax',0
+	.word	267
+	.byte	4,2,35,8,11
+	.byte	'outMin',0
+	.word	267
+	.byte	4,2,35,12,0,15
+	.byte	'PiConfig',0,7,32,3
+	.word	1069
 	.byte	15
-	.byte	'ThreePhase_t',0,3,35,3
-	.word	439
-	.byte	15
-	.byte	'AlphaBeta_t',0,3,40,3
+	.byte	'CurrentsAB',0,3,21,3
 	.word	488
 	.byte	15
-	.byte	'DQ_t',0,3,45,3
+	.byte	'CurrentsDQ',0,3,27,3
 	.word	543
 	.byte	15
-	.byte	'_iob_flag_t',0,7,82,25
-	.word	786
+	.byte	'ThreePhaseDuty',0,3,34,3
+	.word	603
+	.byte	15
+	.byte	'ThreePhaseCurrents',0,3,41,3
+	.word	439
+	.byte	10,8,8,9,4,11
+	.byte	'integral',0
+	.word	267
+	.byte	4,2,35,0,0,15
+	.byte	'PiState',0,8,11,3
+	.word	1236
 	.byte	0
 	.sdecl	'.debug_abbrev',debug
 	.sect	'.debug_abbrev'
-.L51:
+.L54:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,16,6,0,0,2,21,0,54,15,39,12,0,0,3,15,0,73,19,0,0,4,46,1,3,8,32,13
 	.byte	58,15,59,15,57,15,54,15,39,12,0,0,5,5,0,3,8,58,15,59,15,57,15,73,19,0,0,6,11,0,0,0,7,36,0,3,8,11,15,62
 	.byte	15,0,0,8,46,1,3,8,32,13,58,15,59,15,57,15,73,19,54,15,39,12,0,0,9,59,0,3,8,0,0,10,19,1,58,15,59,15,57
@@ -603,689 +670,775 @@ __focWrapAngle_function_end:
 	.byte	22,0,3,8,58,15,59,15,57,15,73,19,0,0,16,21,0,54,15,0,0,0
 	.sdecl	'.debug_line',debug
 	.sect	'.debug_line'
-.L52:
-	.word	.L134-.L133
-.L133:
+.L55:
+	.word	.L150-.L149
+.L149:
 	.half	3
-	.word	.L136-.L135
-.L135:
+	.word	.L152-.L151
+.L151:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1
 	.byte	'C:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\Libraries\\\\iLLD\\\\TC38A\\\\Tricore\\\\Cpu\\\\Std',0
-	.byte	'C:\\Infineon\\AURIX-Studio-1.10.28\\tools\\Compilers\\Tasking_1.1r8\\ctc\\include\\',0,0
+	.byte	'C:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\math',0
+	.byte	'C:\\\\Users\\\\probstn\\\\AURIX-v1.10.28-workspace\\\\stugverter-aurix\\\\inverter\\\\config',0,0
 	.byte	'IfxCpu_IntrinsicsTasking.h',0,1,0,0
 	.byte	'IfxCpu_Intrinsics.h',0,1,0,0
-	.byte	'..\\inverter\\math\\foc_math.h',0,0,0,0
+	.byte	'foc_types.h',0,2,0,0
 	.byte	'../inverter/math/foc_math.c',0,0,0,0
 	.byte	'Platform_Types.h',0,1,0,0
 	.byte	'Ifx_Types.h',0,1,0,0
-	.byte	'stdio.h',0,2,0,0,0
-.L136:
-.L134:
+	.byte	'config.h',0,3,0,0
+	.byte	'state.h',0,3,0,0,0
+.L152:
+.L150:
 	.sdecl	'.debug_info',debug,cluster('FOC_ClarkeTransform')
 	.sect	'.debug_info'
-.L53:
+.L56:
 	.word	306
 	.half	3
-	.word	.L54
+	.word	.L57
 	.byte	4,1
 	.byte	'../inverter/math/foc_math.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
-	.word	.L56,.L55
+	.word	.L59,.L58
 	.byte	2
-	.word	.L49
+	.word	.L52
 	.byte	3
-	.byte	'FOC_ClarkeTransform',0,1,32,6,1,1,1
-	.word	.L38,.L83,.L37
+	.byte	'FOC_ClarkeTransform',0,1,5,6,1,1,1
+	.word	.L39,.L91,.L38
 	.byte	4
-	.byte	'input_abc',0,1,32,46
-	.word	.L84,.L85
+	.byte	'input_abc',0,1,5,52
+	.word	.L92,.L93
 	.byte	4
-	.byte	'output_ab',0,1,32,70
-	.word	.L86,.L87
+	.byte	'output_ab',0,1,5,75
+	.word	.L94,.L95
 	.byte	5
-	.word	.L38,.L83
+	.word	.L39,.L91
 	.byte	0,0
 	.sdecl	'.debug_abbrev',debug,cluster('FOC_ClarkeTransform')
 	.sect	'.debug_abbrev'
-.L54:
+.L57:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
 	.sdecl	'.debug_line',debug,cluster('FOC_ClarkeTransform')
 	.sect	'.debug_line'
-.L55:
-	.word	.L138-.L137
-.L137:
+.L58:
+	.word	.L154-.L153
+.L153:
 	.half	3
-	.word	.L140-.L139
-.L139:
+	.word	.L156-.L155
+.L155:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../inverter/math/foc_math.c',0,0,0,0,0
-.L140:
+.L156:
 	.byte	5,33,7,0,5,2
-	.word	.L38
-	.byte	3,37,1,5,22,9
-	.half	.L141-.L38
+	.word	.L39
+	.byte	3,6,1,5,22,9
+	.half	.L157-.L39
 	.byte	1,5,76,9
-	.half	.L142-.L141
+	.half	.L158-.L157
 	.byte	3,1,1,5,60,9
-	.half	.L143-.L142
+	.half	.L159-.L158
 	.byte	1,5,53,9
-	.half	.L144-.L143
+	.half	.L160-.L159
 	.byte	1,5,57,9
-	.half	.L145-.L144
+	.half	.L161-.L160
 	.byte	1,5,24,9
-	.half	.L146-.L145
+	.half	.L162-.L161
 	.byte	1,5,41,9
-	.half	.L147-.L146
+	.half	.L163-.L162
 	.byte	1,5,22,9
-	.half	.L148-.L147
+	.half	.L164-.L163
 	.byte	1,5,1,9
-	.half	.L149-.L148
+	.half	.L165-.L164
 	.byte	3,1,1,7,9
-	.half	.L57-.L149
+	.half	.L60-.L165
 	.byte	0,1,1
-.L138:
+.L154:
 	.sdecl	'.debug_ranges',debug,cluster('FOC_ClarkeTransform')
 	.sect	'.debug_ranges'
-.L56:
-	.word	-1,.L38,0,.L57-.L38,0,0
+.L59:
+	.word	-1,.L39,0,.L60-.L39,0,0
 	.sdecl	'.debug_info',debug,cluster('FOC_InvClarkeTransform')
 	.sect	'.debug_info'
-.L58:
+.L61:
 	.word	355
 	.half	3
-	.word	.L59
+	.word	.L62
 	.byte	4,1
 	.byte	'../inverter/math/foc_math.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
-	.word	.L61,.L60
+	.word	.L64,.L63
 	.byte	2
-	.word	.L49
+	.word	.L52
 	.byte	3
-	.byte	'FOC_InvClarkeTransform',0,1,56,6,1,1,1
-	.word	.L40,.L88,.L39
+	.byte	'FOC_InvClarkeTransform',0,1,11,6,1,1,1
+	.word	.L41,.L96,.L40
 	.byte	4
-	.byte	'input_ab',0,1,56,48
-	.word	.L89,.L90
+	.byte	'input_ab',0,1,11,47
+	.word	.L97,.L98
 	.byte	4
-	.byte	'output_abc',0,1,56,72
-	.word	.L91,.L92
+	.byte	'output_abc',0,1,11,77
+	.word	.L99,.L100
 	.byte	5
-	.word	.L40,.L88
+	.word	.L41,.L96
 	.byte	6
-	.byte	'term_beta',0,1,63,13
-	.word	.L93,.L94
+	.byte	'term_beta',0,1,13,13
+	.word	.L101,.L102
 	.byte	6
-	.byte	'term_alpha',0,1,64,13
-	.word	.L93,.L95
+	.byte	'term_alpha',0,1,14,13
+	.word	.L101,.L103
 	.byte	0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('FOC_InvClarkeTransform')
 	.sect	'.debug_abbrev'
-.L59:
+.L62:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
 	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('FOC_InvClarkeTransform')
 	.sect	'.debug_line'
-.L60:
-	.word	.L151-.L150
-.L150:
+.L63:
+	.word	.L167-.L166
+.L166:
 	.half	3
-	.word	.L153-.L152
-.L152:
+	.word	.L169-.L168
+.L168:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../inverter/math/foc_math.c',0,0,0,0,0
-.L153:
-	.byte	5,50,7,0,5,2
-	.word	.L40
-	.byte	3,62,1,5,25,9
-	.half	.L154-.L40
-	.byte	1,5,40,9
-	.half	.L155-.L154
+.L169:
+	.byte	5,51,7,0,5,2
+	.word	.L41
+	.byte	3,12,1,5,26,9
+	.half	.L170-.L41
+	.byte	1,5,41,9
+	.half	.L171-.L170
 	.byte	1,5,50,9
-	.half	.L122-.L155
+	.half	.L135-.L171
 	.byte	3,1,1,5,26,9
-	.half	.L156-.L122
+	.half	.L172-.L135
 	.byte	1,5,50,9
-	.half	.L157-.L156
+	.half	.L173-.L172
 	.byte	1,5,29,9
-	.half	.L123-.L157
+	.half	.L136-.L173
 	.byte	3,2,1,5,19,9
-	.half	.L158-.L123
+	.half	.L174-.L136
 	.byte	1,5,32,9
-	.half	.L159-.L158
+	.half	.L175-.L174
 	.byte	3,1,1,5,19,9
-	.half	.L160-.L159
+	.half	.L176-.L175
 	.byte	1,5,32,9
-	.half	.L161-.L160
+	.half	.L177-.L176
 	.byte	3,1,1,5,19,9
-	.half	.L162-.L161
+	.half	.L178-.L177
 	.byte	1,5,1,9
-	.half	.L163-.L162
+	.half	.L179-.L178
 	.byte	3,1,1,7,9
-	.half	.L62-.L163
+	.half	.L65-.L179
 	.byte	0,1,1
-.L151:
+.L167:
 	.sdecl	'.debug_ranges',debug,cluster('FOC_InvClarkeTransform')
 	.sect	'.debug_ranges'
-.L61:
-	.word	-1,.L40,0,.L62-.L40,0,0
+.L64:
+	.word	-1,.L41,0,.L65-.L41,0,0
 	.sdecl	'.debug_info',debug,cluster('FOC_ParkTransform')
 	.sect	'.debug_info'
-.L63:
+.L66:
 	.word	345
 	.half	3
-	.word	.L64
+	.word	.L67
 	.byte	4,1
 	.byte	'../inverter/math/foc_math.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
-	.word	.L66,.L65
+	.word	.L69,.L68
 	.byte	2
-	.word	.L49
+	.word	.L52
 	.byte	3
-	.byte	'FOC_ParkTransform',0,1,90,6,1,1,1
-	.word	.L42,.L96,.L41
+	.byte	'FOC_ParkTransform',0,1,21,6,1,1,1
+	.word	.L43,.L104,.L42
 	.byte	4
-	.byte	'input_ab',0,1,90,43
-	.word	.L89,.L97
+	.byte	'input_ab',0,1,21,42
+	.word	.L97,.L105
 	.byte	4
-	.byte	'output_dq',0,1,90,59
-	.word	.L98,.L99
+	.byte	'output_dq',0,1,21,64
+	.word	.L106,.L107
 	.byte	4
-	.byte	'sinTheta',0,1,90,78
-	.word	.L93,.L100
+	.byte	'sinTheta',0,1,21,83
+	.word	.L101,.L108
 	.byte	4
-	.byte	'cosTheta',0,1,90,96
-	.word	.L93,.L101
+	.byte	'cosTheta',0,1,21,101
+	.word	.L101,.L109
 	.byte	5
-	.word	.L42,.L96
+	.word	.L43,.L104
 	.byte	0,0
 	.sdecl	'.debug_abbrev',debug,cluster('FOC_ParkTransform')
 	.sect	'.debug_abbrev'
-.L64:
+.L67:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
 	.sdecl	'.debug_line',debug,cluster('FOC_ParkTransform')
 	.sect	'.debug_line'
-.L65:
-	.word	.L165-.L164
-.L164:
+.L68:
+	.word	.L181-.L180
+.L180:
 	.half	3
-	.word	.L167-.L166
-.L166:
+	.word	.L183-.L182
+.L182:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../inverter/math/foc_math.c',0,0,0,0,0
-.L167:
-	.byte	5,30,7,0,5,2
-	.word	.L42
-	.byte	3,223,0,1,5,61,9
-	.half	.L168-.L42
-	.byte	1,5,68,9
-	.half	.L169-.L168
-	.byte	1,5,50,9
-	.half	.L170-.L169
+.L183:
+	.byte	5,29,7,0,5,2
+	.word	.L43
+	.byte	3,22,1,5,60,9
+	.half	.L184-.L43
+	.byte	1,5,67,9
+	.half	.L185-.L184
+	.byte	1,5,49,9
+	.half	.L186-.L185
 	.byte	1,5,18,9
-	.half	.L171-.L170
+	.half	.L187-.L186
 	.byte	1,5,30,9
-	.half	.L172-.L171
+	.half	.L188-.L187
 	.byte	3,1,1,5,21,9
-	.half	.L173-.L172
+	.half	.L189-.L188
 	.byte	1,5,61,9
-	.half	.L174-.L173
+	.half	.L190-.L189
 	.byte	1,5,68,9
-	.half	.L175-.L174
+	.half	.L191-.L190
 	.byte	1,5,50,9
-	.half	.L176-.L175
+	.half	.L192-.L191
 	.byte	1,5,18,9
-	.half	.L177-.L176
+	.half	.L193-.L192
 	.byte	1,5,1,9
-	.half	.L178-.L177
+	.half	.L194-.L193
 	.byte	3,1,1,7,9
-	.half	.L67-.L178
+	.half	.L70-.L194
 	.byte	0,1,1
-.L165:
+.L181:
 	.sdecl	'.debug_ranges',debug,cluster('FOC_ParkTransform')
 	.sect	'.debug_ranges'
-.L66:
-	.word	-1,.L42,0,.L67-.L42,0,0
+.L69:
+	.word	-1,.L43,0,.L70-.L43,0,0
 	.sdecl	'.debug_info',debug,cluster('FOC_InvParkTransform')
 	.sect	'.debug_info'
-.L68:
+.L71:
 	.word	348
 	.half	3
-	.word	.L69
+	.word	.L72
 	.byte	4,1
 	.byte	'../inverter/math/foc_math.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
-	.word	.L71,.L70
+	.word	.L74,.L73
 	.byte	2
-	.word	.L49
+	.word	.L52
 	.byte	3
-	.byte	'FOC_InvParkTransform',0,1,117,6,1,1,1
-	.word	.L44,.L102,.L43
+	.byte	'FOC_InvParkTransform',0,1,27,6,1,1,1
+	.word	.L45,.L110,.L44
 	.byte	4
-	.byte	'input_dq',0,1,117,39
-	.word	.L103,.L104
+	.byte	'input_dq',0,1,27,45
+	.word	.L111,.L112
 	.byte	4
-	.byte	'output_ab',0,1,117,62
-	.word	.L86,.L105
+	.byte	'output_ab',0,1,27,67
+	.word	.L94,.L113
 	.byte	4
-	.byte	'sinTheta',0,1,117,81
-	.word	.L93,.L106
+	.byte	'sinTheta',0,1,27,86
+	.word	.L101,.L114
 	.byte	4
-	.byte	'cosTheta',0,1,117,99
-	.word	.L93,.L107
+	.byte	'cosTheta',0,1,27,104
+	.word	.L101,.L115
 	.byte	5
-	.word	.L44,.L102
+	.word	.L45,.L110
 	.byte	0,0
 	.sdecl	'.debug_abbrev',debug,cluster('FOC_InvParkTransform')
 	.sect	'.debug_abbrev'
-.L69:
+.L72:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
 	.sdecl	'.debug_line',debug,cluster('FOC_InvParkTransform')
 	.sect	'.debug_line'
-.L70:
-	.word	.L180-.L179
-.L179:
+.L73:
+	.word	.L196-.L195
+.L195:
 	.half	3
-	.word	.L182-.L181
-.L181:
+	.word	.L198-.L197
+.L197:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../inverter/math/foc_math.c',0,0,0,0,0
-.L182:
+.L198:
 	.byte	5,33,7,0,5,2
-	.word	.L44
-	.byte	3,250,0,1,5,37,9
-	.half	.L183-.L44
+	.word	.L45
+	.byte	3,28,1,5,37,9
+	.half	.L199-.L45
 	.byte	1,5,60,9
-	.half	.L184-.L183
+	.half	.L200-.L199
 	.byte	1,5,49,9
-	.half	.L185-.L184
+	.half	.L201-.L200
 	.byte	1,5,22,9
-	.half	.L186-.L185
+	.half	.L202-.L201
 	.byte	1,5,33,9
-	.half	.L187-.L186
+	.half	.L203-.L202
 	.byte	3,1,1,5,60,9
-	.half	.L188-.L187
+	.half	.L204-.L203
 	.byte	1,5,64,9
-	.half	.L189-.L188
+	.half	.L205-.L204
 	.byte	1,5,49,9
-	.half	.L190-.L189
+	.half	.L206-.L205
 	.byte	1,5,22,9
-	.half	.L191-.L190
+	.half	.L207-.L206
 	.byte	1,5,1,9
-	.half	.L192-.L191
+	.half	.L208-.L207
 	.byte	3,1,1,7,9
-	.half	.L72-.L192
+	.half	.L75-.L208
 	.byte	0,1,1
-.L180:
+.L196:
 	.sdecl	'.debug_ranges',debug,cluster('FOC_InvParkTransform')
 	.sect	'.debug_ranges'
-.L71:
-	.word	-1,.L44,0,.L72-.L44,0,0
+.L74:
+	.word	-1,.L45,0,.L75-.L45,0,0
 	.sdecl	'.debug_info',debug,cluster('focWrapAngle')
 	.sect	'.debug_info'
-.L73:
-	.word	279
+.L76:
+	.word	277
 	.half	3
-	.word	.L74
+	.word	.L77
 	.byte	4,1
 	.byte	'../inverter/math/foc_math.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
-	.word	.L76,.L75
+	.word	.L79,.L78
 	.byte	2
-	.word	.L49
+	.word	.L52
 	.byte	3
-	.byte	'focWrapAngle',0,1,183,1,9
-	.word	.L93
+	.byte	'focWrapAngle',0,1,56,9
+	.word	.L101
 	.byte	1,1,1
-	.word	.L48,.L108,.L47
+	.word	.L49,.L116,.L48
 	.byte	4
-	.byte	'angle',0,1,183,1,30
-	.word	.L93,.L109
+	.byte	'angle',0,1,56,30
+	.word	.L101,.L117
 	.byte	5
-	.word	.L48,.L108
+	.word	.L49,.L116
 	.byte	0,0
 	.sdecl	'.debug_abbrev',debug,cluster('focWrapAngle')
 	.sect	'.debug_abbrev'
-.L74:
+.L77:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
 	.byte	54,15,39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
 	.sdecl	'.debug_line',debug,cluster('focWrapAngle')
 	.sect	'.debug_line'
-.L75:
-	.word	.L194-.L193
-.L193:
+.L78:
+	.word	.L210-.L209
+.L209:
 	.half	3
-	.word	.L196-.L195
-.L195:
+	.word	.L212-.L211
+.L211:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../inverter/math/foc_math.c',0,0,0,0,0
-.L196:
+.L212:
 	.byte	5,31,7,0,5,2
-	.word	.L48
-	.byte	3,184,1,1,5,18,9
-	.half	.L33-.L48
+	.word	.L49
+	.byte	3,57,1,5,18,9
+	.half	.L33-.L49
 	.byte	3,2,1,5,15,9
-	.half	.L197-.L33
+	.half	.L213-.L33
 	.byte	1,5,21,9
-	.half	.L32-.L197
+	.half	.L32-.L213
 	.byte	3,126,1,5,18,9
-	.half	.L198-.L32
+	.half	.L214-.L32
 	.byte	1,5,31,9
-	.half	.L199-.L198
+	.half	.L215-.L214
 	.byte	1,5,24,7,9
-	.half	.L200-.L199
+	.half	.L216-.L215
 	.byte	3,4,1,5,18,9
-	.half	.L35-.L200
+	.half	.L35-.L216
 	.byte	3,2,1,5,15,9
-	.half	.L201-.L35
+	.half	.L217-.L35
 	.byte	1,5,20,9
-	.half	.L34-.L201
+	.half	.L34-.L217
 	.byte	3,126,1,5,24,9
-	.half	.L202-.L34
+	.half	.L218-.L34
 	.byte	1,5,5,9
-	.half	.L203-.L202
+	.half	.L219-.L218
 	.byte	3,4,1,5,1,9
-	.half	.L36-.L203
+	.half	.L36-.L219
 	.byte	3,1,1,7,9
-	.half	.L77-.L36
+	.half	.L80-.L36
 	.byte	0,1,1
-.L194:
+.L210:
 	.sdecl	'.debug_ranges',debug,cluster('focWrapAngle')
 	.sect	'.debug_ranges'
-.L76:
-	.word	-1,.L48,0,.L77-.L48,0,0
-	.sdecl	'.debug_info',debug,cluster('focSVPWM')
+.L79:
+	.word	-1,.L49,0,.L80-.L49,0,0
+	.sdecl	'.debug_info',debug,cluster('focGetMotorElecAngle')
 	.sect	'.debug_info'
-.L78:
-	.word	453
+.L81:
+	.word	350
 	.half	3
-	.word	.L79
+	.word	.L82
 	.byte	4,1
 	.byte	'../inverter/math/foc_math.c',0
 	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
 	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
-	.word	.L81,.L80
+	.word	.L84,.L83
 	.byte	2
-	.word	.L49
+	.word	.L52
 	.byte	3
-	.byte	'focSVPWM',0,1,147,1,6,1,1,1
-	.word	.L46,.L110,.L45
+	.byte	'focGetMotorElecAngle',0,1,69,9
+	.word	.L101
+	.byte	1,1,1
+	.word	.L51,.L118,.L50
 	.byte	4
-	.byte	'V_ab',0,1,147,1,34
-	.word	.L89,.L111
+	.byte	'theta_resolver',0,1,69,38
+	.word	.L101,.L119
 	.byte	4
-	.byte	'DutyCycles',0,1,147,1,54
-	.word	.L91,.L112
+	.byte	'resolver_offset',0,1,69,62
+	.word	.L101,.L120
+	.byte	4
+	.byte	'motor_polepairs',0,1,69,85
+	.word	.L121,.L122
 	.byte	5
-	.word	.L46,.L110
-	.byte	6
-	.byte	'V_phase_raw',0,1,149,1,18
-	.word	.L113,.L114
-	.byte	6
-	.byte	'V_max',0,1,150,1,13
-	.word	.L93,.L115
-	.byte	6
-	.byte	'V_min',0,1,150,1,20
-	.word	.L93,.L116
-	.byte	6
-	.byte	'V_offset',0,1,151,1,13
-	.word	.L93,.L117
+	.word	.L51,.L118
+	.byte	0,0
+	.sdecl	'.debug_abbrev',debug,cluster('focGetMotorElecAngle')
+	.sect	'.debug_abbrev'
+.L82:
+	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,73,16
+	.byte	54,15,39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,0,17,1,18,1,0,0,0
+	.sdecl	'.debug_line',debug,cluster('focGetMotorElecAngle')
+	.sect	'.debug_line'
+.L83:
+	.word	.L221-.L220
+.L220:
+	.half	3
+	.word	.L223-.L222
+.L222:
+	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
+	.byte	'../inverter/math/foc_math.c',0,0,0,0,0
+.L223:
+	.byte	5,41,7,0,5,2
+	.word	.L51
+	.byte	3,198,0,1,5,62,9
+	.half	.L224-.L51
+	.byte	1,5,60,9
+	.half	.L225-.L224
+	.byte	1,5,5,9
+	.half	.L147-.L225
+	.byte	1,5,1,9
+	.half	.L37-.L147
+	.byte	3,1,1,7,9
+	.half	.L85-.L37
+	.byte	0,1,1
+.L221:
+	.sdecl	'.debug_ranges',debug,cluster('focGetMotorElecAngle')
+	.sect	'.debug_ranges'
+.L84:
+	.word	-1,.L51,0,.L85-.L51,0,0
+	.sdecl	'.debug_info',debug,cluster('focSVPWM')
+	.sect	'.debug_info'
+.L86:
+	.word	433
+	.half	3
+	.word	.L87
+	.byte	4,1
+	.byte	'../inverter/math/foc_math.c',0
+	.byte	'TASKING VX-toolset for AURIX Development Studio (non-commercial): C compiler',0
+	.byte	'C:\\Users\\probstn\\AURIX-v1.10.28-workspace\\stugverter-aurix\\TriCore Debug (TASKING)\\',0,12,1
+	.word	.L89,.L88
+	.byte	2
+	.word	.L52
+	.byte	3
+	.byte	'focSVPWM',0,1,33,6,1,1,1
+	.word	.L47,.L123,.L46
+	.byte	4
+	.byte	'V_ab',0,1,33,33
+	.word	.L97,.L124
+	.byte	4
+	.byte	'DutyCycles',0,1,33,55
+	.word	.L125,.L126
 	.byte	5
-	.word	.L118,.L110
+	.word	.L47,.L123
 	.byte	6
-	.byte	'V_a_mod',0,1,171,1,13
-	.word	.L93,.L119
+	.byte	'V_phase_raw',0,1,35,24
+	.word	.L127,.L128
 	.byte	6
-	.byte	'V_b_mod',0,1,172,1,13
-	.word	.L93,.L120
+	.byte	'V_max',0,1,36,13
+	.word	.L101,.L129
 	.byte	6
-	.byte	'V_c_mod',0,1,173,1,13
-	.word	.L93,.L121
-	.byte	0,0,0,0
+	.byte	'V_min',0,1,36,20
+	.word	.L101,.L130
+	.byte	6
+	.byte	'V_offset',0,1,37,13
+	.word	.L101,.L131
+	.byte	6
+	.byte	'V_a_mod',0,1,38,13
+	.word	.L101,.L132
+	.byte	6
+	.byte	'V_b_mod',0,1,38,22
+	.word	.L101,.L133
+	.byte	6
+	.byte	'V_c_mod',0,1,38,31
+	.word	.L101,.L134
+	.byte	0,0,0
 	.sdecl	'.debug_abbrev',debug,cluster('focSVPWM')
 	.sect	'.debug_abbrev'
-.L79:
+.L87:
 	.byte	1,17,1,3,8,37,8,27,8,19,15,128,70,12,85,6,16,6,0,0,2,61,0,24,16,0,0,3,46,1,3,8,58,15,59,15,57,15,54,15
 	.byte	39,12,63,12,17,1,18,1,64,6,0,0,4,5,0,3,8,58,15,59,15,57,15,73,16,2,6,0,0,5,11,1,17,1,18,1,0,0,6,52,0,3
 	.byte	8,58,15,59,15,57,15,73,16,2,6,0,0,0
 	.sdecl	'.debug_line',debug,cluster('focSVPWM')
 	.sect	'.debug_line'
-.L80:
-	.word	.L205-.L204
-.L204:
+.L88:
+	.word	.L227-.L226
+.L226:
 	.half	3
-	.word	.L207-.L206
-.L206:
+	.word	.L229-.L228
+.L228:
 	.byte	2,1,-4,9,10,0,1,1,1,1,0,0,0,1,0
 	.byte	'../inverter/math/foc_math.c',0,0,0,0,0
-.L207:
+.L229:
 	.byte	5,6,7,0,5,2
-	.word	.L46
-	.byte	3,146,1,1,5,35,9
-	.half	.L127-.L46
+	.word	.L47
+	.byte	3,32,1,5,35,9
+	.half	.L140-.L47
 	.byte	3,7,1,5,13,9
-	.half	.L126-.L127
-	.byte	3,4,1,9
-	.half	.L7-.L126
-	.byte	3,3,1,5,39,9
+	.half	.L139-.L140
+	.byte	3,2,1,9
+	.half	.L7-.L139
+	.byte	3,1,1,5,39,9
 	.half	.L13-.L7
-	.byte	3,5,1,5,16,9
-	.half	.L208-.L13
+	.byte	3,2,1,5,16,9
+	.half	.L230-.L13
 	.byte	1,5,39,9
-	.half	.L209-.L208
-	.byte	1,5,35,9
-	.half	.L118-.L209
-	.byte	3,5,1,5,38,9
-	.half	.L210-.L118
-	.byte	1,5,35,9
-	.half	.L129-.L210
-	.byte	3,1,1,5,38,9
-	.half	.L211-.L129
-	.byte	1,5,35,9
-	.half	.L130-.L211
-	.byte	3,1,1,5,38,9
-	.half	.L212-.L130
+	.half	.L231-.L230
+	.byte	1,5,26,9
+	.half	.L141-.L231
+	.byte	3,2,1,5,29,9
+	.half	.L232-.L141
+	.byte	1,5,26,9
+	.half	.L143-.L232
+	.byte	3,1,1,5,29,9
+	.half	.L233-.L143
+	.byte	1,5,26,9
+	.half	.L144-.L233
+	.byte	3,1,1,5,29,9
+	.half	.L234-.L144
 	.byte	1,5,21,9
-	.half	.L131-.L212
-	.byte	3,5,1,5,19,9
-	.half	.L19-.L131
+	.half	.L145-.L234
+	.byte	3,2,1,5,19,9
+	.half	.L19-.L145
 	.byte	1,5,21,9
-	.half	.L213-.L19
+	.half	.L235-.L19
 	.byte	3,1,1,5,19,9
-	.half	.L25-.L213
+	.half	.L25-.L235
 	.byte	1,5,21,9
-	.half	.L214-.L25
+	.half	.L236-.L25
 	.byte	3,1,1,5,19,9
-	.half	.L31-.L214
+	.half	.L31-.L236
 	.byte	1,5,1,9
-	.half	.L215-.L31
+	.half	.L237-.L31
 	.byte	3,1,1,7,9
-	.half	.L82-.L215
+	.half	.L90-.L237
 	.byte	0,1,1
-.L205:
+.L227:
 	.sdecl	'.debug_ranges',debug,cluster('focSVPWM')
 	.sect	'.debug_ranges'
-.L81:
-	.word	-1,.L46,0,.L82-.L46,0,0
+.L89:
+	.word	-1,.L47,0,.L90-.L47,0,0
 	.sdecl	'.debug_loc',debug,cluster('FOC_ClarkeTransform')
 	.sect	'.debug_loc'
-.L37:
-	.word	-1,.L38,0,.L83-.L38
+.L38:
+	.word	-1,.L39,0,.L91-.L39
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L85:
-	.word	-1,.L38,0,.L83-.L38
+.L93:
+	.word	-1,.L39,0,.L91-.L39
 	.half	1
 	.byte	100
 	.word	0,0
-.L87:
-	.word	-1,.L38,0,.L83-.L38
+.L95:
+	.word	-1,.L39,0,.L91-.L39
 	.half	1
 	.byte	101
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('FOC_InvClarkeTransform')
 	.sect	'.debug_loc'
-.L39:
-	.word	-1,.L40,0,.L88-.L40
+.L40:
+	.word	-1,.L41,0,.L96-.L41
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L90:
-	.word	-1,.L40,0,.L88-.L40
+.L98:
+	.word	-1,.L41,0,.L96-.L41
 	.half	1
 	.byte	100
 	.word	0,0
-.L92:
-	.word	-1,.L40,0,.L88-.L40
+.L100:
+	.word	-1,.L41,0,.L96-.L41
 	.half	1
 	.byte	101
 	.word	0,0
-.L95:
-	.word	-1,.L40,.L123-.L40,.L88-.L40
+.L103:
+	.word	-1,.L41,.L136-.L41,.L96-.L41
 	.half	1
 	.byte	81
 	.word	0,0
-.L94:
-	.word	-1,.L40,.L122-.L40,.L88-.L40
+.L102:
+	.word	-1,.L41,.L135-.L41,.L96-.L41
 	.half	5
 	.byte	144,32,157,32,0
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('FOC_InvParkTransform')
 	.sect	'.debug_loc'
-.L43:
-	.word	-1,.L44,0,.L102-.L44
+.L44:
+	.word	-1,.L45,0,.L110-.L45
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L107:
-	.word	-1,.L44,0,.L102-.L44
+.L115:
+	.word	-1,.L45,0,.L110-.L45
 	.half	1
 	.byte	85
 	.word	0,0
-.L104:
-	.word	-1,.L44,0,.L102-.L44
+.L112:
+	.word	-1,.L45,0,.L110-.L45
 	.half	1
 	.byte	100
 	.word	0,0
-.L105:
-	.word	-1,.L44,0,.L102-.L44
+.L113:
+	.word	-1,.L45,0,.L110-.L45
 	.half	1
 	.byte	101
 	.word	0,0
-.L106:
-	.word	-1,.L44,0,.L102-.L44
+.L114:
+	.word	-1,.L45,0,.L110-.L45
 	.half	1
 	.byte	84
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('FOC_ParkTransform')
 	.sect	'.debug_loc'
-.L41:
-	.word	-1,.L42,0,.L96-.L42
+.L42:
+	.word	-1,.L43,0,.L104-.L43
 	.half	2
 	.byte	138,0
 	.word	0,0
-.L101:
-	.word	-1,.L42,0,.L96-.L42
+.L109:
+	.word	-1,.L43,0,.L104-.L43
 	.half	1
 	.byte	85
 	.word	0,0
-.L97:
-	.word	-1,.L42,0,.L96-.L42
+.L105:
+	.word	-1,.L43,0,.L104-.L43
 	.half	1
 	.byte	100
 	.word	0,0
-.L99:
-	.word	-1,.L42,0,.L96-.L42
+.L107:
+	.word	-1,.L43,0,.L104-.L43
 	.half	1
 	.byte	101
 	.word	0,0
-.L100:
-	.word	-1,.L42,0,.L96-.L42
+.L108:
+	.word	-1,.L43,0,.L104-.L43
+	.half	1
+	.byte	84
+	.word	0,0
+	.sdecl	'.debug_loc',debug,cluster('focGetMotorElecAngle')
+	.sect	'.debug_loc'
+.L50:
+	.word	-1,.L51,0,.L118-.L51
+	.half	2
+	.byte	138,0
+	.word	0,0
+.L122:
+	.word	-1,.L51,0,.L147-.L51
+	.half	1
+	.byte	86
+	.word	0,0
+.L120:
+	.word	-1,.L51,0,.L147-.L51
+	.half	1
+	.byte	85
+	.word	0,0
+.L119:
+	.word	-1,.L51,0,.L148-.L51
 	.half	1
 	.byte	84
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('focSVPWM')
 	.sect	'.debug_loc'
-.L112:
-	.word	-1,.L46,0,.L125-.L46
+.L126:
+	.word	-1,.L47,0,.L138-.L47
 	.half	1
 	.byte	101
-	.word	.L127-.L46,.L110-.L46
+	.word	.L140-.L47,.L123-.L47
 	.half	1
 	.byte	111
 	.word	0,0
-.L119:
-	.word	-1,.L46,.L129-.L46,.L110-.L46
+.L132:
+	.word	-1,.L47,.L143-.L47,.L123-.L47
 	.half	1
 	.byte	81
 	.word	0,0
-.L111:
-	.word	-1,.L46,0,.L126-.L46
+.L124:
+	.word	-1,.L47,0,.L139-.L47
 	.half	1
 	.byte	100
 	.word	0,0
-.L120:
-	.word	-1,.L46,.L130-.L46,.L110-.L46
+.L133:
+	.word	-1,.L47,.L144-.L47,.L123-.L47
 	.half	1
 	.byte	82
 	.word	0,0
-.L121:
-	.word	-1,.L46,.L131-.L46,.L110-.L46
+.L134:
+	.word	-1,.L47,.L145-.L47,.L123-.L47
 	.half	1
 	.byte	83
 	.word	0,0
-.L115:
+.L129:
 	.word	0,0
-.L116:
+.L130:
 	.word	0,0
-.L117:
-	.word	-1,.L46,.L118-.L46,.L128-.L46
+.L131:
+	.word	-1,.L47,.L141-.L47,.L142-.L47
 	.half	5
 	.byte	144,32,157,32,0
 	.word	0,0
-.L114:
-	.word	-1,.L46,0,.L110-.L46
+.L128:
+	.word	-1,.L47,0,.L123-.L47
 	.half	2
 	.byte	145,112
 	.word	0,0
-.L45:
-	.word	-1,.L46,0,.L124-.L46
+.L46:
+	.word	-1,.L47,0,.L137-.L47
 	.half	2
 	.byte	138,0
-	.word	.L124-.L46,.L110-.L46
+	.word	.L137-.L47,.L123-.L47
 	.half	2
 	.byte	138,16
-	.word	.L110-.L46,.L110-.L46
+	.word	.L123-.L47,.L123-.L47
 	.half	2
 	.byte	138,0
 	.word	0,0
 	.sdecl	'.debug_loc',debug,cluster('focWrapAngle')
 	.sect	'.debug_loc'
-.L109:
-	.word	-1,.L48,0,.L108-.L48
+.L117:
+	.word	-1,.L49,0,.L116-.L49
 	.half	1
 	.byte	84
-	.word	.L132-.L48,.L108-.L48
+	.word	.L146-.L49,.L116-.L49
 	.half	1
 	.byte	82
 	.word	0,0
-.L47:
-	.word	-1,.L48,0,.L108-.L48
+.L48:
+	.word	-1,.L49,0,.L116-.L49
 	.half	2
 	.byte	138,0
 	.word	0,0
 	.sdecl	'.debug_frame',debug
 	.sect	'.debug_frame'
-.L216:
+.L238:
 	.word	48
 	.word	-1
 	.byte	3,0,2,1,27,12,26,0,8,26,8,27,8,30,8,29,8,28,8,16,8,17,8,24,8,25,8,31,8,32,8,33,8,34,8,35,8,36,8,37,8,38
@@ -1293,35 +1446,39 @@ __focWrapAngle_function_end:
 	.sdecl	'.debug_frame',debug,cluster('FOC_ClarkeTransform')
 	.sect	'.debug_frame'
 	.word	20
-	.word	.L216,.L38,.L83-.L38
+	.word	.L238,.L39,.L91-.L39
 	.byte	8,18,8,19,8,22,8,23
 	.sdecl	'.debug_frame',debug,cluster('FOC_InvClarkeTransform')
 	.sect	'.debug_frame'
 	.word	20
-	.word	.L216,.L40,.L88-.L40
+	.word	.L238,.L41,.L96-.L41
 	.byte	8,18,8,19,8,22,8,23
 	.sdecl	'.debug_frame',debug,cluster('FOC_ParkTransform')
 	.sect	'.debug_frame'
 	.word	20
-	.word	.L216,.L42,.L96-.L42
+	.word	.L238,.L43,.L104-.L43
 	.byte	8,18,8,19,8,22,8,23
 	.sdecl	'.debug_frame',debug,cluster('FOC_InvParkTransform')
 	.sect	'.debug_frame'
 	.word	20
-	.word	.L216,.L44,.L102-.L44
+	.word	.L238,.L45,.L110-.L45
 	.byte	8,18,8,19,8,22,8,23
 	.sdecl	'.debug_frame',debug,cluster('focSVPWM')
 	.sect	'.debug_frame'
 	.word	36
-	.word	.L216,.L46,.L110-.L46
+	.word	.L238,.L47,.L123-.L47
 	.byte	4
-	.word	(.L124-.L46)/2
+	.word	(.L137-.L47)/2
 	.byte	19,16,22,26,3,19,138,16,4
-	.word	(.L110-.L124)/2
+	.word	(.L123-.L137)/2
 	.byte	19,0,8,26,0,0
 	.sdecl	'.debug_frame',debug,cluster('focWrapAngle')
 	.sect	'.debug_frame'
 	.word	24
-	.word	.L216,.L48,.L108-.L48
+	.word	.L238,.L49,.L116-.L49
 	.byte	8,18,8,19,8,20,8,21,8,22,8,23
+	.sdecl	'.debug_frame',debug,cluster('focGetMotorElecAngle')
+	.sect	'.debug_frame'
+	.word	12
+	.word	.L238,.L51,.L118-.L51
 	; Module end

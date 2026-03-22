@@ -1,21 +1,11 @@
+#ifndef PI_H_
+#define PI_H_
+
 #include "Ifx_Types.h"
+#include "config.h"
+#include "state.h"
 
-#ifndef PI_H
-#define PI_H
+void PI_Init(PiConfig *config, PiState *state, float32 kp, float32 ki, float32 min, float32 max);
+float32 PI_Run(const PiConfig *config, PiState *state, float32 setpoint, float32 current);
 
-typedef struct
-{
-  float32 Kp;
-  float32 Ki;
-
-  float32 integral;
-
-  float32 outMax;
-  float32 outMin;
-
-} PI_Controller_t;
-
-void PI_Init(PI_Controller_t* pi, float32 kp, float32 ki, float32 min, float32 max);
-float32 PI_Run(PI_Controller_t* pi, float32 setpoint, float32 current);
-
-#endif
+#endif /* PI_H_ */

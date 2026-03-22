@@ -1,61 +1,19 @@
-/**********************************************************************************************************************
- * \file math.h
- * \copyright Copyright (C) Infineon Technologies AG 2019
- *********************************************************************************************************************/
-
 #ifndef FOC_MATH_H_
 #define FOC_MATH_H_
 
-/*********************************************************************************************************************/
-/*-----------------------------------------------------Includes------------------------------------------------------*/
-/*********************************************************************************************************************/
 #include "Ifx_Types.h"
-
-/*********************************************************************************************************************/
-/*------------------------------------------------------Macros-------------------------------------------------------*/
-/*********************************************************************************************************************/
-/* Math Constants */
-#define FOC_TWO_PI          (6.28318530718f)
-#define FOC_SQRT3           (1.732050808f)
-#define FOC_ONE_BY_SQRT3    (0.577350269f)  /* 1 / sqrt(3) */
-#define FOC_SQRT3_BY_2      (0.866025404f)  /* sqrt(3) / 2 */
-#define FOC_ONE_HALF        (0.5f)
-
-/* Duty Cycle Limits */
-#define FOC_DUTY_MAX        (1.0f)
-#define FOC_DUTY_MIN        (0.0f)
-
-/*********************************************************************************************************************/
-/*-------------------------------------------------Data Structures---------------------------------------------------*/
-/*********************************************************************************************************************/
-typedef struct {
-    float32 u;
-    float32 v;
-    float32 w;
-} ThreePhase_t;
-
-typedef struct {
-    float32 alpha;
-    float32 beta;
-} AlphaBeta_t;
-
-typedef struct {
-    float32 d;
-    float32 q;
-} DQ_t;
-
-/*********************************************************************************************************************/
-/*------------------------------------------------Function Prototypes------------------------------------------------*/
-/*********************************************************************************************************************/
+#include "current_math.h"
+#include "foc_types.h"
 
 /* Core Transformations */
-void FOC_ClarkeTransform(const ThreePhase_t *input_abc, AlphaBeta_t *output_ab);
-void FOC_InvClarkeTransform(const AlphaBeta_t *input_ab, ThreePhase_t *output_abc);
-void FOC_ParkTransform(const AlphaBeta_t *input_ab, DQ_t *output_dq, float32 sinTheta, float32 cosTheta);
-void FOC_InvParkTransform(const DQ_t *input_dq, AlphaBeta_t *output_ab, float32 sinTheta, float32 cosTheta);
+void FOC_ClarkeTransform(const ThreePhaseCurrents *input_abc, CurrentsAB *output_ab);
+void FOC_InvClarkeTransform(const CurrentsAB *input_ab, ThreePhaseCurrents *output_abc);
+void FOC_ParkTransform(const CurrentsAB *input_ab, CurrentsDQ *output_dq, float32 sinTheta, float32 cosTheta);
+void FOC_InvParkTransform(const CurrentsDQ *input_dq, CurrentsAB *output_ab, float32 sinTheta, float32 cosTheta);
 float32 focWrapAngle(float32 angle);
+float32 focGetMotorElecAngle(float32 theta_resolver, float32 resolver_offset, uint8 motor_polepairs);
 
 /* Modulation */
-void focSVPWM(const AlphaBeta_t *V_ab, ThreePhase_t *DutyCycles);
+void focSVPWM(const CurrentsAB *V_ab, ThreePhaseDuty *DutyCycles);
 
 #endif /* FOC_MATH_H_ */

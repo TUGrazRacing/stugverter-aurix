@@ -58,7 +58,9 @@ Libraries/iLLD/TC38A/Tricore/_Impl \
 Libraries/iLLD/TC38A/Tricore/_Lib/DataHandling \
 Libraries/iLLD/TC38A/Tricore/_PinMap \
 inverter/adc \
+inverter/config \
 inverter/control \
+inverter/driver \
 inverter/math \
 inverter/pwm \
 

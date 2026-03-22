@@ -1,14 +1,8 @@
-#include "adc.h"
-#include <inverter/pwm/phase_pwm.h>
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
-#include "Bsp.h"
-#include "IfxPort_Pinmap.h"
-#include "stdio.h"
-#include "logger.h"
-#include "gate_driver.h"
 #include "motor_control.h"
+
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -28,13 +22,7 @@ void core0_main(void)
     IfxCpu_emitEvent(&g_cpuSyncEvent);
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
 
-    gatedriverInit();
-    controller_init();
-    adcInit();
-    inverterInit();
-
-    gatedriverReadyMode();
-    gatedriverEnable();
+    controllerInit();
 
 //    logSysClocks();
     while(1)
