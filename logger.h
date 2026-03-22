@@ -14,7 +14,7 @@ typedef struct
     float32 i_u;
     float32 i_v;
     float32 theta;
-    uint32 timestamp_ticks; /* Optional: store when the sample happened */
+    uint64 time;
 } LogData_t;
 
 /*********************************************************************************************************************/
