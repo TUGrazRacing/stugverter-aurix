@@ -1,5 +1,4 @@
 #include "adc.h"
-#include "serialio.h"
 
 #include <IfxCpu_Irq.h>
 #include <IfxCpu.h>

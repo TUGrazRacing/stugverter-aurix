@@ -1,4 +1,4 @@
-#include "app_config.h"
+#include <app_config.h>
 #include <string.h>
 #include <limits.h>
 #include <IfxStm.h>
@@ -44,7 +44,7 @@ void initConfig(void)
     app_config.foc.voltageRef        = 0.125f;
     app_config.foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL; //5 seconds
     app_config.foc.resolver_offset   = 0.0f;
-    app_config.foc.id_ref            = 0.0f;
+    app_config.foc.id_ref            = -1.0f;
     app_config.foc.iq_ref            = 5.0f;
 
     //PI Controller ID

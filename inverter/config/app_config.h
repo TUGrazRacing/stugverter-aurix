@@ -1,8 +1,8 @@
 #ifndef APP_CONFIG_H_
 #define APP_CONFIG_H_
 
-#include "config.h"
-#include "state.h"
+#include <types_config.h>
+#include <types_state.h>
 
 typedef struct
 {

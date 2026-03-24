@@ -1,8 +1,8 @@
 #ifndef PWM_H_
 #define PWM_H_
 
+#include <types_config.h>
 #include "Ifx_Types.h"
-#include "config.h"
 
 #define PWM_FREQUENCY (20.0E3)
 
