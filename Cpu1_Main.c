@@ -27,27 +27,35 @@
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
+#include "IfxStm.h"
 #include "uart.h"
+#include "can.h"
+#include "Bsp.h"
+#include "logger.h"
+#include "protocol.h"
+#include "stream.h"
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
-void core1_main(void)
+void core1_main (void)
 {
-    IfxCpu_enableInterrupts();
+  IfxCpu_enableInterrupts();
+  IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
 
-    /* !!WATCHDOG1 IS DISABLED HERE!!
-     * Enable the watchdog and service it periodically if it is required
-     */
-    IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
+  IfxCpu_emitEvent(&g_cpuSyncEvent);
+  IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
 
-    /* Wait for CPU sync event */
-    IfxCpu_emitEvent(&g_cpuSyncEvent);
-    IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
-
-    UART_Init(115200);
-
-    while(1)
-    {
-      UART_Process();
-    }
+  initSimpleUART();
+//    enableCanTransceiver();
+//    initMcmcan();
+//    initLogger();
+  Protocol_Init();
+  Stream_Init();
+  while (1)
+  {
+    Protocol_Process();
+    Stream_Process();
+//    IfxStm_wait(IfxStm_getTicksFromMilliseconds(&MODULE_STM0, 100));
+//        logProcess();
+  }
 }

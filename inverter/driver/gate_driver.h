@@ -15,12 +15,6 @@
 void gatedriverInit(void);
 
 /**
- * @brief Resets the Gate Driver internal logic.
- * Performs a High->Low->High pulse on the NRST pins to clear faults and latch configuration.
- */
-void gatedriverReadyMode(void);
-
-/**
  * @brief Enables the Gate Driver outputs.
  * Sets the EN pins High.
  */

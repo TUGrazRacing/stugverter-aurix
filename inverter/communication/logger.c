@@ -4,10 +4,12 @@
 #include "logger.h"
 #include "IfxScuCcu.h"
 #include <stdio.h>
+#include "can.h"
+#include "Ifx_Types.h"
+#include "IfxCpu.h"
+#include "IfxScuWdt.h"
+#include "IfxStm.h"
 
-/*********************************************************************************************************************/
-/*------------------------------------------------Global Variables---------------------------------------------------*/
-/*********************************************************************************************************************/
 volatile uint64 start_ticks = 0;
 volatile uint64 stop_ticks = 0;
 
@@ -16,56 +18,58 @@ static LogData_t g_logBuffer[LOG_BUFFER_SIZE];
 static volatile uint32 g_writeIdx = 0;
 static volatile uint32 g_readIdx = 0;
 
+/* CAN send timing */
+static uint64 g_periodTicks = 0;
+static uint64 g_nextTxTime = 0;
 /*********************************************************************************************************************/
 /*---------------------------------------------Function Implementations----------------------------------------------*/
 /*********************************************************************************************************************/
 
-void initLogger (void)
+static uint64 periodTicks = 0;
+static uint64 nextTxTime  = 0;
+
+void initLogger(void)
 {
-  g_writeIdx = 0;
-  g_readIdx = 0;
-  printf("[Logger] Initialized ring buffer size: %d\n", LOG_BUFFER_SIZE);
+    g_writeIdx = 0;
+    g_readIdx  = 0;
+
+    uint64 stmFreqHz = (uint64)IfxStm_getFrequency(IFXSTM_DEFAULT_TIMER);
+    periodTicks = stmFreqHz / 1000;
+    nextTxTime  = IfxStm_get(IFXSTM_DEFAULT_TIMER) + periodTicks;
 }
 
-//int sample_nr = 0;
-
-boolean logPush (const LogData_t *log)
+boolean logPush(const LogData_t *log)
 {
-//    if(sample_nr++ < 100) return FALSE;
-  uint32 nextWriteIdx = (g_writeIdx + 1) % LOG_BUFFER_SIZE;
+    uint32 nextWriteIdx = (g_writeIdx + 1) % LOG_BUFFER_SIZE;
 
-  /* Check if buffer is full (Next write would catch up to Read) */
-  if (nextWriteIdx == g_readIdx)
-  {
-    /* Buffer Overflow! Drop sample or set an error flag */
-    return FALSE;
-  }
-  g_logBuffer[g_writeIdx] = *log;
+    if (nextWriteIdx == g_readIdx)
+    {
+        return FALSE;
+    }
 
-  g_writeIdx = nextWriteIdx;
-//    sample_nr = 0;
-
-  return TRUE;
+    g_logBuffer[g_writeIdx] = *log;
+    g_writeIdx = nextWriteIdx;
+    return TRUE;
 }
 
-void logProcess (void)
+void logProcess(void)
 {
-  /* Process chunks of data to allow other main loop tasks to run */
-  uint32 count = 0;
-  const uint32 MAX_PRINT_PER_LOOP = 10;
+    uint64 now = IfxStm_get(IFXSTM_DEFAULT_TIMER);
 
-  while ((g_readIdx != g_writeIdx) && (count < MAX_PRINT_PER_LOOP))
-  {
-    LogData_t *data = &g_logBuffer[g_readIdx];
+    if ((sint64)(now - nextTxTime) < 0)
+    {
+        return;
+    }
 
-    /* Print the data (Slow operation) */
-    /* Format: [ADC] U: 1234, V: 2345 */
-    printf("%.2f %.2f %.2f\n", data->i_u, data->i_v, data->theta);
+    if (g_readIdx != g_writeIdx)
+    {
+        LogData_t data = g_logBuffer[g_readIdx];
+        g_readIdx = (g_readIdx + 1) % LOG_BUFFER_SIZE;
 
-    /* Advance Read Index */
-    g_readIdx = (g_readIdx + 1) % LOG_BUFFER_SIZE;
-    count++;
-  }
+        transmitCanMessage(data.i_u, data.i_v, data.theta);
+    }
+
+    nextTxTime += periodTicks;
 }
 
 void logSysClocks (void)

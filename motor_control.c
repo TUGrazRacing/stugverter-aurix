@@ -16,7 +16,6 @@ void controllerStep(void)
 {
     static uint16 sin_raw, cos_raw, curr_u_raw, curr_v_raw;
     readAdc(&curr_u_raw, &curr_v_raw, &sin_raw, &cos_raw);
-
     static float32 theta_resolver_mech;
     theta_resolver_mech = resolverGetMechanicalAngle(sin_raw, cos_raw);
 
@@ -38,6 +37,5 @@ void controllerInit(void)
     adcInit();
     pwmInit(&app_config.pwm);
 
-    gatedriverReadyMode();
     gatedriverEnable();
 }

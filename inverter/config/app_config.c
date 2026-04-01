@@ -40,22 +40,22 @@ void initConfig(void)
 
     /* FOC defaults */
     app_config.foc.motor_polepairs   = 7U;
-    app_config.foc.speedRefHz        = 15.0f;
-    app_config.foc.voltageRef        = 0.125f;
+    app_config.foc.speedRefHz        = 20.0f;
+    app_config.foc.voltageRef        = 0.15f;
     app_config.foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL; //5 seconds
     app_config.foc.resolver_offset   = 0.0f;
-    app_config.foc.id_ref            = -1.0f;
+    app_config.foc.id_ref            = 0.0f;
     app_config.foc.iq_ref            = 5.0f;
 
     //PI Controller ID
-    app_config.foc.pi_config_id.Kp    = 0.2f;
-    app_config.foc.pi_config_id.Ki    = 0.001f;
+    app_config.foc.pi_config_id.Kp    = 0.05f;
+    app_config.foc.pi_config_id.Ki    = 0.05f;
     app_config.foc.pi_config_id.outMax = 0.5f;
     app_config.foc.pi_config_id.outMin = -0.5f;
 
     //PI Controller IQ
-    app_config.foc.pi_config_iq.Kp    = 0.2f;
-    app_config.foc.pi_config_iq.Ki    = 0.001f;
+    app_config.foc.pi_config_iq.Kp    = 0.05f;
+    app_config.foc.pi_config_iq.Ki    = 0.05f;
     app_config.foc.pi_config_iq.outMax = 0.5f;
     app_config.foc.pi_config_iq.outMin = -0.5f;
 
