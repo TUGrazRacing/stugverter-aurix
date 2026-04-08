@@ -62,16 +62,16 @@ void initSimpleUART(void)
 
     /* Configure Pins (Make sure these match your specific board) */
     const IfxAsclin_Asc_Pins pins = {
-        .cts        = NULL_PTR,
-        .ctsMode    = IfxPort_InputMode_pullUp,
-        .rx         = &IfxAsclin0_RXA_P14_1_IN,
-        .rxMode     = IfxPort_InputMode_pullUp,
-        .rts        = NULL_PTR,
-        .rtsMode    = IfxPort_OutputMode_pushPull,
-        .tx         = &IfxAsclin0_TX_P14_0_OUT,
-        .txMode     = IfxPort_OutputMode_pushPull,
-        .pinDriver  = IfxPort_PadDriver_cmosAutomotiveSpeed1
-    };
+            .cts        = NULL_PTR,
+            .ctsMode    = IfxPort_InputMode_pullUp,
+            .rx         = &IfxAsclin0_RXA_P14_1_IN,
+            .rxMode     = IfxPort_InputMode_pullUp,
+            .rts        = NULL_PTR,
+            .rtsMode    = IfxPort_OutputMode_pushPull,
+            .tx         = &IfxAsclin0_TX_P14_0_OUT,
+            .txMode     = IfxPort_OutputMode_pushPull,
+            .pinDriver  = IfxPort_PadDriver_cmosAutomotiveSpeed1
+        };
     ascConf.pins = &pins;
 
     /* Link FIFO buffers */

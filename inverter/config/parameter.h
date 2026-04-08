@@ -1,31 +1,33 @@
-#ifndef PARAMETER_H_
-#define PARAMETER_H_
+#ifndef PARAMETER_H
+#define PARAMETER_H
 
-#include <stdint.h>
-#include <stdbool.h>
+#include <stdbool.h>       // Adds support for 'bool', 'true', and 'false'
+#include <stdint.h>        // Adds support for 'uint16_t', 'uint32_t', etc.
+#include "Cpu/Std/Ifx_Types.h"
 
-/* Assuming ParameterType resolves to byte size in your existing code
- * (e.g. TYPE_UINT16 = 2, TYPE_FLOAT32 = 4)
- */
-typedef uint8_t ParameterType;
-#define TYPE_UINT8   1
-#define TYPE_INT8    1
-#define TYPE_UINT16  2
-#define TYPE_UINT32  4
-#define TYPE_FLOAT32 4
-#define TYPE_UINT64  8
+/* Die Enum-Werte entsprechen der Byte-Größe für die Payload-Verarbeitung */
+typedef enum {
+    TYPE_UINT8   = 1,
+    TYPE_INT8    = 1,
+    TYPE_UINT16  = 2,
+    TYPE_UINT32  = 4,
+    TYPE_FLOAT32 = 4,
+    TYPE_UINT64  = 8
+} ParameterType;
 
-/* Access Types using bitflags */
-typedef enum
-{
-    ACCESS_NONE = 0x00,
-    ACCESS_R    = 0x01,
-    ACCESS_W    = 0x02,
-    ACCESS_RW   = 0x03  /* (ACCESS_R | ACCESS_W) */
+typedef enum {
+    ACCESS_R  = 0x01,
+    ACCESS_W  = 0x02,
+    ACCESS_RW = 0x03
 } AccessType;
 
-/* Function Prototypes */
+/* API Prototypen */
 bool readParameter(uint16_t address, void *out_data, uint8_t *out_len);
 bool writeParameter(uint16_t address, const void *in_data, uint8_t in_len);
+bool getParameterLen(uint16_t address, uint8_t *out_len);
+uint16_t getParameterCount(void);
 
-#endif /* PARAMETER_H_ */
+/* Wichtig für Dictionary: Muss den char** label enthalten */
+bool getParameterInfo(uint16_t index, uint16_t *address, uint8_t *type, uint8_t *access, const char **label);
+
+#endif
