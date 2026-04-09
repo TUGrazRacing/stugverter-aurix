@@ -64,11 +64,11 @@ void initSimpleUART(void)
     const IfxAsclin_Asc_Pins pins = {
             .cts        = NULL_PTR,
             .ctsMode    = IfxPort_InputMode_pullUp,
-            .rx         = &IfxAsclin0_RXA_P14_1_IN,
+            .rx         = &IfxAsclin0_RXA_P14_1_IN, //&IfxAsclin0_RXA_P14_1_IN, | &IfxAsclin0_RXD_P33_10_IN
             .rxMode     = IfxPort_InputMode_pullUp,
             .rts        = NULL_PTR,
             .rtsMode    = IfxPort_OutputMode_pushPull,
-            .tx         = &IfxAsclin0_TX_P14_0_OUT,
+            .tx         = &IfxAsclin0_TX_P14_0_OUT, //&IfxAsclin0_TX_P14_0_OUT, | &IfxAsclin0_TX_P33_9_OUT
             .txMode     = IfxPort_OutputMode_pushPull,
             .pinDriver  = IfxPort_PadDriver_cmosAutomotiveSpeed1
         };
