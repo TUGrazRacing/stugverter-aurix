@@ -108,123 +108,117 @@ static void Protocol_ProcessPacket (void)
   uint8_t data_len = rx_len - 3; // Total length minus CMD and 2 bytes CRC
 
   /* -----------------------------------------------------------------
-   * READ COMMAND (0x01)
-   * -----------------------------------------------------------------*/
-  if (cmd == PROTOCOL_CMD_READ)
-  {
-    if (data_len < 3)
+     * READ COMMAND (0x01)
+     * Erwartet: [ID1_LSB] [ID1_MSB] [ID2_LSB] [ID2_MSB] ... (Liste von 16-Bit Adressen)
+     * Antwort:  [Val1_Bytes...] [Val2_Bytes...] ... (Reine Werte in exakter Reihenfolge)
+     * -----------------------------------------------------------------*/
+    if (cmd == PROTOCOL_CMD_READ)
     {
-      Protocol_SendNACK(NACK_ERR_UNKNOWN_CMD);
-      return;
-    }
+        // Da jede ID/Adresse 2 Bytes lang ist, ergibt sich die Anzahl aus der Payload-Länge
+        uint8_t req_cnt = data_len / 2;
 
-    uint16_t start_addr = (uint16_t) rx_buf[1] | ((uint16_t) rx_buf[2] << 8);
-    uint8_t cnt = rx_buf[3];
-
-    uint8_t ack_payload[PROTOCOL_MAX_PAYLOAD];
-    uint8_t ack_idx = 0;
-
-    ack_payload[ack_idx++] = start_addr & 0xFF;
-    ack_payload[ack_idx++] = (start_addr >> 8) & 0xFF;
-
-    uint8_t cnt_idx = ack_idx++; // Reserve space for the actual count of read registers
-    uint8_t actual_cnt = 0;
-    uint16_t current_addr = start_addr;
-
-    // If CNT is 0, read all possible up to buffer limit. Otherwise read CNT.
-    uint8_t target_cnt = (cnt == 0) ? 255 : cnt;
-
-    for (uint8_t i = 0; i < target_cnt; i++)
-    {
-      uint8_t val[8];
-      uint8_t vlen = 0;
-
-      if (readParameter(current_addr, val, &vlen))
-      {
-        if ((ack_idx + vlen) <= (PROTOCOL_MAX_PAYLOAD - 2))
+        // Wenn keine IDs mitgeschickt wurden oder die Länge ungerade ist
+        if (req_cnt == 0 || (data_len % 2 != 0))
         {
-          memcpy(&ack_payload[ack_idx], val, vlen);
-          ack_idx += vlen;
-          actual_cnt++;
-          current_addr++; // Increment address for next register
+            Protocol_SendNACK(NACK_ERR_OTHER);
+            return;
         }
-        else
+
+        uint8_t ack_payload[PROTOCOL_MAX_PAYLOAD];
+        uint8_t ack_idx = 0;
+
+        // Iteriere in der korrekten Reihenfolge über alle angeforderten Adressen
+        for (uint8_t i = 0; i < req_cnt; i++)
         {
-          break; // Packet full
+            // Extrahiere die 2-Byte Adresse (Little Endian). rx_buf[1] ist das erste Byte nach dem CMD.
+            uint16_t req_addr = (uint16_t)rx_buf[1 + (i * 2)] | ((uint16_t)rx_buf[2 + (i * 2)] << 8);
+
+            uint8_t val[8]; // Temporärer Puffer für den Wert (max 8 Bytes laut Parameter-Typen)
+            uint8_t vlen = 0;
+
+            if (readParameter(req_addr, val, &vlen))
+            {
+                if ((ack_idx + vlen) <= PROTOCOL_MAX_PAYLOAD)
+                {
+                    memcpy(&ack_payload[ack_idx], val, vlen);
+                    ack_idx += vlen;
+                }
+                else
+                {
+                    Protocol_SendNACK(NACK_ERR_OTHER);
+                    return;
+                }
+            }
+            else
+            {
+                Protocol_SendNACK(NACK_ERR_INVALID_ADDR);
+                return;
+            }
         }
-      }
-      else
+
+        Protocol_SendPacket(PROTOCOL_CMD_READ_ACK, ack_payload, ack_idx);
+    }
+    /* -----------------------------------------------------------------
+       * WRITE COMMAND (0x02)
+       * Erwartet: [Addr1_LSB][Addr1_MSB][Val1...] [Addr2_LSB][Addr2_MSB][Val2...] ...
+       * Antwort:  [Anzahl_erfolgreicher_Writes]
+       * -----------------------------------------------------------------*/
+      else if (cmd == PROTOCOL_CMD_WRITE)
       {
-        if (cnt != 0)
-          break; // Stop if explicit read fails
-      }
-    }
+        uint8_t payload_ptr = 1; // rx_buf[0] ist CMD, Daten starten ab Index 1
+        uint8_t actual_cnt = 0;
 
-    ack_payload[cnt_idx] = actual_cnt;
-
-    if (actual_cnt == 0 && cnt != 0)
-    {
-      Protocol_SendNACK(NACK_ERR_INVALID_ADDR);
-    }
-    else
-    {
-      Protocol_SendPacket(PROTOCOL_CMD_READ_ACK, ack_payload, ack_idx);
-    }
-  }
-  /* -----------------------------------------------------------------
-   * WRITE COMMAND (0x02)
-   * -----------------------------------------------------------------*/
-  else if (cmd == PROTOCOL_CMD_WRITE)
-  {
-    if (data_len < 4)
-    {
-      Protocol_SendNACK(NACK_ERR_UNKNOWN_CMD);
-      return;
-    }
-
-    uint16_t start_addr = (uint16_t) rx_buf[1] | ((uint16_t) rx_buf[2] << 8);
-    uint8_t cnt = rx_buf[3];
-    uint8_t actual_cnt = 0;
-    uint8_t payload_ptr = 4;
-
-    for (uint8_t i = 0; i < cnt; i++)
-    {
-      uint8_t vlen = 0;
-      // Erwartete Länge aus der Tabelle holen
-      if (getParameterLen(start_addr + i, &vlen))
-      {
-        if (payload_ptr + vlen <= rx_len - 2)
+        // Wir loopen durch die Payload, solange noch mindestens Platz für eine Adresse (2 Bytes) ist
+        while (payload_ptr < data_len + 1)
         {
-          if (writeParameter(start_addr + i, &rx_buf[payload_ptr], vlen))
+          // 1. Adresse extrahieren (2 Bytes, Little Endian)
+          if (payload_ptr + 2 > data_len + 1) break; // Paket zu Ende
+          uint16_t req_addr = (uint16_t)rx_buf[payload_ptr] | ((uint16_t)rx_buf[payload_ptr + 1] << 8);
+          payload_ptr += 2;
+
+          // 2. Erwartete Länge für dieses spezifische Register aus der Tabelle holen
+          uint8_t vlen = 0;
+          if (getParameterLen(req_addr, &vlen))
           {
-            actual_cnt++;
+            // 3. Prüfen, ob der Wert für dieses Register noch komplett im Puffer liegt
+            if (payload_ptr + vlen <= data_len + 1)
+            {
+              // 4. Parameter schreiben
+              if (writeParameter(req_addr, &rx_buf[payload_ptr], vlen))
+              {
+                actual_cnt++;
+              }
+              // Pointer um die Länge des geschriebenen Wertes verschieben
+              payload_ptr += vlen;
+            }
+            else
+            {
+              // Paket abgeschnitten, Wert unvollständig
+              break;
+            }
           }
-          payload_ptr += vlen;
+          else
+          {
+            // Adresse existiert nicht -> Wir brechen ab und senden NACK,
+            // da wir nicht wissen, wie viele Bytes wir für den "unbekannten" Wert überspringen müssten.
+            Protocol_SendNACK(NACK_ERR_INVALID_ADDR);
+            return;
+          }
+        }
+
+        // Wenn absolut nichts geschrieben werden konnte (bei angefordertem Write) -> NACK
+        if (actual_cnt == 0 && data_len > 0)
+        {
+          Protocol_SendNACK(NACK_ERR_OTHER);
         }
         else
         {
-          break;
-        } // Paket zu Ende
+          // Sende ein ACK mit der Anzahl der erfolgreich verarbeiteten Register
+          uint8_t ack_payload[1];
+          ack_payload[0] = actual_cnt;
+          Protocol_SendPacket(PROTOCOL_CMD_WRITE_ACK, ack_payload, 1);
+        }
       }
-      else
-      {
-        break;
-      } // Adresse nicht in Tabelle
-    }
-
-    if (actual_cnt == 0 && cnt > 0)
-    {
-      Protocol_SendNACK(NACK_ERR_INVALID_ADDR);
-    }
-    else
-    {
-      uint8_t ack_payload[3];
-      ack_payload[0] = start_addr & 0xFF;
-      ack_payload[1] = (start_addr >> 8) & 0xFF;
-      ack_payload[2] = actual_cnt;
-      Protocol_SendPacket(PROTOCOL_CMD_WRITE_ACK, ack_payload, 3);
-    }
-  }
   /* -----------------------------------------------------------------
    * STREAM START COMMAND (0x03)
    * -----------------------------------------------------------------*/
