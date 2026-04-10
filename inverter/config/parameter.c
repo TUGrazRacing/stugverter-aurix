@@ -88,11 +88,22 @@ static const Parameter param_table[] = {
 
 /* --- API Functions --- */
 
+uint8_t getParameterSize(ParameterType type) {
+    switch(type) {
+        case TYPE_UINT8: case TYPE_INT8: return 1;
+        case TYPE_UINT16: case TYPE_INT16: return 2;
+        case TYPE_UINT32: case TYPE_INT32: case TYPE_FLOAT32: return 4;
+        case TYPE_UINT64: return 8;
+        default: return 0;
+    }
+}
+
 bool readParameter(uint16_t address, void *out_data, uint8_t *out_len) {
     for (uint16_t i = 0; i < PARAM_TABLE_SIZE; i++) {
         if (param_table[i].address == address) {
             if (!(param_table[i].access & ACCESS_R)) return false;
-            *out_len = (uint8_t)param_table[i].type;
+            // FIX: Use the size helper
+            *out_len = getParameterSize(param_table[i].type);
             memcpy(out_data, param_table[i].ptr, *out_len);
             return true;
         }
@@ -104,7 +115,8 @@ bool writeParameter(uint16_t address, const void *in_data, uint8_t in_len) {
     for (uint16_t i = 0; i < PARAM_TABLE_SIZE; i++) {
         if (param_table[i].address == address) {
             if (!(param_table[i].access & ACCESS_W)) return false;
-            if (in_len != (uint8_t)param_table[i].type) return false;
+            // FIX: Use the size helper
+            if (in_len != getParameterSize(param_table[i].type)) return false;
             memcpy(param_table[i].ptr, in_data, in_len);
             return true;
         }
@@ -115,7 +127,8 @@ bool writeParameter(uint16_t address, const void *in_data, uint8_t in_len) {
 bool getParameterLen(uint16_t address, uint8_t *out_len) {
     for (uint16_t i = 0; i < PARAM_TABLE_SIZE; i++) {
         if (param_table[i].address == address) {
-            *out_len = (uint8_t)param_table[i].type;
+            // FIX: Use the size helper
+            *out_len = getParameterSize(param_table[i].type);
             return true;
         }
     }
