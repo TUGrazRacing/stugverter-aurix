@@ -30,7 +30,6 @@
 #include "IfxStm.h"
 #include "uart.h"
 #include "can.h"
-#include "Bsp.h"
 #include "logger.h"
 #include "protocol.h"
 #include "stream.h"
