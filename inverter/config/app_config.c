@@ -4,6 +4,8 @@
 #include <IfxStm.h>
 
 AppConfig app_config;
+AppConfig app_config_shadow;
+AppSetpoints app_setpoints;
 AppState  app_state;
 
 #define ADC_STEPS 4096U
@@ -11,6 +13,8 @@ AppState  app_state;
 void initConfig(void)
 {
     memset(&app_config, 0, sizeof(app_config));
+    memset(&app_config_shadow, 0, sizeof(app_config_shadow));
+    memset(&app_setpoints, 0, sizeof(app_setpoints));
     memset(&app_state,  0, sizeof(app_state));
 
     /* Safe/default initialization.
@@ -40,12 +44,8 @@ void initConfig(void)
 
     /* FOC defaults */
     app_config.foc.motor_polepairs   = 7U;
-    app_config.foc.speedRefHz        = 20.0f;
-    app_config.foc.voltageRef        = 0.15f;
     app_config.foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL; //5 seconds
     app_config.foc.resolver_offset   = 0.0f;
-    app_config.foc.id_ref            = 0.0f;
-    app_config.foc.iq_ref            = 5.0f;
 
     //PI Controller ID
     app_config.foc.pi_config_id.Kp    = 0.05f;
@@ -67,4 +67,22 @@ void initConfig(void)
 
     app_state.resolver.prev_elec_angle = 0.0f;
     app_state.resolver.sector          = 0;
+
+    app_setpoints.foc.speedRefHz = 20.0f;
+    app_setpoints.foc.voltageRef  = 0.15f;
+    app_setpoints.foc.id_ref      = 0.0f;
+    app_setpoints.foc.iq_ref      = 5.0f;
+
+    app_config_shadow = app_config;
+}
+
+void commitConfigShadow(void)
+{
+    app_config = app_config_shadow;
+}
+
+void updateFocResolverOffset(float32 resolver_offset)
+{
+    app_config.foc.resolver_offset = resolver_offset;
+    app_config_shadow.foc.resolver_offset = resolver_offset;
 }

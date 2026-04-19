@@ -16,6 +16,8 @@
 #define PROTOCOL_CMD_STREAM_STOP_ACK 0x84
 #define PROTOCOL_CMD_DICTIONARY     0x05
 #define PROTOCOL_CMD_DICTIONARY_ACK 0x85
+#define PROTOCOL_CMD_CONFIG_COMMIT  0x06
+#define PROTOCOL_CMD_CONFIG_COMMIT_ACK 0x86
 #define PROTOCOL_CMD_NACK           0x7F
 
 #define PROTOCOL_NACK_BAD_CRC       0x01
@@ -25,10 +27,16 @@
 #define PROTOCOL_NACK_OTHER         0x05
 
 #define PROTOCOL_MAX_PAYLOAD        250
+#define PROTOCOL_UDP_STREAM_PORT    3040U
+
+typedef void (*Protocol_TxBytesFn)(const uint8_t *data, uint16_t len);
 
 /* Function Prototypes */
 void Protocol_Init(void);
-void Protocol_Process(void);
-void Protocol_SendStreamData(uint8_t stream_id, const uint8_t *data, uint8_t data_len);
+void Protocol_SetTxHandler(Protocol_TxBytesFn handler);
+void Protocol_ProcessBytes(const uint8_t *data, uint16_t len);
+void Protocol_NetworkInit(void);
+bool Protocol_HasUdpSender(void);
+void Protocol_SendStreamData(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, uint8_t register_count, const uint8_t *data, uint8_t data_len);
 
 #endif

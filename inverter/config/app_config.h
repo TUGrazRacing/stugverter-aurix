@@ -15,13 +15,22 @@ typedef struct
 
 typedef struct
 {
+    FocSetpoints foc;
+} AppSetpoints;
+
+typedef struct
+{
     FocState       foc;
     ResolverState  resolver;
 } AppState;
 
 extern AppConfig app_config;
+extern AppConfig app_config_shadow;
+extern AppSetpoints app_setpoints;
 extern AppState  app_state;
 
 void initConfig(void);
+void commitConfigShadow(void);
+void updateFocResolverOffset(float32 resolver_offset);
 
 #endif /* APP_CONFIG_H_ */

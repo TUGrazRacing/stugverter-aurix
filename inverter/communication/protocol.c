@@ -1,11 +1,15 @@
 #include "protocol.h"
-#include "IfxAsclin_Asc.h"
+#include "lwip/udp.h"
+#include "lwip/pbuf.h"
+#include "lwip/ip_addr.h"
 #include <string.h>
 #include "parameter.h"
 #include "stream.h"
+#include "app_config.h"
 
-/* External declaration for your UART instance */
-extern IfxAsclin_Asc g_asclin;
+static struct udp_pcb *stream_udp_pcb;
+static ip_addr_t       stream_destination;
+static Protocol_TxBytesFn protocol_tx_handler;
 
 /* RX State Machine States */
 typedef enum
@@ -24,22 +28,57 @@ static void Protocol_ProcessPacket (void);
 static void Protocol_SendPacket (uint8_t cmd, const uint8_t *payload, uint8_t payload_len);
 static void Protocol_SendNACK (uint8_t reason);
 static uint16_t CRC16_CCITT_Update (uint16_t crc, uint8_t data);
+static void Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len);
 
 void Protocol_Init (void)
 {
   rx_state = STATE_WAIT_SYNC;
   rx_len = 0;
   rx_idx = 0;
+  protocol_tx_handler = NULL;
 }
 
-void Protocol_Process (void)
+void Protocol_SetTxHandler(Protocol_TxBytesFn handler)
 {
-  uint8_t rxData;
-  Ifx_SizeT count = 1;
-  while (IfxAsclin_Asc_read(&g_asclin, &rxData, &count, 0) && count > 0)
+  protocol_tx_handler = handler;
+}
+
+void Protocol_NetworkInit(void)
+{
+  if (stream_udp_pcb != NULL)
   {
-    Protocol_ParseByte(rxData);
-    count = 1;
+    return;
+  }
+
+  stream_udp_pcb = udp_new();
+  if (stream_udp_pcb == NULL)
+  {
+    return;
+  }
+
+  IP4_ADDR(&stream_destination, 255, 255, 255, 255);
+  if (udp_bind(stream_udp_pcb, IP_ADDR_ANY, PROTOCOL_UDP_STREAM_PORT) != ERR_OK)
+  {
+    udp_remove(stream_udp_pcb);
+    stream_udp_pcb = NULL;
+  }
+}
+
+bool Protocol_HasUdpSender(void)
+{
+  return (stream_udp_pcb != NULL);
+}
+
+void Protocol_ProcessBytes(const uint8_t *data, uint16_t len)
+{
+  if ((data == NULL) || (len == 0U))
+  {
+    return;
+  }
+
+  for (uint16_t i = 0U; i < len; i++)
+  {
+    Protocol_ParseByte(data[i]);
   }
 }
 
@@ -195,6 +234,11 @@ static void Protocol_ProcessPacket (void)
       Protocol_SendNACK(PROTOCOL_NACK_OTHER);
       return;
     }
+    if (((data_len - 3U) % 2U) != 0U)
+    {
+      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
+      return;
+    }
     uint8_t id = rx_buf[1];
     uint16_t freq = (uint16_t) rx_buf[2] | ((uint16_t) rx_buf[3] << 8);
     uint8_t num_regs = (data_len - 3) / 2;
@@ -207,17 +251,18 @@ static void Protocol_ProcessPacket (void)
 
     if (Stream_Start(id, freq, regs, num_regs))
     {
-      // Initial data response (0x83)
+      // Subscription response: stream id, register count, then the fixed register order
       uint8_t ack[PROTOCOL_MAX_PAYLOAD];
-      ack[0] = id;
-      uint8_t ack_idx = 1;
+      uint8_t ack_idx = 0;
+      ack[ack_idx++] = id;
+      ack[ack_idx++] = num_regs;
       for (uint8_t i = 0; i < num_regs; i++)
       {
-        uint8_t val[8], vlen;
-        if (readParameter(regs[i], val, &vlen))
+        ack[ack_idx++] = (uint8_t)(regs[i] & 0xFFU);
+        ack[ack_idx++] = (uint8_t)((regs[i] >> 8) & 0xFFU);
+        if (ack_idx >= PROTOCOL_MAX_PAYLOAD)
         {
-          memcpy(&ack[ack_idx], val, vlen);
-          ack_idx += vlen;
+          break;
         }
       }
       Protocol_SendPacket(PROTOCOL_CMD_STREAM_ACK, ack, ack_idx);
@@ -231,14 +276,33 @@ static void Protocol_ProcessPacket (void)
   // --- 4.4 STREAM STOP (0x04) ---
   else if (cmd == PROTOCOL_CMD_STREAM_STOP)
   {
+    if (data_len < 1U)
+    {
+      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
+      return;
+    }
+
     uint8_t id = rx_buf[1];
     Stream_Stop(id);
     Protocol_SendPacket(PROTOCOL_CMD_STREAM_STOP_ACK, &id, 1);
   }
 
+  // --- 4.5 UPDATE CONFIG (0x06) ---
+  else if (cmd == PROTOCOL_CMD_CONFIG_COMMIT)
+  {
+    commitConfigShadow();
+    Protocol_SendPacket(PROTOCOL_CMD_CONFIG_COMMIT_ACK, NULL, 0);
+  }
+
   // --- 4.3 DICTIONARY (0x05) ---
   else if (cmd == PROTOCOL_CMD_DICTIONARY)
   {
+    if (data_len < 3U)
+    {
+      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
+      return;
+    }
+
     uint16_t start_addr = rx_buf[1] | (rx_buf[2] << 8);
     uint8_t req_cnt = rx_buf[3];
     uint16_t total_params = getParameterCount();
@@ -256,43 +320,38 @@ static void Protocol_ProcessPacket (void)
     while (remaining > 0 && i < total_params)
     {
       uint8_t tx_p[PROTOCOL_MAX_PAYLOAD];
-      uint16_t chunk_addr;
-      getParameterInfo(i, &chunk_addr, NULL, NULL, NULL, NULL);
-
-      tx_p[0] = chunk_addr & 0xFF;
-      tx_p[1] = (chunk_addr >> 8) & 0xFF;
-      uint8_t count_idx = 2;
-      uint8_t tx_idx = 3;
-      uint8_t actual_cnt = 0;
+      uint8_t tx_idx = 0;
 
       while (remaining > 0 && i < total_params)
       {
         uint16_t p_addr;
-        uint8_t p_type, p_access, p_unit[2];
+        uint8_t p_type, p_access, p_unit[PARAM_UNIT_LEN];
         const char *p_label;
         if (getParameterInfo(i, &p_addr, &p_type, &p_access, &p_label, p_unit))
         {
-          uint8_t l_len = (uint8_t) strlen(p_label);
-          if (l_len > 15)
-            l_len = 15;
-
-          if ((tx_idx + 5 + l_len) > PROTOCOL_MAX_PAYLOAD)
+          if ((tx_idx + PARAM_DICT_RECORD_LEN) > PROTOCOL_MAX_PAYLOAD)
             break;
 
           tx_p[tx_idx++] = p_addr & 0xFF;
           tx_p[tx_idx++] = (p_addr >> 8) & 0xFF;
-          // Info Byte: Access(7), LabelLen(3-6), Type(0-2)
-          tx_p[tx_idx++] = (p_type & 0x07) | ((l_len & 0x0F) << 3) | ((p_access & 0x01) << 7);
-          tx_p[tx_idx++] = p_unit[0];
-          tx_p[tx_idx++] = p_unit[1];
-          memcpy(&tx_p[tx_idx], p_label, l_len);
-          tx_idx += l_len;
-          actual_cnt++;
+          tx_p[tx_idx++] = (p_type & 0x0F) | ((p_access & 0x03) << 4);
+          memset(&tx_p[tx_idx], ' ', PARAM_NAME_LEN);
+          if (p_label != NULL)
+          {
+            uint8_t l_len = (uint8_t) strlen(p_label);
+            if (l_len > PARAM_NAME_LEN)
+            {
+              l_len = PARAM_NAME_LEN;
+            }
+            memcpy(&tx_p[tx_idx], p_label, l_len);
+          }
+          tx_idx += PARAM_NAME_LEN;
+          memcpy(&tx_p[tx_idx], p_unit, PARAM_UNIT_LEN);
+          tx_idx += PARAM_UNIT_LEN;
           remaining--;
         }
         i++;
       }
-      tx_p[count_idx] = actual_cnt;
       Protocol_SendPacket(PROTOCOL_CMD_DICTIONARY_ACK, tx_p, tx_idx);
     }
   }
@@ -327,8 +386,10 @@ static void Protocol_SendPacket (uint8_t cmd, const uint8_t *payload, uint8_t pa
   tx_buf[idx++] = crc & 0xFF;
   tx_buf[idx++] = (crc >> 8) & 0xFF;
 
-  Ifx_SizeT count = idx;
-  IfxAsclin_Asc_write(&g_asclin, tx_buf, &count, 0xFFFFFFFF);
+  if (protocol_tx_handler != NULL)
+  {
+    protocol_tx_handler(tx_buf, idx);
+  }
 }
 
 static void Protocol_SendNACK (uint8_t reason)
@@ -352,28 +413,63 @@ static uint16_t CRC16_CCITT_Update (uint16_t crc, uint8_t data)
 /**
  * @brief Sendet ein Stream-Datenpaket (CMD 0x83)
  * @param stream_id Die ID des Streams
+ * @param sequence Laufende Sequenznummer
  * @param data Pointer auf die rohen Parameter-Daten
  * @param data_len Länge der Parameter-Daten in Bytes
  */
-void Protocol_SendStreamData (uint8_t stream_id, const uint8_t *data, uint8_t data_len)
+void Protocol_SendStreamData (uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, uint8_t register_count, const uint8_t *data, uint8_t data_len)
 {
   uint8_t tx_payload[PROTOCOL_MAX_PAYLOAD];
+  uint8_t payload_len = 0;
 
-  // Sicherheitscheck: Verhindern, dass wir über den Puffer hinausschreiben
-  if ((1 + data_len) > PROTOCOL_MAX_PAYLOAD)
+  if ((stream_udp_pcb == NULL) || ((14U + data_len) > PROTOCOL_MAX_PAYLOAD))
   {
-    return; // Payload zu groß
+    return;
   }
 
-  // 1. Stream ID als erstes Byte
-  tx_payload[0] = stream_id;
+  tx_payload[payload_len++] = 0x55U;
+  tx_payload[payload_len++] = 0xAAU;
+  tx_payload[payload_len++] = stream_id;
+  tx_payload[payload_len++] = (uint8_t)(sequence & 0xFFU);
+  tx_payload[payload_len++] = (uint8_t)((sequence >> 8) & 0xFFU);
 
-  // 2. Die eigentlichen Parameter-Daten anhängen (falls vorhanden)
-  if (data_len > 0 && data != NULL)
+  for (uint8_t i = 0U; i < 8U; i++)
   {
-    memcpy(&tx_payload[1], data, data_len);
+    tx_payload[payload_len++] = (uint8_t)((timestamp_ticks >> (8U * i)) & 0xFFU);
   }
 
-  // 3. Als CMD_STREAM_ACK (0x83) an den PC senden
-  Protocol_SendPacket(PROTOCOL_CMD_STREAM_ACK, tx_payload, 1 + data_len);
+  tx_payload[payload_len++] = register_count;
+
+  if ((data_len > 0U) && (data != NULL))
+  {
+    memcpy(&tx_payload[payload_len], data, data_len);
+    payload_len = (uint8_t)(payload_len + data_len);
+  }
+
+  Protocol_SendUdpPayload(tx_payload, payload_len);
+}
+
+static void Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len)
+{
+  struct pbuf *packet = NULL;
+
+  if ((stream_udp_pcb == NULL) || (payload == NULL) || (payload_len == 0U))
+  {
+    return;
+  }
+
+  packet = pbuf_alloc(PBUF_TRANSPORT, payload_len, PBUF_RAM);
+  if (packet == NULL)
+  {
+    return;
+  }
+
+  if (pbuf_take(packet, payload, payload_len) != ERR_OK)
+  {
+    pbuf_free(packet);
+    return;
+  }
+
+  (void)udp_sendto(stream_udp_pcb, packet, &stream_destination, PROTOCOL_UDP_STREAM_PORT);
+  pbuf_free(packet);
 }

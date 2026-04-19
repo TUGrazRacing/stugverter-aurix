@@ -6,6 +6,7 @@
 #include <math.h>
 #include "pwm.h"
 #include "logger.h"
+#include "app_config.h"
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -56,7 +57,7 @@ static void focOpenLoop (void)
     return;
   }
 
-  foc_state->electricalAngle += (foc_config->speedRefHz * FOC_TWO_PI * (1.0f / (float32) pwm_config->frequency));
+  foc_state->electricalAngle += (app_setpoints.foc.speedRefHz * FOC_TWO_PI * (1.0f / (float32) pwm_config->frequency));
 
   if (foc_state->electricalAngle >= FOC_TWO_PI)
   {
@@ -70,8 +71,8 @@ static void focOpenLoop (void)
   sinVal = sinf(foc_state->electricalAngle);
   cosVal = cosf(foc_state->electricalAngle);
 
-  foc_state->v_ab.alpha = foc_config->voltageRef * cosVal;
-  foc_state->v_ab.beta = foc_config->voltageRef * sinVal;
+  foc_state->v_ab.alpha = app_setpoints.foc.voltageRef * cosVal;
+  foc_state->v_ab.beta = app_setpoints.foc.voltageRef * sinVal;
 
   // Stores result straight into state
   focSVPWM(&foc_state->v_ab, &foc_state->duty_3ph);
@@ -95,8 +96,8 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
   cosVal = cosf(theta_corr);
   FOC_ParkTransform(&foc_state->i_ab, &foc_state->i_dq, sinVal, cosVal);
 
-  foc_state->v_dq.d = PI_Run(&foc_config->pi_config_id, &foc_state->pi_state_id, foc_config->id_ref, foc_state->i_dq.d);
-  foc_state->v_dq.q = PI_Run(&foc_config->pi_config_iq, &foc_state->pi_state_iq, foc_config->iq_ref, foc_state->i_dq.q);
+  foc_state->v_dq.d = PI_Run(&foc_config->pi_config_id, &foc_state->pi_state_id, app_setpoints.foc.id_ref, foc_state->i_dq.d);
+  foc_state->v_dq.q = PI_Run(&foc_config->pi_config_iq, &foc_state->pi_state_iq, app_setpoints.foc.iq_ref, foc_state->i_dq.q);
 
   //wieder einkommentiert
   logPush(&(LogData_t){
@@ -143,7 +144,7 @@ static void focCalibrateZeroOffset (float32 theta_measured)
 
   if ((current_time - starttime) > foc_config->calibration_ticks)
   {
-    foc_config->resolver_offset = theta_measured;
+    updateFocResolverOffset(theta_measured);
     foc_state->calibrated = true;
     starttime = 0U;
   }

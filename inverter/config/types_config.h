@@ -36,18 +36,20 @@ typedef struct
 {
   uint8 motor_polepairs;
 
-  float32 speedRefHz;
-  float32 voltageRef;
-
   uint64 calibration_ticks;
   float32 resolver_offset;
-
-  float32 id_ref;
-  float32 iq_ref;
 
   PiConfig pi_config_id;
   PiConfig pi_config_iq;
 } FocConfig;
+
+typedef struct
+{
+  float32 speedRefHz;
+  float32 voltageRef;
+  float32 id_ref;
+  float32 iq_ref;
+} FocSetpoints;
 
 typedef struct
 {

@@ -27,12 +27,8 @@
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
-#include "IfxStm.h"
-#include "uart.h"
 #include "can.h"
 #include "logger.h"
-#include "protocol.h"
-#include "stream.h"
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
@@ -44,17 +40,8 @@ void core1_main (void)
   IfxCpu_emitEvent(&g_cpuSyncEvent);
   IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
 
-  initSimpleUART();
-//    enableCanTransceiver();
-//    initMcmcan();
-//    initLogger();
-  Protocol_Init();
-  Stream_Init();
   while (1)
   {
-    Protocol_Process();
-    Stream_Process();
 //    IfxStm_wait(IfxStm_getTicksFromMilliseconds(&MODULE_STM0, 100));
-//        logProcess();
   }
 }

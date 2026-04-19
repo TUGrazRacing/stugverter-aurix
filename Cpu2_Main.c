@@ -32,8 +32,10 @@
 #include "Configuration.h"
 #include "ConfigurationIsr.h"
 #include "Ifx_Lwip.h"
-#include "Echo.h"
 #include "UART_Logging.h"
+#include "protocol.h"
+#include "stream.h"
+#include "ethernet.h"
 
 #define UART_LOG(msg) sendUARTMessage((char *)(msg), (Ifx_SizeT)(sizeof(msg) - 1))
 
@@ -94,13 +96,19 @@ void core2_main(void)
     netif_set_addr(Ifx_Lwip_getNetIf(), &staticIp, &staticNetmask, &staticGateway);
     UART_LOG("CPU2: static IP set to 192.168.1.100\r\n");
 
-    echoInit();                                             /* Initialize ECHO application                                  */
-    UART_LOG("CPU2: echo server initialized\r\n");
+    Protocol_Init();
+    Protocol_NetworkInit();
+    Stream_Init();
+    Ethernet_Init();
+    UART_LOG("CPU2: ethernet control server initialized\r\n");
     
     while(1)
     {
         Ifx_Lwip_pollTimerFlags();                          /* Poll LwIP timers and trigger protocols execution if required */
         Ifx_Lwip_pollReceiveFlags();                        /* Receive data package through ETH                             */
+        Ethernet_Process();
+        Stream_Process();
+        Stream_TransmitPending();
 
         {
             uint8 linkUp = (uint8)(netif_is_link_up(Ifx_Lwip_getNetIf()) ? 1U : 0U);
