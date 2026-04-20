@@ -23,7 +23,7 @@ void core0_main(void)
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
 
     controllerInit();
-
+ 
 //    logSysClocks();
     while(1)
     {
@@ -32,5 +32,3 @@ void core0_main(void)
        //wait(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, 1000));
     }
 }
-
-

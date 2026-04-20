@@ -2,66 +2,68 @@
 #include "lwip/udp.h"
 #include "lwip/pbuf.h"
 #include "lwip/ip_addr.h"
+#include "UART_Logging.h"
+#include <stdio.h>
+#include <stdarg.h>
 #include <string.h>
 #include "parameter.h"
 #include "stream.h"
 #include "app_config.h"
 
+#define PROTOCOL_DEBUG_ENABLE 1
+#define PROTOCOL_LOG_BUFFER_SIZE 192U
+
 static struct udp_pcb *stream_udp_pcb;
-static ip_addr_t       stream_destination;
+static ip_addr_t stream_destination;
 static Protocol_TxBytesFn protocol_tx_handler;
 
-/* RX State Machine States */
-typedef enum
-{
-  STATE_WAIT_SYNC, STATE_WAIT_LENGTH, STATE_WAIT_PAYLOAD
-} ProtocolState_t;
-
-static ProtocolState_t rx_state;
-static uint8_t rx_len;
-static uint8_t rx_idx;
-static uint8_t rx_buf[PROTOCOL_MAX_PAYLOAD + 4]; // Buffer for CMD + DATA + CRC16
-
-/* Internal Helper Functions */
-static void Protocol_ParseByte (uint8_t b);
-static void Protocol_ProcessPacket (void);
-static void Protocol_SendPacket (uint8_t cmd, const uint8_t *payload, uint8_t payload_len);
-static void Protocol_SendNACK (uint8_t reason);
-static uint16_t CRC16_CCITT_Update (uint16_t crc, uint8_t data);
+static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t payload_len);
+static void Protocol_SendPacket(uint8_t cmd, const uint8_t *payload, uint16_t payload_len);
+static void Protocol_SendError(uint16_t address, uint8_t reason);
 static void Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len);
+static void Protocol_Log(const char *fmt, ...);
+static const char *Protocol_CmdName(uint8_t cmd);
+static const char *Protocol_ErrorName(uint8_t reason);
 
-void Protocol_Init (void)
+void Protocol_Init(void)
 {
-  rx_state = STATE_WAIT_SYNC;
-  rx_len = 0;
-  rx_idx = 0;
   protocol_tx_handler = NULL;
+  Protocol_Log("PROTOCOL: init\r\n");
 }
 
 void Protocol_SetTxHandler(Protocol_TxBytesFn handler)
 {
   protocol_tx_handler = handler;
+  Protocol_Log("PROTOCOL: tx handler %s\r\n", (handler != NULL) ? "attached" : "cleared");
 }
 
 void Protocol_NetworkInit(void)
 {
+  Protocol_Log("PROTOCOL: init UDP sender on port %u\r\n", (unsigned int)PROTOCOL_UDP_STREAM_PORT);
+
   if (stream_udp_pcb != NULL)
   {
+    Protocol_Log("PROTOCOL: UDP sender already ready\r\n");
     return;
   }
 
   stream_udp_pcb = udp_new();
   if (stream_udp_pcb == NULL)
   {
+    Protocol_Log("PROTOCOL: udp_new failed\r\n");
     return;
   }
 
   IP4_ADDR(&stream_destination, 255, 255, 255, 255);
   if (udp_bind(stream_udp_pcb, IP_ADDR_ANY, PROTOCOL_UDP_STREAM_PORT) != ERR_OK)
   {
+    Protocol_Log("PROTOCOL: udp_bind failed\r\n");
     udp_remove(stream_udp_pcb);
     stream_udp_pcb = NULL;
+    return;
   }
+
+  Protocol_Log("PROTOCOL: UDP sender ready\r\n");
 }
 
 bool Protocol_HasUdpSender(void)
@@ -71,364 +73,369 @@ bool Protocol_HasUdpSender(void)
 
 void Protocol_ProcessBytes(const uint8_t *data, uint16_t len)
 {
-  if ((data == NULL) || (len == 0U))
+  uint16_t payload_len;
+  uint8_t cmd;
+
+  if ((data == NULL) || (len < PROTOCOL_TCP_HEADER_SIZE))
   {
     return;
   }
 
-  for (uint16_t i = 0U; i < len; i++)
+  if ((data[0] != PROTOCOL_START_BYTE_0) || (data[1] != PROTOCOL_START_BYTE_1))
   {
-    Protocol_ParseByte(data[i]);
+    Protocol_Log("PROTOCOL: bad start bytes 0x%02X 0x%02X\r\n", (unsigned int)data[0], (unsigned int)data[1]);
+    Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+    return;
   }
+
+  cmd = data[2];
+  payload_len = (uint16_t)data[3] | ((uint16_t)data[4] << 8);
+
+  if (payload_len > PROTOCOL_MAX_PAYLOAD)
+  {
+    Protocol_Log("PROTOCOL: payload too large %u\r\n", (unsigned int)payload_len);
+    Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+    return;
+  }
+
+  if (len != (uint16_t)(PROTOCOL_TCP_HEADER_SIZE + payload_len))
+  {
+    Protocol_Log("PROTOCOL: frame length mismatch len=%u expected=%u\r\n",
+                 (unsigned int)len,
+                 (unsigned int)(PROTOCOL_TCP_HEADER_SIZE + payload_len));
+    Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+    return;
+  }
+
+  Protocol_Log("PROTOCOL: process cmd=%s(0x%02X) payload=%u\r\n", Protocol_CmdName(cmd), (unsigned int)cmd, (unsigned int)payload_len);
+  Protocol_ProcessPacket(cmd, &data[PROTOCOL_TCP_HEADER_SIZE], payload_len);
 }
 
-static void Protocol_ParseByte (uint8_t b)
+static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t payload_len)
 {
-  switch (rx_state)
-  {
-    case STATE_WAIT_SYNC :
-      if (b == PROTOCOL_START_BYTE)
-      {
-        rx_state = STATE_WAIT_LENGTH;
-      }
-      break;
-
-    case STATE_WAIT_LENGTH :
-      rx_len = b; // Length = CMD(1) + DATA(N) + CRC(2)
-      rx_idx = 0;
-      // Min length: CMD(1) + DATA(0) + CRC(2) = 3
-      if (rx_len < 3 || rx_len > (PROTOCOL_MAX_PAYLOAD + 3))
-      {
-        rx_state = STATE_WAIT_SYNC;
-      }
-      else
-      {
-        rx_state = STATE_WAIT_PAYLOAD;
-      }
-      break;
-
-    case STATE_WAIT_PAYLOAD :
-      rx_buf[rx_idx++] = b;
-
-      if (rx_idx >= rx_len)
-      {
-        // CRC Calculation over Start Byte + Length + Payload (CMD + DATA)
-        uint16_t calc_crc = 0xFFFF;
-        calc_crc = CRC16_CCITT_Update(calc_crc, PROTOCOL_START_BYTE);
-        calc_crc = CRC16_CCITT_Update(calc_crc, rx_len);
-
-        for (uint8_t i = 0; i < rx_len - 2; i++)
-        {
-          calc_crc = CRC16_CCITT_Update(calc_crc, rx_buf[i]);
-        }
-
-        uint16_t recv_crc = (uint16_t) rx_buf[rx_len - 2] | ((uint16_t) rx_buf[rx_len - 1] << 8);
-
-        if (calc_crc == recv_crc)
-        {
-          Protocol_ProcessPacket();
-        }
-        else
-        {
-          Protocol_SendNACK(PROTOCOL_NACK_BAD_CRC);
-        }
-        rx_state = STATE_WAIT_SYNC;
-      }
-      break;
-  }
-}
-
-static void Protocol_ProcessPacket (void)
-{
-  uint8_t cmd = rx_buf[0];
-  uint8_t data_len = rx_len - 3; // Total minus CMD and CRC bytes
-
-  // --- 4.1 READ REGISTER (0x01) ---
+  /* Command dispatcher: validate payload first, then execute register/state action. */
   if (cmd == PROTOCOL_CMD_READ)
   {
-    uint8_t req_cnt = data_len / 2;
-    if (req_cnt == 0 || (data_len % 2 != 0))
+    if ((payload_len == 0U) || ((payload_len % 2U) != 0U))
     {
-      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
     }
 
+    uint16_t req_cnt = payload_len / 2U;
+    Protocol_Log("PROTOCOL: read req count=%u\r\n", (unsigned int)req_cnt);
     uint8_t ack_payload[PROTOCOL_MAX_PAYLOAD];
-    uint8_t ack_idx = 0;
+    uint16_t ack_idx = 0U;
 
-    for (uint8_t i = 0; i < req_cnt; i++)
+    for (uint16_t i = 0U; i < req_cnt; i++)
     {
-      uint16_t addr = (uint16_t) rx_buf[1 + (i * 2)] | ((uint16_t) rx_buf[2 + (i * 2)] << 8);
+      uint16_t addr = (uint16_t)payload[i * 2U] | ((uint16_t)payload[(i * 2U) + 1U] << 8);
       uint8_t val[8];
-      uint8_t vlen = 0;
+      uint8_t vlen = 0U;
 
-      if (readParameter(addr, val, &vlen))
+      if (!readParameter(addr, val, &vlen))
       {
-        // Fragmentation: if this entry exceeds buffer, send current chunk
-        if ((ack_idx + 2 + vlen) > PROTOCOL_MAX_PAYLOAD)
-        {
-          Protocol_SendPacket(PROTOCOL_CMD_READ_ACK, ack_payload, ack_idx);
-          ack_idx = 0;
-        }
-        ack_payload[ack_idx++] = addr & 0xFF;
-        ack_payload[ack_idx++] = (addr >> 8) & 0xFF;
-        memcpy(&ack_payload[ack_idx], val, vlen);
-        ack_idx += vlen;
-      }
-      else
-      {
-        Protocol_SendNACK(PROTOCOL_NACK_INVALID_ADDR);
+        Protocol_SendError(addr, PROTOCOL_ERROR_INVALID_ADDR);
         return;
       }
-    }
-    if (ack_idx > 0)
-      Protocol_SendPacket(PROTOCOL_CMD_READ_ACK, ack_payload, ack_idx);
-  }
 
-  // --- 4.2 WRITE REGISTER (0x02) ---
-  else if (cmd == PROTOCOL_CMD_WRITE)
-  {
-    if (data_len < 2)
-    {
-      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
-      return;
-    }
-
-    uint16_t start_addr = (uint16_t) rx_buf[1] | ((uint16_t) rx_buf[2] << 8);
-    uint8_t ptr = 1;
-    uint8_t count = 0;
-
-    while (ptr < data_len + 1)
-    {
-      uint16_t addr = (uint16_t) rx_buf[ptr] | ((uint16_t) rx_buf[ptr + 1] << 8);
-      uint8_t vlen = 0;
-      if (getParameterLen(addr, &vlen))
+      if ((ack_idx + vlen) > PROTOCOL_MAX_PAYLOAD)
       {
-        if (writeParameter(addr, &rx_buf[ptr + 2], vlen))
-        {
-          count++;
-          ptr += (2 + vlen);
-        }
-        else
-        {
-          Protocol_SendNACK(PROTOCOL_NACK_READ_ONLY);
-          return;
-        }
-      }
-      else
-      {
-        Protocol_SendNACK(PROTOCOL_NACK_INVALID_ADDR);
+        Protocol_SendError(addr, PROTOCOL_ERROR_OTHER);
         return;
       }
+
+      memcpy(&ack_payload[ack_idx], val, vlen);
+      ack_idx = (uint16_t)(ack_idx + vlen);
     }
 
-    uint8_t ack[3] = {start_addr & 0xFF, (start_addr >> 8) & 0xFF, count};
-    Protocol_SendPacket(PROTOCOL_CMD_WRITE_ACK, ack, 3);
+    Protocol_SendPacket(PROTOCOL_CMD_READ_ACK, ack_payload, ack_idx);
+    Protocol_Log("PROTOCOL: read ack bytes=%u\r\n", (unsigned int)ack_idx);
+    return;
   }
 
-  // --- 4.4 STREAM START (0x03) ---
-  else if (cmd == PROTOCOL_CMD_STREAM_START)
+  if (cmd == PROTOCOL_CMD_WRITE)
   {
-    if (data_len < 3)
-    { // ID(1) + Freq(2)
-      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
-      return;
-    }
-    if (((data_len - 3U) % 2U) != 0U)
+    uint16_t ptr = 0U;
+    uint8_t count = 0U;
+    uint16_t first_addr = 0U;
+    Protocol_Log("PROTOCOL: write req bytes=%u\r\n", (unsigned int)payload_len);
+
+    if (payload_len < 2U)
     {
-      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
     }
-    uint8_t id = rx_buf[1];
-    uint16_t freq = (uint16_t) rx_buf[2] | ((uint16_t) rx_buf[3] << 8);
-    uint8_t num_regs = (data_len - 3) / 2;
+
+    while ((ptr + 2U) <= payload_len)
+    {
+      uint16_t addr = (uint16_t)payload[ptr] | ((uint16_t)payload[ptr + 1U] << 8);
+      uint8_t vlen = 0U;
+
+      if (count == 0U)
+      {
+        first_addr = addr;
+      }
+
+      if (!getParameterLen(addr, &vlen))
+      {
+        Protocol_SendError(addr, PROTOCOL_ERROR_INVALID_ADDR);
+        return;
+      }
+
+      if ((uint16_t)(ptr + 2U + vlen) > payload_len)
+      {
+        Protocol_SendError(addr, PROTOCOL_ERROR_OTHER);
+        return;
+      }
+
+      if (!writeParameter(addr, &payload[ptr + 2U], vlen))
+      {
+        Protocol_SendError(addr, PROTOCOL_ERROR_ACCESS_DENIED);
+        return;
+      }
+
+      ptr = (uint16_t)(ptr + 2U + vlen);
+      count++;
+    }
+
+    if (ptr != payload_len)
+    {
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+      return;
+    }
+
+    {
+      uint8_t ack[3];
+      ack[0] = (uint8_t)(first_addr & 0xFFU);
+      ack[1] = (uint8_t)((first_addr >> 8) & 0xFFU);
+      ack[2] = count;
+      Protocol_SendPacket(PROTOCOL_CMD_WRITE_ACK, ack, sizeof(ack));
+      Protocol_Log("PROTOCOL: write ack first=0x%04X count=%u\r\n", (unsigned int)first_addr, (unsigned int)count);
+    }
+    return;
+  }
+
+  if (cmd == PROTOCOL_CMD_STREAM_START)
+  {
+    if ((payload_len < 5U) || (((payload_len - 3U) % 2U) != 0U))
+    {
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+      return;
+    }
+
+    uint8_t stream_id = payload[0];
+    uint16_t freq_x100 = (uint16_t)payload[1] | ((uint16_t)payload[2] << 8);
+    uint8_t num_regs = (uint8_t)((payload_len - 3U) / 2U);
+    Protocol_Log("PROTOCOL: stream start id=%u freq_x100=%u regs=%u\r\n",
+           (unsigned int)stream_id,
+           (unsigned int)freq_x100,
+           (unsigned int)num_regs);
     uint16_t regs[STREAM_MAX_REGS];
 
-    for (uint8_t i = 0; i < num_regs && i < STREAM_MAX_REGS; i++)
+    if ((freq_x100 == 0U) || (num_regs == 0U) || (num_regs > STREAM_MAX_REGS))
     {
-      regs[i] = (uint16_t) rx_buf[4 + (i * 2)] | ((uint16_t) rx_buf[5 + (i * 2)] << 8);
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+      return;
     }
 
-    if (Stream_Start(id, freq, regs, num_regs))
+    for (uint8_t i = 0U; i < num_regs; i++)
     {
-      // Subscription response: stream id, register count, then the fixed register order
+      uint16_t base = (uint16_t)(3U + (i * 2U));
+      regs[i] = (uint16_t)payload[base] | ((uint16_t)payload[base + 1U] << 8);
+    }
+
+    /* Reconfigure the same stream ID if it already exists. */
+    (void)Stream_Stop(stream_id);
+
+    if (!Stream_Start(stream_id, freq_x100, regs, num_regs))
+    {
+      Protocol_SendError(regs[0], PROTOCOL_ERROR_INVALID_ADDR);
+      return;
+    }
+
+    {
       uint8_t ack[PROTOCOL_MAX_PAYLOAD];
-      uint8_t ack_idx = 0;
-      ack[ack_idx++] = id;
+      uint16_t ack_idx = 0U;
+      ack[ack_idx++] = stream_id;
       ack[ack_idx++] = num_regs;
-      for (uint8_t i = 0; i < num_regs; i++)
+      for (uint8_t i = 0U; i < num_regs; i++)
       {
         ack[ack_idx++] = (uint8_t)(regs[i] & 0xFFU);
         ack[ack_idx++] = (uint8_t)((regs[i] >> 8) & 0xFFU);
-        if (ack_idx >= PROTOCOL_MAX_PAYLOAD)
+      }
+      Protocol_SendPacket(PROTOCOL_CMD_STREAM_ACK, ack, ack_idx);
+      Protocol_Log("PROTOCOL: stream ack id=%u regs=%u\r\n", (unsigned int)stream_id, (unsigned int)num_regs);
+    }
+    return;
+  }
+
+  if (cmd == PROTOCOL_CMD_STREAM_STOP)
+  {
+    if (payload_len != 1U)
+    {
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+      return;
+    }
+
+    uint8_t id = payload[0];
+    if (!Stream_Stop(id))
+    {
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+      return;
+    }
+
+    Protocol_SendPacket(PROTOCOL_CMD_STREAM_STOP_ACK, &id, 1U);
+    Protocol_Log("PROTOCOL: stream stop ack id=%u\r\n", (unsigned int)id);
+    return;
+  }
+
+  if (cmd == PROTOCOL_CMD_CONFIG_COMMIT)
+  {
+    if (payload_len != 0U)
+    {
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+      return;
+    }
+
+    commitConfigShadow();
+    Protocol_SendPacket(PROTOCOL_CMD_CONFIG_COMMIT_ACK, NULL, 0U);
+    Protocol_Log("PROTOCOL: config commit ack\r\n");
+    return;
+  }
+
+  if (cmd == PROTOCOL_CMD_DICTIONARY)
+  {
+    if (payload_len != 0U)
+    {
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
+      return;
+    }
+
+    uint16_t total_params = getParameterCount();
+    uint16_t i = 0U;
+
+    while (i < total_params)
+    {
+      uint8_t tx_p[PROTOCOL_MAX_PAYLOAD];
+      uint16_t tx_idx = 0U;
+
+      while (i < total_params)
+      {
+        uint16_t p_addr;
+        uint8_t p_type;
+        uint8_t p_access;
+        uint8_t p_unit[PARAM_UNIT_LEN];
+        const char *p_label;
+
+        if (!getParameterInfo(i, &p_addr, &p_type, &p_access, &p_label, p_unit))
+        {
+          i++;
+          continue;
+        }
+
+        if ((tx_idx + PARAM_DICT_RECORD_LEN) > PROTOCOL_MAX_PAYLOAD)
         {
           break;
         }
-      }
-      Protocol_SendPacket(PROTOCOL_CMD_STREAM_ACK, ack, ack_idx);
-    }
-    else
-    {
-      Protocol_SendNACK(PROTOCOL_NACK_INVALID_ADDR);
-    }
-  }
 
-  // --- 4.4 STREAM STOP (0x04) ---
-  else if (cmd == PROTOCOL_CMD_STREAM_STOP)
-  {
-    if (data_len < 1U)
-    {
-      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
-      return;
-    }
+        tx_p[tx_idx++] = (uint8_t)(p_addr & 0xFFU);
+        tx_p[tx_idx++] = (uint8_t)((p_addr >> 8) & 0xFFU);
+        tx_p[tx_idx++] = (uint8_t)((p_type & 0x0FU) | ((p_access & 0x03U) << 4));
 
-    uint8_t id = rx_buf[1];
-    Stream_Stop(id);
-    Protocol_SendPacket(PROTOCOL_CMD_STREAM_STOP_ACK, &id, 1);
-  }
-
-  // --- 4.5 UPDATE CONFIG (0x06) ---
-  else if (cmd == PROTOCOL_CMD_CONFIG_COMMIT)
-  {
-    commitConfigShadow();
-    Protocol_SendPacket(PROTOCOL_CMD_CONFIG_COMMIT_ACK, NULL, 0);
-  }
-
-  // --- 4.3 DICTIONARY (0x05) ---
-  else if (cmd == PROTOCOL_CMD_DICTIONARY)
-  {
-    if (data_len < 3U)
-    {
-      Protocol_SendNACK(PROTOCOL_NACK_OTHER);
-      return;
-    }
-
-    uint16_t start_addr = rx_buf[1] | (rx_buf[2] << 8);
-    uint8_t req_cnt = rx_buf[3];
-    uint16_t total_params = getParameterCount();
-    uint16_t i = 0;
-
-    for (; i < total_params; i++)
-    {
-      uint16_t addr;
-      if (getParameterInfo(i, &addr, NULL, NULL, NULL, NULL) && addr >= start_addr)
-        break;
-    }
-
-    uint8_t remaining = (req_cnt == 0) ? (total_params - i) : req_cnt;
-
-    while (remaining > 0 && i < total_params)
-    {
-      uint8_t tx_p[PROTOCOL_MAX_PAYLOAD];
-      uint8_t tx_idx = 0;
-
-      while (remaining > 0 && i < total_params)
-      {
-        uint16_t p_addr;
-        uint8_t p_type, p_access, p_unit[PARAM_UNIT_LEN];
-        const char *p_label;
-        if (getParameterInfo(i, &p_addr, &p_type, &p_access, &p_label, p_unit))
+        memset(&tx_p[tx_idx], ' ', PARAM_NAME_LEN);
+        if (p_label != NULL)
         {
-          if ((tx_idx + PARAM_DICT_RECORD_LEN) > PROTOCOL_MAX_PAYLOAD)
-            break;
-
-          tx_p[tx_idx++] = p_addr & 0xFF;
-          tx_p[tx_idx++] = (p_addr >> 8) & 0xFF;
-          tx_p[tx_idx++] = (p_type & 0x0F) | ((p_access & 0x03) << 4);
-          memset(&tx_p[tx_idx], ' ', PARAM_NAME_LEN);
-          if (p_label != NULL)
+          uint8_t l_len = (uint8_t)strlen(p_label);
+          if (l_len > PARAM_NAME_LEN)
           {
-            uint8_t l_len = (uint8_t) strlen(p_label);
-            if (l_len > PARAM_NAME_LEN)
-            {
-              l_len = PARAM_NAME_LEN;
-            }
-            memcpy(&tx_p[tx_idx], p_label, l_len);
+            l_len = PARAM_NAME_LEN;
           }
-          tx_idx += PARAM_NAME_LEN;
-          memcpy(&tx_p[tx_idx], p_unit, PARAM_UNIT_LEN);
-          tx_idx += PARAM_UNIT_LEN;
-          remaining--;
+          memcpy(&tx_p[tx_idx], p_label, l_len);
         }
+        tx_idx += PARAM_NAME_LEN;
+
+        memcpy(&tx_p[tx_idx], p_unit, PARAM_UNIT_LEN);
+        tx_idx += PARAM_UNIT_LEN;
+
         i++;
       }
+
       Protocol_SendPacket(PROTOCOL_CMD_DICTIONARY_ACK, tx_p, tx_idx);
+      Protocol_Log("PROTOCOL: dictionary chunk bytes=%u\r\n", (unsigned int)tx_idx);
     }
+    return;
   }
-  else
-  {
-    Protocol_SendNACK(PROTOCOL_NACK_UNKNOWN_CMD);
-  }
+
+  Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
 }
 
-static void Protocol_SendPacket (uint8_t cmd, const uint8_t *payload, uint8_t payload_len)
+static void Protocol_SendPacket(uint8_t cmd, const uint8_t *payload, uint16_t payload_len)
 {
-  uint8_t tx_buf[PROTOCOL_MAX_PAYLOAD + 5];
-  uint16_t crc = 0xFFFF;
-  uint8_t len = 1 + payload_len + 2; // CMD + DATA + CRC
-  uint8_t idx = 0;
+  uint8_t tx_buf[PROTOCOL_TCP_HEADER_SIZE + PROTOCOL_MAX_PAYLOAD];
+  uint16_t idx = 0U;
 
-  tx_buf[idx++] = PROTOCOL_START_BYTE;
-  crc = CRC16_CCITT_Update(crc, PROTOCOL_START_BYTE);
-
-  tx_buf[idx++] = len;
-  crc = CRC16_CCITT_Update(crc, len);
-
-  tx_buf[idx++] = cmd;
-  crc = CRC16_CCITT_Update(crc, cmd);
-
-  for (uint8_t i = 0; i < payload_len; i++)
+  if (payload_len > PROTOCOL_MAX_PAYLOAD)
   {
-    tx_buf[idx++] = payload[i];
-    crc = CRC16_CCITT_Update(crc, payload[i]);
+    Protocol_Log("PROTOCOL: TX payload too large %u\r\n", (unsigned int)payload_len);
+    return;
   }
 
-  tx_buf[idx++] = crc & 0xFF;
-  tx_buf[idx++] = (crc >> 8) & 0xFF;
+  tx_buf[idx++] = PROTOCOL_START_BYTE_0;
+  tx_buf[idx++] = PROTOCOL_START_BYTE_1;
+  tx_buf[idx++] = cmd;
+  tx_buf[idx++] = (uint8_t)(payload_len & 0xFFU);
+  tx_buf[idx++] = (uint8_t)((payload_len >> 8) & 0xFFU);
+
+  if ((payload_len > 0U) && (payload != NULL))
+  {
+    memcpy(&tx_buf[idx], payload, payload_len);
+    idx = (uint16_t)(idx + payload_len);
+  }
 
   if (protocol_tx_handler != NULL)
   {
+    Protocol_Log("PROTOCOL: TX cmd=%s(0x%02X) len=%u\r\n", Protocol_CmdName(cmd), (unsigned int)cmd, (unsigned int)idx);
     protocol_tx_handler(tx_buf, idx);
   }
-}
-
-static void Protocol_SendNACK (uint8_t reason)
-{
-  Protocol_SendPacket(PROTOCOL_CMD_NACK, &reason, 1);
-}
-
-static uint16_t CRC16_CCITT_Update (uint16_t crc, uint8_t data)
-{
-  crc = (uint16_t) ((crc ^ ((uint16_t) data << 8)) & 0xFFFF);
-  for (uint8_t i = 0; i < 8; i++)
+  else
   {
-    if (crc & 0x8000)
-      crc = (uint16_t) (((crc << 1) ^ 0x1021) & 0xFFFF);
-    else
-      crc = (uint16_t) ((crc << 1) & 0xFFFF);
+    Protocol_Log("PROTOCOL: TX dropped, no handler cmd=0x%02X\r\n", (unsigned int)cmd);
   }
-  return crc;
 }
 
-/**
- * @brief Sendet ein Stream-Datenpaket (CMD 0x83)
- * @param stream_id Die ID des Streams
- * @param sequence Laufende Sequenznummer
- * @param data Pointer auf die rohen Parameter-Daten
- * @param data_len Länge der Parameter-Daten in Bytes
- */
-void Protocol_SendStreamData (uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, uint8_t register_count, const uint8_t *data, uint8_t data_len)
+static void Protocol_SendError(uint16_t address, uint8_t reason)
+{
+  uint8_t payload[3];
+  payload[0] = (uint8_t)(address & 0xFFU);
+  payload[1] = (uint8_t)((address >> 8) & 0xFFU);
+  payload[2] = reason;
+
+  Protocol_Log("PROTOCOL: ERROR addr=0x%04X reason=%s(0x%02X)\r\n",
+               (unsigned int)address,
+               Protocol_ErrorName(reason),
+               (unsigned int)reason);
+
+  Protocol_SendPacket(PROTOCOL_CMD_ERROR, payload, sizeof(payload));
+}
+
+void Protocol_SendStreamData(uint8_t stream_id,
+                             uint16_t sequence,
+                             uint64_t timestamp_ticks,
+                             uint8_t register_count,
+                             const uint8_t *data,
+                             uint8_t data_len)
 {
   uint8_t tx_payload[PROTOCOL_MAX_PAYLOAD];
-  uint8_t payload_len = 0;
+  uint16_t payload_len = 0U;
 
-  if ((stream_udp_pcb == NULL) || ((14U + data_len) > PROTOCOL_MAX_PAYLOAD))
+  if ((stream_udp_pcb == NULL) || ((uint16_t)(14U + data_len) > PROTOCOL_MAX_PAYLOAD))
   {
     return;
   }
 
-  tx_payload[payload_len++] = 0x55U;
-  tx_payload[payload_len++] = 0xAAU;
+  tx_payload[payload_len++] = PROTOCOL_START_BYTE_0;
+  tx_payload[payload_len++] = PROTOCOL_START_BYTE_1;
   tx_payload[payload_len++] = stream_id;
   tx_payload[payload_len++] = (uint8_t)(sequence & 0xFFU);
   tx_payload[payload_len++] = (uint8_t)((sequence >> 8) & 0xFFU);
@@ -443,10 +450,16 @@ void Protocol_SendStreamData (uint8_t stream_id, uint16_t sequence, uint64_t tim
   if ((data_len > 0U) && (data != NULL))
   {
     memcpy(&tx_payload[payload_len], data, data_len);
-    payload_len = (uint8_t)(payload_len + data_len);
+    payload_len = (uint16_t)(payload_len + data_len);
   }
 
   Protocol_SendUdpPayload(tx_payload, payload_len);
+  Protocol_Log("PROTOCOL: stream UDP id=%u seq=%u ts=%llu count=%u payload=%u\r\n",
+               (unsigned int)stream_id,
+               (unsigned int)sequence,
+               (unsigned long long)timestamp_ticks,
+               (unsigned int)register_count,
+               (unsigned int)payload_len);
 }
 
 static void Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len)
@@ -472,4 +485,64 @@ static void Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len
 
   (void)udp_sendto(stream_udp_pcb, packet, &stream_destination, PROTOCOL_UDP_STREAM_PORT);
   pbuf_free(packet);
+}
+
+static void Protocol_Log(const char *fmt, ...)
+{
+#if PROTOCOL_DEBUG_ENABLE
+  char buffer[PROTOCOL_LOG_BUFFER_SIZE];
+  va_list args;
+  int len;
+
+  va_start(args, fmt);
+  len = vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  if (len < 0)
+  {
+    return;
+  }
+
+  if ((size_t)len >= sizeof(buffer))
+  {
+    len = (int)(sizeof(buffer) - 1U);
+    buffer[len] = '\0';
+  }
+
+  sendUARTMessage(buffer, (Ifx_SizeT)len);
+#else
+  (void)fmt;
+#endif
+}
+
+static const char *Protocol_CmdName(uint8_t cmd)
+{
+  switch (cmd)
+  {
+    case PROTOCOL_CMD_DICTIONARY: return "DICTIONARY";
+    case PROTOCOL_CMD_READ: return "READ";
+    case PROTOCOL_CMD_READ_ACK: return "READ_ACK";
+    case PROTOCOL_CMD_WRITE: return "WRITE";
+    case PROTOCOL_CMD_WRITE_ACK: return "WRITE_ACK";
+    case PROTOCOL_CMD_STREAM_START: return "STREAM_START";
+    case PROTOCOL_CMD_STREAM_ACK: return "STREAM_ACK";
+    case PROTOCOL_CMD_STREAM_STOP: return "STREAM_STOP";
+    case PROTOCOL_CMD_STREAM_STOP_ACK: return "STREAM_STOP_ACK";
+    case PROTOCOL_CMD_DICTIONARY_ACK: return "DICTIONARY_ACK";
+    case PROTOCOL_CMD_CONFIG_COMMIT: return "CONFIG_COMMIT";
+    case PROTOCOL_CMD_CONFIG_COMMIT_ACK: return "CONFIG_COMMIT_ACK";
+    case PROTOCOL_CMD_ERROR: return "ERROR";
+    default: return "UNKNOWN";
+  }
+}
+
+static const char *Protocol_ErrorName(uint8_t reason)
+{
+  switch (reason)
+  {
+    case PROTOCOL_ERROR_INVALID_ADDR: return "INVALID_ADDR";
+    case PROTOCOL_ERROR_ACCESS_DENIED: return "ACCESS_DENIED";
+    case PROTOCOL_ERROR_OTHER: return "OTHER";
+    default: return "UNKNOWN";
+  }
 }
