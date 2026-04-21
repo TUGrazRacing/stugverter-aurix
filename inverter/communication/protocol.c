@@ -20,7 +20,7 @@ static Protocol_TxBytesFn protocol_tx_handler;
 static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t payload_len);
 static void Protocol_SendPacket(uint8_t cmd, const uint8_t *payload, uint16_t payload_len);
 static void Protocol_SendError(uint16_t address, uint8_t reason);
-static void Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len);
+static bool Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len);
 static void Protocol_Log(const char *fmt, ...);
 static const char *Protocol_CmdName(uint8_t cmd);
 static const char *Protocol_ErrorName(uint8_t reason);
@@ -218,22 +218,22 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
 
   if (cmd == PROTOCOL_CMD_STREAM_START)
   {
-    if ((payload_len < 5U) || (((payload_len - 3U) % 2U) != 0U))
+    if ((payload_len < 4U) || ((payload_len % 2U) != 0U))
     {
       Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
     }
 
     uint8_t stream_id = payload[0];
-    uint16_t freq_x100 = (uint16_t)payload[1] | ((uint16_t)payload[2] << 8);
-    uint8_t num_regs = (uint8_t)((payload_len - 3U) / 2U);
-    Protocol_Log("PROTOCOL: stream start id=%u freq_x100=%u regs=%u\r\n",
+    uint8_t every_n_loops = payload[1];
+    uint8_t num_regs = (uint8_t)((payload_len - 2U) / 2U);
+    Protocol_Log("PROTOCOL: stream start id=%u every_n=%u regs=%u\r\n",
            (unsigned int)stream_id,
-           (unsigned int)freq_x100,
+           (unsigned int)every_n_loops,
            (unsigned int)num_regs);
     uint16_t regs[STREAM_MAX_REGS];
 
-    if ((freq_x100 == 0U) || (num_regs == 0U) || (num_regs > STREAM_MAX_REGS))
+    if ((every_n_loops == 0U) || (num_regs == 0U) || (num_regs > STREAM_MAX_REGS))
     {
       Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
@@ -241,14 +241,14 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
 
     for (uint8_t i = 0U; i < num_regs; i++)
     {
-      uint16_t base = (uint16_t)(3U + (i * 2U));
+      uint16_t base = (uint16_t)(2U + (i * 2U));
       regs[i] = (uint16_t)payload[base] | ((uint16_t)payload[base + 1U] << 8);
     }
 
     /* Reconfigure the same stream ID if it already exists. */
     (void)Stream_Stop(stream_id);
 
-    if (!Stream_Start(stream_id, freq_x100, regs, num_regs))
+    if (!Stream_Start(stream_id, every_n_loops, regs, num_regs))
     {
       Protocol_SendError(regs[0], PROTOCOL_ERROR_INVALID_ADDR);
       return;
@@ -419,72 +419,35 @@ static void Protocol_SendError(uint16_t address, uint8_t reason)
   Protocol_SendPacket(PROTOCOL_CMD_ERROR, payload, sizeof(payload));
 }
 
-void Protocol_SendStreamData(uint8_t stream_id,
-                             uint16_t sequence,
-                             uint64_t timestamp_ticks,
-                             uint8_t register_count,
-                             const uint8_t *data,
-                             uint8_t data_len)
+bool Protocol_SendStreamPacket(const uint8_t *payload, uint16_t payload_len)
 {
-  uint8_t tx_payload[PROTOCOL_MAX_PAYLOAD];
-  uint16_t payload_len = 0U;
-
-  if ((stream_udp_pcb == NULL) || ((uint16_t)(14U + data_len) > PROTOCOL_MAX_PAYLOAD))
-  {
-    return;
-  }
-
-  tx_payload[payload_len++] = PROTOCOL_START_BYTE_0;
-  tx_payload[payload_len++] = PROTOCOL_START_BYTE_1;
-  tx_payload[payload_len++] = stream_id;
-  tx_payload[payload_len++] = (uint8_t)(sequence & 0xFFU);
-  tx_payload[payload_len++] = (uint8_t)((sequence >> 8) & 0xFFU);
-
-  for (uint8_t i = 0U; i < 8U; i++)
-  {
-    tx_payload[payload_len++] = (uint8_t)((timestamp_ticks >> (8U * i)) & 0xFFU);
-  }
-
-  tx_payload[payload_len++] = register_count;
-
-  if ((data_len > 0U) && (data != NULL))
-  {
-    memcpy(&tx_payload[payload_len], data, data_len);
-    payload_len = (uint16_t)(payload_len + data_len);
-  }
-
-  Protocol_SendUdpPayload(tx_payload, payload_len);
-  Protocol_Log("PROTOCOL: stream UDP id=%u seq=%u ts=%llu count=%u payload=%u\r\n",
-               (unsigned int)stream_id,
-               (unsigned int)sequence,
-               (unsigned long long)timestamp_ticks,
-               (unsigned int)register_count,
-               (unsigned int)payload_len);
+  return Protocol_SendUdpPayload(payload, payload_len);
 }
 
-static void Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len)
+static bool Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len)
 {
   struct pbuf *packet = NULL;
 
   if ((stream_udp_pcb == NULL) || (payload == NULL) || (payload_len == 0U))
   {
-    return;
+    return false;
   }
 
   packet = pbuf_alloc(PBUF_TRANSPORT, payload_len, PBUF_RAM);
   if (packet == NULL)
   {
-    return;
+    return false;
   }
 
   if (pbuf_take(packet, payload, payload_len) != ERR_OK)
   {
     pbuf_free(packet);
-    return;
+    return false;
   }
 
   (void)udp_sendto(stream_udp_pcb, packet, &stream_destination, PROTOCOL_UDP_STREAM_PORT);
   pbuf_free(packet);
+  return true;
 }
 
 static void Protocol_Log(const char *fmt, ...)

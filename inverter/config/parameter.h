@@ -34,6 +34,7 @@ typedef enum {
 
 /* API Prototypes */
 bool readParameter(uint16_t address, void *out_data, uint8_t *out_len);
+bool getParameterPointer(uint16_t address, const void **out_ptr, uint8_t *out_len);
 bool writeParameter(uint16_t address, const void *in_data, uint8_t in_len);
 bool getParameterLen(uint16_t address, uint8_t *out_len);
 uint16_t getParameterCount(void);

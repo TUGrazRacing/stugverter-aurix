@@ -98,7 +98,6 @@ void core2_main(void)
 
     Protocol_Init();
     Protocol_NetworkInit();
-    Stream_Init();
     Ethernet_Init();
     UART_LOG("CPU2: ethernet control server initialized\r\n");
     
@@ -107,7 +106,6 @@ void core2_main(void)
         Ifx_Lwip_pollTimerFlags();                          /* Poll LwIP timers and trigger protocols execution if required */
         Ifx_Lwip_pollReceiveFlags();                        /* Receive data package through ETH                             */
         Ethernet_Process();
-        Stream_Process();
         Stream_TransmitPending();
 
         {

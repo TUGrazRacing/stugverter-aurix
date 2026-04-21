@@ -6,7 +6,7 @@
 #include "current_math.h"
 #include "pwm.h"
 #include "gate_driver.h"
-#include "logger.h"
+#include "stream.h"
 
 IFX_INTERRUPT(controllerStep, 0, ISR_PRIORITY_ADC);
 
@@ -24,11 +24,13 @@ void controllerStep(void)
     static ThreePhaseDuty dutycycles;
     focStep(&dutycycles, theta_resolver_mech, &currents);
     setDutyCycles(dutycycles.u * 100.0f, dutycycles.v * 100.0f, dutycycles.w * 100.0f);
+    Stream_OnControlLoop();
 }
 
 void controllerInit(void)
 {
     initConfig(); //get default config
+    Stream_Init();
 
     gatedriverInit();
     initCurrents(&app_config.current, &app_config.adc);

@@ -114,6 +114,23 @@ bool readParameter(uint16_t address, void *out_data, uint8_t *out_len) {
     return false;
 }
 
+bool getParameterPointer(uint16_t address, const void **out_ptr, uint8_t *out_len) {
+    for (uint16_t i = 0; i < PARAM_TABLE_SIZE; i++) {
+        if (param_table[i].address == address) {
+            uint8_t len = getParameterSize(param_table[i].type);
+            if ((out_ptr == NULL) || (out_len == NULL) || (param_table[i].read_ptr == NULL) || (len == 0U)) {
+                return false;
+            }
+
+            *out_ptr = param_table[i].read_ptr;
+            *out_len = len;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool writeParameter(uint16_t address, const void *in_data, uint8_t in_len) {
     for (uint16_t i = 0; i < PARAM_TABLE_SIZE; i++) {
         if (param_table[i].address == address) {

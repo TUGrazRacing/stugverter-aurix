@@ -1,6 +1,5 @@
 #include "current_math.h"
 #include <stdio.h>
-#include "logger.h"
 
 static CurrentConfig *current_config = NULL_PTR;
 static AdcConfig     *adc_config     = NULL_PTR;

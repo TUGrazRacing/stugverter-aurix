@@ -37,6 +37,6 @@ void Protocol_SetTxHandler(Protocol_TxBytesFn handler);
 void Protocol_ProcessBytes(const uint8_t *data, uint16_t len);
 void Protocol_NetworkInit(void);
 bool Protocol_HasUdpSender(void);
-void Protocol_SendStreamData(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, uint8_t register_count, const uint8_t *data, uint8_t data_len);
+bool Protocol_SendStreamPacket(const uint8_t *payload, uint16_t payload_len);
 
 #endif

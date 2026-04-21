@@ -5,7 +5,6 @@
 #include "pi.h"
 #include <math.h>
 #include "pwm.h"
-#include "logger.h"
 #include "app_config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -98,14 +97,6 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
 
   foc_state->v_dq.d = PI_Run(&foc_config->pi_config_id, &foc_state->pi_state_id, app_setpoints.foc.id_ref, foc_state->i_dq.d);
   foc_state->v_dq.q = PI_Run(&foc_config->pi_config_iq, &foc_state->pi_state_iq, app_setpoints.foc.iq_ref, foc_state->i_dq.q);
-
-  //wieder einkommentiert
-  logPush(&(LogData_t){
-      .i_u   = currents->u,
-      .i_v   = currents->v,
-      .theta = theta_corr,
-      .time  = IfxStm_get(IFXSTM_DEFAULT_TIMER)
-  });
 
   FOC_InvParkTransform(&foc_state->v_dq, &foc_state->v_ab, sinVal, cosVal);
   // Stores result straight into state
