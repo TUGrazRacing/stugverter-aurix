@@ -27,6 +27,7 @@ void core0_main(void)
 //    logSysClocks();
     while(1)
     {
+         controllerBackgroundTask();
        /* Print a keep-alive message every ~1 second (assuming loop runs fast)
           or just rely on the wait */
        //wait(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, 1000));

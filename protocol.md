@@ -52,12 +52,13 @@ Request payload: empty (`Length = 0`)
 
 If `Length != 0`, the device responds with `Error-Resp (0x8F)` and error code `0x03`.
 
-Response (`0x80`) payload is repeated dictionary records (24 bytes each):
+Response (`0x80`) payload is repeated dictionary records (25 bytes each):
 
 | Field | Size | Description |
 | :--- | :--- | :--- |
 | Address | 2 Bytes | Register address |
 | Ctrl | 1 Byte | Bits 0-3 type, bits 4-5 access, bits 6-7 reserved |
+| Group ID | 1 Byte | Logical parameter grouping identifier |
 | Name | 16 Bytes | Space-padded ASCII |
 | Unit | 5 Bytes | Space-padded ASCII |
 
@@ -103,7 +104,7 @@ Request payload:
 | Field | Size | Description |
 | :--- | :--- | :--- |
 | Stream ID | 1 Byte | Subscription identifier chosen by host |
-| Frequency | 2 Bytes | Stream frequency in x100 Hz (`10000` = 100.00 Hz) |
+| Loop Divider | 1 Byte | Capture every Nth current control loop (`1` = every loop) |
 | Address 1 | 2 Bytes | First register address to stream |
 | ... | ... | ... |
 | Address n | 2 Bytes | n-th register address |
@@ -175,14 +176,13 @@ UDP payload format:
 | :--- | :--- | :--- |
 | Start | 2 Bytes | `0xAA55` |
 | Stream ID | 1 Byte | Stream identifier |
-| Seq-Num | 2 Bytes | Sequence number |
-| Timestamp | 8 Bytes | Tick timestamp |
-| Count | 1 Byte | Number of streamed datapoints |
-| Data | Variable | Concatenated values in acknowledged register order |
+| Count | 1 Byte | Number of packed samples in this UDP payload |
+| Samples | Variable | Repeated `Seq-Num(2) | Timestamp(8) | Data(sample bytes)` entries |
 
 Notes:
 - Data ordering exactly follows `Stream-Ack` address order.
-- One UDP packet contains one full sampled snapshot for that stream.
+- Sample byte length is implied by the acknowledged register list.
+- One UDP packet can contain multiple captured samples from the same stream.
 
 ## 7. Host Implementation Checklist
 
@@ -200,7 +200,7 @@ Use this checklist when implementing the PC/host side to ensure interoperability
 - `Dict-Req (0x00)`: send `Length = 0`.
 - `Read-Req (0x01)`: send one or more 16-bit addresses; payload length must be even.
 - `Write-Req (0x02)`: serialize address+value pairs with exact type sizes.
-- `Stream-Req (0x03)`: send `StreamID(1) + FreqX100(2) + address list`; include at least one address.
+- `Stream-Req (0x03)`: send `StreamID(1) + LoopDivider(1) + address list`; include at least one address.
 - `Stream-Stop (0x04)`: send exactly one byte stream ID.
 - `Update-Config (0x06)`: send `Length = 0`.
 
@@ -215,7 +215,7 @@ Use this checklist when implementing the PC/host side to ensure interoperability
 ### 7.4 Streaming and UDP
 
 - Listen on UDP port `3040` for stream packets.
-- Expect UDP payload: `AA55, streamId, seq, timestamp, count, data`.
+- Expect UDP payload: `AA55, streamId, sampleCount, repeated(seq(2), timestamp(8), sampleData)`.
 - Track `Seq-Num` per stream ID to detect packet loss/reordering.
 - Decode `Data` strictly in the order acknowledged in `Stream-Ack`.
 
@@ -224,3 +224,15 @@ Use this checklist when implementing the PC/host side to ensure interoperability
 - Use a single active TCP control connection; opening a new one replaces the previous client.
 - Be prepared for response chunking and asynchronous stream packets.
 - Re-send stream subscriptions after reconnect.
+
+## 8. Control Mode Register Conventions
+
+The firmware exposes runtime control mode and speed setpoint as live-write setpoints:
+
+- `CTRL_MODE` (`u8`, access `Write Live`):
+  - `0`: Current control mode (host writes `ID_REF` / `IQ_REF` directly)
+  - `1`: Speed control mode (Core 1 speed loop writes `IQ_REF` from speed PI)
+- `SPEED_SET` (`f32`, unit `rpm`, access `Write Live`):
+  - Mechanical speed setpoint used when `CTRL_MODE = 1`
+
+`SPEED_RPM` and `SPD_IQ_REF` are provided as read-only telemetry for monitoring and streaming.

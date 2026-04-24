@@ -7,7 +7,7 @@
 
 #define PARAM_NAME_LEN         16U
 #define PARAM_UNIT_LEN         5U
-#define PARAM_DICT_RECORD_LEN  (2U + 1U + PARAM_NAME_LEN + PARAM_UNIT_LEN)
+#define PARAM_DICT_RECORD_LEN  (2U + 1U + 1U + PARAM_NAME_LEN + PARAM_UNIT_LEN)
 
 typedef enum {
     TYPE_UINT8   = 0,
@@ -40,6 +40,6 @@ uint16_t getParameterCount(void);
 uint8_t getParameterSize(ParameterType type);
 bool getParameterClass(uint16_t address, ParameterClass *out_class);
 
-bool getParameterInfo(uint16_t index, uint16_t *address, uint8_t *type, uint8_t *access, const char **label, uint8_t *unit);
+bool getParameterInfo(uint16_t index, uint16_t *address, uint8_t *type, uint8_t *access, uint8_t *group, const char **label, uint8_t *unit);
 
 #endif

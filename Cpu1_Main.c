@@ -29,6 +29,7 @@
 #include "IfxScuWdt.h"
 #include "can.h"
 #include "logger.h"
+#include "motor_control.h"
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
@@ -42,6 +43,6 @@ void core1_main (void)
 
   while (1)
   {
-//    IfxStm_wait(IfxStm_getTicksFromMilliseconds(&MODULE_STM0, 100));
+    controllerCore1Task();
   }
 }

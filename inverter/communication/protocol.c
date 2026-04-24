@@ -218,22 +218,22 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
 
   if (cmd == PROTOCOL_CMD_STREAM_START)
   {
-    if ((payload_len < 5U) || (((payload_len - 3U) % 2U) != 0U))
+    if ((payload_len < 4U) || (((payload_len - 2U) % 2U) != 0U))
     {
       Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
     }
 
     uint8_t stream_id = payload[0];
-    uint16_t freq_x100 = (uint16_t)payload[1] | ((uint16_t)payload[2] << 8);
-    uint8_t num_regs = (uint8_t)((payload_len - 3U) / 2U);
-    Protocol_Log("PROTOCOL: stream start id=%u freq_x100=%u regs=%u\r\n",
+    uint8_t loop_divider = payload[1];
+    uint8_t num_regs = (uint8_t)((payload_len - 2U) / 2U);
+    Protocol_Log("PROTOCOL: stream start id=%u divider=%u regs=%u\r\n",
            (unsigned int)stream_id,
-           (unsigned int)freq_x100,
+           (unsigned int)loop_divider,
            (unsigned int)num_regs);
     uint16_t regs[STREAM_MAX_REGS];
 
-    if ((freq_x100 == 0U) || (num_regs == 0U) || (num_regs > STREAM_MAX_REGS))
+    if ((loop_divider == 0U) || (num_regs == 0U) || (num_regs > STREAM_MAX_REGS))
     {
       Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
@@ -241,16 +241,25 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
 
     for (uint8_t i = 0U; i < num_regs; i++)
     {
-      uint16_t base = (uint16_t)(3U + (i * 2U));
+      uint16_t base = (uint16_t)(2U + (i * 2U));
       regs[i] = (uint16_t)payload[base] | ((uint16_t)payload[base + 1U] << 8);
+
+      {
+        uint8_t vlen = 0U;
+        if (!getParameterLen(regs[i], &vlen))
+        {
+          Protocol_SendError(regs[i], PROTOCOL_ERROR_INVALID_ADDR);
+          return;
+        }
+      }
     }
 
     /* Reconfigure the same stream ID if it already exists. */
     (void)Stream_Stop(stream_id);
 
-    if (!Stream_Start(stream_id, freq_x100, regs, num_regs))
+    if (!Stream_Start(stream_id, loop_divider, regs, num_regs))
     {
-      Protocol_SendError(regs[0], PROTOCOL_ERROR_INVALID_ADDR);
+      Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
     }
 
@@ -325,10 +334,11 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
         uint16_t p_addr;
         uint8_t p_type;
         uint8_t p_access;
+        uint8_t p_group;
         uint8_t p_unit[PARAM_UNIT_LEN];
         const char *p_label;
 
-        if (!getParameterInfo(i, &p_addr, &p_type, &p_access, &p_label, p_unit))
+        if (!getParameterInfo(i, &p_addr, &p_type, &p_access, &p_group, &p_label, p_unit))
         {
           i++;
           continue;
@@ -342,6 +352,7 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
         tx_p[tx_idx++] = (uint8_t)(p_addr & 0xFFU);
         tx_p[tx_idx++] = (uint8_t)((p_addr >> 8) & 0xFFU);
         tx_p[tx_idx++] = (uint8_t)((p_type & 0x0FU) | ((p_access & 0x03U) << 4));
+        tx_p[tx_idx++] = p_group;
 
         memset(&tx_p[tx_idx], ' ', PARAM_NAME_LEN);
         if (p_label != NULL)
@@ -422,7 +433,6 @@ static void Protocol_SendError(uint16_t address, uint8_t reason)
 void Protocol_SendStreamData(uint8_t stream_id,
                              uint16_t sequence,
                              uint64_t timestamp_ticks,
-                             uint8_t register_count,
                              const uint8_t *data,
                              uint8_t data_len)
 {
@@ -437,6 +447,7 @@ void Protocol_SendStreamData(uint8_t stream_id,
   tx_payload[payload_len++] = PROTOCOL_START_BYTE_0;
   tx_payload[payload_len++] = PROTOCOL_START_BYTE_1;
   tx_payload[payload_len++] = stream_id;
+  tx_payload[payload_len++] = 1U;
   tx_payload[payload_len++] = (uint8_t)(sequence & 0xFFU);
   tx_payload[payload_len++] = (uint8_t)((sequence >> 8) & 0xFFU);
 
@@ -444,8 +455,6 @@ void Protocol_SendStreamData(uint8_t stream_id,
   {
     tx_payload[payload_len++] = (uint8_t)((timestamp_ticks >> (8U * i)) & 0xFFU);
   }
-
-  tx_payload[payload_len++] = register_count;
 
   if ((data_len > 0U) && (data != NULL))
   {
@@ -458,7 +467,7 @@ void Protocol_SendStreamData(uint8_t stream_id,
                (unsigned int)stream_id,
                (unsigned int)sequence,
                (unsigned long long)timestamp_ticks,
-               (unsigned int)register_count,
+               1U,
                (unsigned int)payload_len);
 }
 

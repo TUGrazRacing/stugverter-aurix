@@ -57,7 +57,7 @@ static void focOpenLoop (void)
     return;
   }
 
-  foc_state->electricalAngle += (app_setpoints.foc.speedRefHz * FOC_TWO_PI * (1.0f / (float32) pwm_config->frequency));
+  foc_state->electricalAngle += ((app_setpoints.foc.speedSetpointRpm / 60.0f) * FOC_TWO_PI * (1.0f / (float32) pwm_config->frequency));
 
   if (foc_state->electricalAngle >= FOC_TWO_PI)
   {
