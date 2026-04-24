@@ -72,12 +72,25 @@ void initConfig(void)
     /* State defaults */
     app_state.foc.electricalAngle = 0.0f;
     app_state.foc.calibrated      = false;
+    app_state.foc.adc_curr_u_raw = 0U;
+    app_state.foc.adc_curr_v_raw = 0U;
+    app_state.foc.adc_sin_raw = 0U;
+    app_state.foc.adc_cos_raw = 0U;
+    app_state.foc.adc_curr_u = 0.0f;
+    app_state.foc.adc_curr_v = 0.0f;
+    app_state.foc.adc_curr_w = 0.0f;
+    app_state.foc.i_uvw.u = 0.0f;
+    app_state.foc.i_uvw.v = 0.0f;
+    app_state.foc.i_uvw.w = 0.0f;
     app_state.foc.pi_state_id.integral = 0.0f;
     app_state.foc.pi_state_iq.integral = 0.0f;
     app_state.foc.pi_state_speed.integral = 0.0f;
     app_state.foc.speed_mech_rpm = 0.0f;
     app_state.foc.speed_filt_rpm = 0.0f;
     app_state.foc.speed_iq_ref = 0.0f;
+    app_state.foc.resolver_mech_angle = 0.0f;
+    app_state.foc.control_loop_counter = 0U;
+    app_state.foc.control_loop_tick = 0U;
 
     app_state.resolver.prev_elec_angle = 0.0f;
     app_state.resolver.sector          = 0;

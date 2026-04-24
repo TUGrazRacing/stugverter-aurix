@@ -88,6 +88,7 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
   }
 
   theta_corr = focGetMotorElecAngle(theta, foc_config->resolver_offset, foc_config->motor_polepairs);
+  foc_state->electricalAngle = theta_corr;
 
   FOC_ClarkeTransform(currents, &foc_state->i_ab);
 

@@ -15,6 +15,15 @@ typedef struct
     float32 electricalAngle;
     bool    calibrated;
 
+    uint16 adc_curr_u_raw;
+    uint16 adc_curr_v_raw;
+    uint16 adc_sin_raw;
+    uint16 adc_cos_raw;
+    float32 adc_curr_u;
+    float32 adc_curr_v;
+    float32 adc_curr_w;
+
+    ThreePhaseCurrents i_uvw;
     CurrentsAB     i_ab;
     CurrentsAB     v_ab;
     CurrentsDQ     i_dq;
@@ -28,6 +37,9 @@ typedef struct
     float32 speed_mech_rpm;
     float32 speed_filt_rpm;
     float32 speed_iq_ref;
+    float32 resolver_mech_angle;
+    uint32  control_loop_counter;
+    uint64  control_loop_tick;
 } FocState;
 
 typedef struct

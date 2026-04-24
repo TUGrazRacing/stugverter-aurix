@@ -94,6 +94,24 @@ static const Parameter param_table[] = {
     {0x2401, &app_state.resolver.sector,           NULL,                                        TYPE_INT8,    ACCESS_READ_ONLY,          0x24, "SECTOR",        ""},
     {0x2402, &app_state.foc.speed_mech_rpm,        NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "SPEED_RPM",     "rpm"},
     {0x2403, &app_state.foc.speed_iq_ref,          NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "SPD_IQ_REF",    "A"},
+    {0x2404, &app_state.foc.speed_filt_rpm,        NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "SPD_RPM_FILT",  "rpm"},
+
+    // --- ADC Runtime State (0x2500) ---
+    {0x2500, &app_state.foc.adc_curr_u_raw,        NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_CURR_U",    ""},
+    {0x2501, &app_state.foc.adc_curr_v_raw,        NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_CURR_V",    ""},
+    {0x2502, &app_state.foc.adc_sin_raw,           NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_RES_SIN",   ""},
+    {0x2503, &app_state.foc.adc_cos_raw,           NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_RES_COS",   ""},
+    {0x2504, &app_state.foc.adc_curr_u,            NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x25, "ADC_I_U",       "A"},
+    {0x2505, &app_state.foc.adc_curr_v,            NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x25, "ADC_I_V",       "A"},
+    {0x2506, &app_state.foc.adc_curr_w,            NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x25, "ADC_I_W",       "A"},
+
+    // --- Current Loop Runtime (0x2600) ---
+    {0x2600, &app_state.foc.i_uvw.u,               NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x26, "I_U",           "A"},
+    {0x2601, &app_state.foc.i_uvw.v,               NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x26, "I_V",           "A"},
+    {0x2602, &app_state.foc.i_uvw.w,               NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x26, "I_W",           "A"},
+    {0x2603, &app_state.foc.resolver_mech_angle,   NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x26, "MECH_ANGLE",    "rad"},
+    {0x2604, &app_state.foc.control_loop_counter,  NULL,                                        TYPE_UINT32,  ACCESS_READ_ONLY,          0x26, "LOOP_COUNT",    ""},
+    {0x2605, &app_state.foc.control_loop_tick,     NULL,                                        TYPE_UINT64,  ACCESS_READ_ONLY,          0x26, "LOOP_TICK",     ""},
 };
 
 #define PARAM_TABLE_SIZE (sizeof(param_table) / sizeof(param_table[0]))

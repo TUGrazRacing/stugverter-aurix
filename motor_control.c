@@ -63,6 +63,8 @@ void controllerInit(void)
     controller_runtime.theta_resolver_mech = 0.0f;
     g_control_loop_counter = 0U;
     g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
+    app_state.foc.control_loop_counter = g_control_loop_counter;
+    app_state.foc.control_loop_tick = g_control_loop_last_tick;
 }
 
 void controllerBackgroundTask(void)
@@ -120,12 +122,18 @@ static void controllerReadAdcSample(void)
             &controller_runtime.adc_sample.curr_v_raw,
             &controller_runtime.adc_sample.sin_raw,
             &controller_runtime.adc_sample.cos_raw);
+
+    app_state.foc.adc_curr_u_raw = controller_runtime.adc_sample.curr_u_raw;
+    app_state.foc.adc_curr_v_raw = controller_runtime.adc_sample.curr_v_raw;
+    app_state.foc.adc_sin_raw = controller_runtime.adc_sample.sin_raw;
+    app_state.foc.adc_cos_raw = controller_runtime.adc_sample.cos_raw;
 }
 
 static void controllerUpdateSpeedMeasurement(void)
 {
     controller_runtime.theta_resolver_mech = resolverGetMechanicalAngle(controller_runtime.adc_sample.sin_raw,
                                                                         controller_runtime.adc_sample.cos_raw);
+    app_state.foc.resolver_mech_angle = controller_runtime.theta_resolver_mech;
     Speed_UpdateMeasurement(&app_state.foc,
                             controller_runtime.theta_resolver_mech,
                             (float32)app_config.pwm.frequency);
@@ -137,6 +145,10 @@ static void controllerRunCurrentLoop(void)
     ThreePhaseDuty dutycycles;
 
     currentsGet(&currents, controller_runtime.adc_sample.curr_u_raw, controller_runtime.adc_sample.curr_v_raw);
+    app_state.foc.adc_curr_u = currents.u;
+    app_state.foc.adc_curr_v = currents.v;
+    app_state.foc.adc_curr_w = currents.w;
+    app_state.foc.i_uvw = currents;
     focStep(&dutycycles, controller_runtime.theta_resolver_mech, &currents);
     setDutyCycles(dutycycles.u * 100.0f, dutycycles.v * 100.0f, dutycycles.w * 100.0f);
 }
@@ -145,4 +157,6 @@ static void controllerPublishLoopTiming(void)
 {
     g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
     g_control_loop_counter++;
+    app_state.foc.control_loop_tick = g_control_loop_last_tick;
+    app_state.foc.control_loop_counter = g_control_loop_counter;
 }
