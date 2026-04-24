@@ -12,6 +12,7 @@
 
 #define PROTOCOL_DEBUG_ENABLE 1
 #define PROTOCOL_LOG_BUFFER_SIZE 192U
+#define PROTOCOL_DICTIONARY_GROUP_ALL 0xFFU
 
 static struct udp_pcb *stream_udp_pcb;
 static ip_addr_t stream_destination;
@@ -315,12 +316,13 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
 
   if (cmd == PROTOCOL_CMD_DICTIONARY)
   {
-    if (payload_len != 0U)
+    if (payload_len != 1U)
     {
       Protocol_SendError(0U, PROTOCOL_ERROR_OTHER);
       return;
     }
 
+    uint8_t group_filter = payload[0];
     uint16_t total_params = getParameterCount();
     uint16_t i = 0U;
 
@@ -339,6 +341,12 @@ static void Protocol_ProcessPacket(uint8_t cmd, const uint8_t *payload, uint16_t
         const char *p_label;
 
         if (!getParameterInfo(i, &p_addr, &p_type, &p_access, &p_group, &p_label, p_unit))
+        {
+          i++;
+          continue;
+        }
+
+        if ((group_filter != PROTOCOL_DICTIONARY_GROUP_ALL) && (p_group != group_filter))
         {
           i++;
           continue;

@@ -1,6 +1,7 @@
 #include "stream.h"
 #include "parameter.h"
 #include "motor_control.h"
+#include "IfxCpu.h"
 #include <string.h>
 
 typedef struct
@@ -29,12 +30,12 @@ static StreamFrame_t frame_queue[STREAM_FRAME_BUFFER_SIZE];
 static uint8_t frame_head;
 static uint8_t frame_tail;
 static uint8_t frame_count;
+static IfxCpu_mutexLock stream_lock;
 
 static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *payload, uint8_t payload_len);
 static bool Stream_DequeueFrame(StreamFrame_t *frame);
-static bool Stream_PeekFrame(StreamFrame_t *frame);
 static void Stream_PurgeFrames(uint8_t stream_id);
-static void Stream_CaptureStream(StreamInfo_t *stream);
+static void Stream_Lock(void);
 
 void Stream_Init(void)
 {
@@ -43,20 +44,48 @@ void Stream_Init(void)
     frame_head = 0U;
     frame_tail = 0U;
     frame_count = 0U;
+    stream_lock = 0U;
 }
 
 bool Stream_Start(uint8_t id, uint8_t loop_divider, const uint16_t *regs, uint8_t num_regs)
 {
+    StreamInfo_t next_stream;
+    uint32_t total_payload = 0U;
+    int free_idx = -1;
+
     if ((loop_divider == 0U) || (num_regs == 0U) || (regs == NULL) || (num_regs > STREAM_MAX_REGS))
     {
         return false;
     }
 
-    int free_idx = -1;
+    memset(&next_stream, 0, sizeof(next_stream));
+
+    for (uint8_t i = 0U; i < num_regs; i++)
+    {
+        uint8_t len = 0U;
+
+        if (!getParameterLen(regs[i], &len) || (len == 0U))
+        {
+            return false;
+        }
+
+        if ((total_payload + len) > STREAM_FRAME_VALUE_BYTES)
+        {
+            return false;
+        }
+
+        next_stream.regs[i] = regs[i];
+        next_stream.reg_lengths[i] = len;
+        total_payload += len;
+    }
+
+    Stream_Lock();
+
     for (int i = 0; i < (int)STREAM_MAX_STREAMS; i++)
     {
         if (streams[i].active && (streams[i].id == id))
         {
+            IfxCpu_releaseMutex(&stream_lock);
             return false;
         }
 
@@ -66,59 +95,43 @@ bool Stream_Start(uint8_t id, uint8_t loop_divider, const uint16_t *regs, uint8_
         }
     }
 
-    if (free_idx == -1)
+    if (free_idx < 0)
     {
+        IfxCpu_releaseMutex(&stream_lock);
         return false;
     }
 
-    memset(&streams[free_idx], 0, sizeof(StreamInfo_t));
+    next_stream.active = true;
+    next_stream.id = id;
+    next_stream.sequence = 0U;
+    next_stream.loop_divider = loop_divider;
+    next_stream.next_loop_count = controllerGetLoopCounter() + (uint32_t)loop_divider;
+    next_stream.num_regs = num_regs;
+    streams[free_idx] = next_stream;
 
-    uint32_t payload_budget = STREAM_FRAME_VALUE_BYTES;
-    uint32_t total_payload = 0U;
-
-    for (uint8_t i = 0; i < num_regs; i++)
-    {
-        const void *read_ptr = NULL;
-        uint8_t len = 0U;
-
-        if (!getParameterPointer(regs[i], &read_ptr, &len))
-        {
-            return false;
-        }
-
-        if ((uint16_t)(total_payload + len) > STREAM_FRAME_VALUE_BYTES)
-        {
-            return false;
-        }
-
-        streams[free_idx].reg_ptrs[i] = (const uint8_t *)read_ptr;
-        streams[free_idx].reg_lengths[i] = len;
-        total_payload = (uint8_t)(total_payload + len);
-    }
-
-    streams[free_idx].active = true;
-    streams[free_idx].id = id;
-    streams[free_idx].sequence = 0U;
-    streams[free_idx].loop_divider = loop_divider;
-    streams[free_idx].next_loop_count = controllerGetLoopCounter() + (uint32_t)loop_divider;
-    streams[free_idx].num_regs = num_regs;
-
+    IfxCpu_releaseMutex(&stream_lock);
     return true;
 }
 
 bool Stream_Stop(uint8_t id)
 {
+    bool stopped = false;
+
+    Stream_Lock();
+
     for (int i = 0; i < (int)STREAM_MAX_STREAMS; i++)
     {
         if (streams[i].active && (streams[i].id == id))
         {
             streams[i].active = false;
             Stream_PurgeFrames(id);
-            return true;
+            stopped = true;
+            break;
         }
     }
 
-    return false;
+    IfxCpu_releaseMutex(&stream_lock);
+    return stopped;
 }
 
 void Stream_OnControlLoop(void)
@@ -126,65 +139,65 @@ void Stream_OnControlLoop(void)
     uint32_t current_loop_count = controllerGetLoopCounter();
     uint64_t current_ticks = controllerGetLastLoopTick();
 
+    if (!IfxCpu_acquireMutex(&stream_lock))
+    {
+        return;
+    }
+
     for (int i = 0; i < (int)STREAM_MAX_STREAMS; i++)
     {
         if (streams[i].active && (current_loop_count >= streams[i].next_loop_count))
         {
+            uint8_t payload[STREAM_FRAME_VALUE_BYTES];
+            uint8_t payload_idx = 0U;
+            bool valid = true;
+
             while (current_loop_count >= streams[i].next_loop_count)
             {
                 streams[i].next_loop_count += (uint32_t)streams[i].loop_divider;
+            }
 
-                uint8_t payload[STREAM_FRAME_VALUE_BYTES];
-                uint8_t payload_idx = 0U;
-                bool valid = true;
+            for (uint8_t r = 0U; r < streams[i].num_regs; r++)
+            {
+                uint8_t value[8];
+                uint8_t len = 0U;
 
-                for (uint8_t r = 0; r < streams[i].num_regs; r++)
+                if (!readParameter(streams[i].regs[r], value, &len) || (len != streams[i].reg_lengths[r]))
                 {
-                    uint8_t value[8];
-                    uint8_t len = 0U;
-
-                    if (!readParameter(streams[i].regs[r], value, &len) || (len != streams[i].reg_lengths[r]))
-                    {
-                        valid = false;
-                        break;
-                    }
-
-                    if ((payload_idx + len) > sizeof(payload))
-                    {
-                        valid = false;
-                        break;
-                    }
-
-                    memcpy(&payload[payload_idx], value, len);
-                    payload_idx = (uint8_t)(payload_idx + len);
+                    valid = false;
+                    break;
                 }
 
-                if (valid)
+                if ((payload_idx + len) > sizeof(payload))
                 {
-                    (void)Stream_QueueFrame(streams[i].id, streams[i].sequence++, current_ticks, payload, payload_idx);
+                    valid = false;
+                    break;
                 }
+
+                memcpy(&payload[payload_idx], value, len);
+                payload_idx = (uint8_t)(payload_idx + len);
+            }
+
+            if (valid)
+            {
+                (void)Stream_QueueFrame(streams[i].id, streams[i].sequence++, current_ticks, payload, payload_idx);
             }
         }
-
-        if (stream->loop_counter > 1U)
-        {
-            stream->loop_counter--;
-            continue;
-        }
-
-        stream->loop_counter = stream->loop_divider;
-        Stream_CaptureStream(stream);
     }
+
+    IfxCpu_releaseMutex(&stream_lock);
 }
 
 void Stream_TransmitPending(void)
 {
+    StreamFrame_t frame;
+
     if (!Protocol_HasUdpSender())
     {
         return;
     }
 
-    while (frame_count > 0U)
+    while (Stream_DequeueFrame(&frame))
     {
         Protocol_SendStreamData(frame.stream_id, frame.sequence, frame.timestamp_ticks, frame.payload, frame.payload_len);
     }
@@ -216,41 +229,52 @@ static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t tim
 
 static bool Stream_DequeueFrame(StreamFrame_t *frame)
 {
-    if ((frame == NULL) || (frame_count == 0U))
+    if (frame == NULL)
     {
+        return false;
+    }
+
+    if (!IfxCpu_acquireMutex(&stream_lock))
+    {
+        return false;
+    }
+
+    if (frame_count == 0U)
+    {
+        IfxCpu_releaseMutex(&stream_lock);
         return false;
     }
 
     *frame = frame_queue[frame_tail];
     frame_tail = (uint8_t)((frame_tail + 1U) % STREAM_FRAME_BUFFER_SIZE);
     frame_count--;
+    IfxCpu_releaseMutex(&stream_lock);
     return true;
 }
 
-static bool Stream_PeekFrame(StreamFrame_t *frame)
+static void Stream_Lock(void)
 {
-    if ((frame == NULL) || (frame_count == 0U))
+    while (!IfxCpu_acquireMutex(&stream_lock))
     {
-        return false;
+        /* Wait for the short stream critical section to finish. */
     }
-
-    *frame = frame_queue[frame_tail];
-    return true;
 }
 
 static void Stream_PurgeFrames(uint8_t stream_id)
 {
     StreamFrame_t kept[STREAM_FRAME_BUFFER_SIZE];
     uint8_t kept_count = 0U;
+    uint8_t read_idx = frame_tail;
 
-    while (frame_count > 0U)
+    for (uint8_t i = 0U; i < frame_count; i++)
     {
-        StreamFrame_t frame;
-        (void)Stream_DequeueFrame(&frame);
+        StreamFrame_t frame = frame_queue[read_idx];
         if (frame.stream_id != stream_id)
         {
             kept[kept_count++] = frame;
         }
+
+        read_idx = (uint8_t)((read_idx + 1U) % STREAM_FRAME_BUFFER_SIZE);
     }
 
     frame_head = 0U;
@@ -259,50 +283,8 @@ static void Stream_PurgeFrames(uint8_t stream_id)
 
     for (uint8_t i = 0U; i < kept_count; i++)
     {
-        (void)Stream_QueueFrame(kept[i].stream_id, kept[i].sequence, kept[i].timestamp_ticks, kept[i].payload, kept[i].payload_len);
+        frame_queue[frame_head] = kept[i];
+        frame_head = (uint8_t)((frame_head + 1U) % STREAM_FRAME_BUFFER_SIZE);
+        frame_count++;
     }
-}
-
-static void Stream_CaptureStream(StreamInfo_t *stream)
-{
-    StreamFrame_t *slot;
-    uint8_t payload_idx = 0U;
-
-    if (stream == NULL)
-    {
-        return;
-    }
-
-    for (uint8_t r = 0U; r < stream->num_regs; r++)
-    {
-        uint8_t len = stream->reg_lengths[r];
-
-        if ((payload_idx + len) > sizeof(frame_queue[0].payload))
-        {
-            return;
-        }
-
-        payload_idx = (uint8_t)(payload_idx + len);
-    }
-
-    if (frame_count == STREAM_FRAME_BUFFER_SIZE)
-    {
-        frame_tail = (uint8_t)((frame_tail + 1U) % STREAM_FRAME_BUFFER_SIZE);
-        frame_count--;
-    }
-
-    slot = &frame_queue[frame_head];
-    slot->stream_id = stream->id;
-    slot->sequence = stream->sequence++;
-    slot->timestamp_ticks = IfxStm_get(IFXSTM_DEFAULT_TIMER);
-    slot->register_count = stream->num_regs;
-    slot->payload_len = payload_idx;
-    for (uint8_t r = 0U, offset = 0U; r < stream->num_regs; r++)
-    {
-        uint8_t len = stream->reg_lengths[r];
-        memcpy(&slot->payload[offset], stream->reg_ptrs[r], len);
-        offset = (uint8_t)(offset + len);
-    }
-    frame_head = (uint8_t)((frame_head + 1U) % STREAM_FRAME_BUFFER_SIZE);
-    frame_count++;
 }

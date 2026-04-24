@@ -48,9 +48,13 @@ Each TCP application frame has this layout:
 
 ### 3.1 Dictionary Request (`0x00`)
 
-Request payload: empty (`Length = 0`)
+Request payload:
 
-If `Length != 0`, the device responds with `Error-Resp (0x8F)` and error code `0x03`.
+| Field | Size | Description |
+| :--- | :--- | :--- |
+| Group ID | 1 Byte | Logical group selector; `0xFF` requests all groups |
+
+If `Length != 1`, the device responds with `Error-Resp (0x8F)` and error code `0x03`.
 
 Response (`0x80`) payload is repeated dictionary records (25 bytes each):
 
@@ -62,7 +66,7 @@ Response (`0x80`) payload is repeated dictionary records (25 bytes each):
 | Name | 16 Bytes | Space-padded ASCII |
 | Unit | 5 Bytes | Space-padded ASCII |
 
-Dictionary data may be split into multiple `0x80` frames.
+Dictionary data may be split into multiple `0x80` frames. Group IDs are assigned by logical subsystem/configuration area, not by datatype or access class.
 
 ### 3.2 Read Request (`0x01`)
 
@@ -166,6 +170,25 @@ Access classes:
 - `0x1`: Write After Restart (staged config)
 - `0x2`: Write Live (setpoints)
 
+## 5.1 Dictionary Group IDs
+
+| Group ID | Logical Group |
+| :--- | :--- |
+| `0x01` | ADC configuration |
+| `0x02` | Current measurement configuration |
+| `0x03` | PWM configuration |
+| `0x04` | FOC configuration and setpoints |
+| `0x05` | FOC d-axis PI configuration |
+| `0x06` | FOC q-axis PI configuration |
+| `0x07` | Speed PI configuration |
+| `0x08` | Resolver configuration |
+| `0x20` | FOC runtime state |
+| `0x21` | FOC currents and voltages |
+| `0x22` | PWM duty telemetry |
+| `0x23` | PI runtime state |
+| `0x24` | Resolver and speed telemetry |
+| `0xFF` | Host request selector for all groups, not used as an entry group |
+
 ## 6. UDP Streaming Packet
 
 After a successful `Stream-Req`, UDP packets are sent on stream port `3040`.
@@ -197,7 +220,7 @@ Use this checklist when implementing the PC/host side to ensure interoperability
 
 ### 7.2 Command Payload Rules
 
-- `Dict-Req (0x00)`: send `Length = 0`.
+- `Dict-Req (0x00)`: send one byte group selector; use `0xFF` to request all groups.
 - `Read-Req (0x01)`: send one or more 16-bit addresses; payload length must be even.
 - `Write-Req (0x02)`: serialize address+value pairs with exact type sizes.
 - `Stream-Req (0x03)`: send `StreamID(1) + LoopDivider(1) + address list`; include at least one address.

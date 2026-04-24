@@ -27,12 +27,7 @@
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
-<<<<<<< HEAD
-=======
-#include "can.h"
-#include "logger.h"
 #include "motor_control.h"
->>>>>>> temp_branch
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 

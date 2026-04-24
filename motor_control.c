@@ -6,7 +6,7 @@
 #include "current_math.h"
 #include "pwm.h"
 #include "gate_driver.h"
-#include "logger.h"
+#include "stream.h"
 #include "pi.h"
 #include "IfxCpu.h"
 #include "IfxStm.h"
@@ -71,6 +71,7 @@ void controllerStep(void)
 
     g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
     g_control_loop_counter++;
+    Stream_OnControlLoop();
 }
 
 void controllerInit(void)
