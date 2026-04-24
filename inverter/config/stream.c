@@ -1,7 +1,6 @@
 #include "stream.h"
 #include "parameter.h"
-#include "protocol.h"
-#include "IfxStm.h"
+#include "motor_control.h"
 #include <string.h>
 
 typedef struct
@@ -9,11 +8,11 @@ typedef struct
     bool active;
     uint8_t id;
     uint16_t sequence;
-    uint8_t loop_divider;
-    uint8_t loop_counter;
-    uint8_t num_regs;
-    uint8_t reg_lengths[STREAM_MAX_REGS];
-    const uint8_t *reg_ptrs[STREAM_MAX_REGS];
+    uint8_t  loop_divider;
+    uint32_t next_loop_count;
+    uint8_t  num_regs;
+    uint8_t  reg_lengths[STREAM_MAX_REGS];
+    uint16_t regs[STREAM_MAX_REGS];
 } StreamInfo_t;
 
 typedef struct
@@ -21,9 +20,8 @@ typedef struct
     uint8_t stream_id;
     uint16_t sequence;
     uint64_t timestamp_ticks;
-    uint8_t register_count;
-    uint8_t payload_len;
-    uint8_t payload[STREAM_FRAME_VALUE_BYTES];
+    uint8_t  payload_len;
+    uint8_t  payload[STREAM_FRAME_VALUE_BYTES];
 } StreamFrame_t;
 
 static StreamInfo_t streams[STREAM_MAX_STREAMS];
@@ -32,7 +30,7 @@ static uint8_t frame_head;
 static uint8_t frame_tail;
 static uint8_t frame_count;
 
-static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, uint8_t register_count, const uint8_t *payload, uint8_t payload_len);
+static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *payload, uint8_t payload_len);
 static bool Stream_DequeueFrame(StreamFrame_t *frame);
 static bool Stream_PeekFrame(StreamFrame_t *frame);
 static void Stream_PurgeFrames(uint8_t stream_id);
@@ -47,9 +45,9 @@ void Stream_Init(void)
     frame_count = 0U;
 }
 
-bool Stream_Start(uint8_t id, uint8_t every_n_loops, const uint16_t *regs, uint8_t num_regs)
+bool Stream_Start(uint8_t id, uint8_t loop_divider, const uint16_t *regs, uint8_t num_regs)
 {
-    if ((every_n_loops == 0U) || (num_regs == 0U) || (regs == NULL) || (num_regs > STREAM_MAX_REGS))
+    if ((loop_divider == 0U) || (num_regs == 0U) || (regs == NULL) || (num_regs > STREAM_MAX_REGS))
     {
         return false;
     }
@@ -75,8 +73,10 @@ bool Stream_Start(uint8_t id, uint8_t every_n_loops, const uint16_t *regs, uint8
 
     memset(&streams[free_idx], 0, sizeof(StreamInfo_t));
 
-    uint8_t total_payload = 0U;
-    for (uint8_t i = 0U; i < num_regs; i++)
+    uint32_t payload_budget = STREAM_FRAME_VALUE_BYTES;
+    uint32_t total_payload = 0U;
+
+    for (uint8_t i = 0; i < num_regs; i++)
     {
         const void *read_ptr = NULL;
         uint8_t len = 0U;
@@ -99,8 +99,8 @@ bool Stream_Start(uint8_t id, uint8_t every_n_loops, const uint16_t *regs, uint8
     streams[free_idx].active = true;
     streams[free_idx].id = id;
     streams[free_idx].sequence = 0U;
-    streams[free_idx].loop_divider = every_n_loops;
-    streams[free_idx].loop_counter = every_n_loops;
+    streams[free_idx].loop_divider = loop_divider;
+    streams[free_idx].next_loop_count = controllerGetLoopCounter() + (uint32_t)loop_divider;
     streams[free_idx].num_regs = num_regs;
 
     return true;
@@ -123,13 +123,47 @@ bool Stream_Stop(uint8_t id)
 
 void Stream_OnControlLoop(void)
 {
+    uint32_t current_loop_count = controllerGetLoopCounter();
+    uint64_t current_ticks = controllerGetLastLoopTick();
+
     for (int i = 0; i < (int)STREAM_MAX_STREAMS; i++)
     {
-        StreamInfo_t *stream = &streams[i];
-
-        if (!stream->active)
+        if (streams[i].active && (current_loop_count >= streams[i].next_loop_count))
         {
-            continue;
+            while (current_loop_count >= streams[i].next_loop_count)
+            {
+                streams[i].next_loop_count += (uint32_t)streams[i].loop_divider;
+
+                uint8_t payload[STREAM_FRAME_VALUE_BYTES];
+                uint8_t payload_idx = 0U;
+                bool valid = true;
+
+                for (uint8_t r = 0; r < streams[i].num_regs; r++)
+                {
+                    uint8_t value[8];
+                    uint8_t len = 0U;
+
+                    if (!readParameter(streams[i].regs[r], value, &len) || (len != streams[i].reg_lengths[r]))
+                    {
+                        valid = false;
+                        break;
+                    }
+
+                    if ((payload_idx + len) > sizeof(payload))
+                    {
+                        valid = false;
+                        break;
+                    }
+
+                    memcpy(&payload[payload_idx], value, len);
+                    payload_idx = (uint8_t)(payload_idx + len);
+                }
+
+                if (valid)
+                {
+                    (void)Stream_QueueFrame(streams[i].id, streams[i].sequence++, current_ticks, payload, payload_idx);
+                }
+            }
         }
 
         if (stream->loop_counter > 1U)
@@ -152,66 +186,11 @@ void Stream_TransmitPending(void)
 
     while (frame_count > 0U)
     {
-        StreamFrame_t frame;
-        uint8_t packet[PROTOCOL_MAX_PAYLOAD];
-        uint16_t packet_len = 0U;
-        uint8_t sample_count = 0U;
-        uint8_t batch_stream_id = 0U;
-        uint8_t sample_len = 0U;
-
-        if (!Stream_DequeueFrame(&frame))
-        {
-            break;
-        }
-
-        batch_stream_id = frame.stream_id;
-        sample_len = frame.payload_len;
-
-        packet[packet_len++] = PROTOCOL_START_BYTE_0;
-        packet[packet_len++] = PROTOCOL_START_BYTE_1;
-        packet[packet_len++] = batch_stream_id;
-        packet[packet_len++] = 0U;
-
-        packet[packet_len++] = (uint8_t)(frame.sequence & 0xFFU);
-        packet[packet_len++] = (uint8_t)((frame.sequence >> 8) & 0xFFU);
-
-        for (uint8_t i = 0U; i < 8U; i++)
-        {
-            packet[packet_len++] = (uint8_t)((frame.timestamp_ticks >> (8U * i)) & 0xFFU);
-        }
-
-        memcpy(&packet[packet_len], frame.payload, frame.payload_len);
-        packet_len = (uint16_t)(packet_len + frame.payload_len);
-        sample_count++;
-
-        while (Stream_PeekFrame(&frame))
-        {
-            if ((frame.stream_id != batch_stream_id) || (frame.payload_len != sample_len) || ((uint16_t)(packet_len + 10U + frame.payload_len) > PROTOCOL_MAX_PAYLOAD))
-            {
-                break;
-            }
-
-            (void)Stream_DequeueFrame(&frame);
-
-            packet[packet_len++] = (uint8_t)(frame.sequence & 0xFFU);
-            packet[packet_len++] = (uint8_t)((frame.sequence >> 8) & 0xFFU);
-
-            for (uint8_t i = 0U; i < 8U; i++)
-            {
-                packet[packet_len++] = (uint8_t)((frame.timestamp_ticks >> (8U * i)) & 0xFFU);
-            }
-
-            memcpy(&packet[packet_len], frame.payload, frame.payload_len);
-            packet_len = (uint16_t)(packet_len + frame.payload_len);
-            sample_count++;
-        }
-
-        packet[3] = sample_count;
-        (void)Protocol_SendStreamPacket(packet, packet_len);
+        Protocol_SendStreamData(frame.stream_id, frame.sequence, frame.timestamp_ticks, frame.payload, frame.payload_len);
     }
 }
 
-static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, uint8_t register_count, const uint8_t *payload, uint8_t payload_len)
+static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *payload, uint8_t payload_len)
 {
     if ((payload == NULL) || (payload_len > sizeof(frame_queue[0].payload)))
     {
@@ -227,7 +206,6 @@ static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t tim
     frame_queue[frame_head].stream_id = stream_id;
     frame_queue[frame_head].sequence = sequence;
     frame_queue[frame_head].timestamp_ticks = timestamp_ticks;
-    frame_queue[frame_head].register_count = register_count;
     frame_queue[frame_head].payload_len = payload_len;
     memcpy(frame_queue[frame_head].payload, payload, payload_len);
 
@@ -281,7 +259,7 @@ static void Stream_PurgeFrames(uint8_t stream_id)
 
     for (uint8_t i = 0U; i < kept_count; i++)
     {
-        (void)Stream_QueueFrame(kept[i].stream_id, kept[i].sequence, kept[i].timestamp_ticks, kept[i].register_count, kept[i].payload, kept[i].payload_len);
+        (void)Stream_QueueFrame(kept[i].stream_id, kept[i].sequence, kept[i].timestamp_ticks, kept[i].payload, kept[i].payload_len);
     }
 }
 

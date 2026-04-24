@@ -23,6 +23,11 @@ typedef struct
 
     PiState pi_state_id;
     PiState pi_state_iq;
+    PiState pi_state_speed;
+
+    float32 speed_mech_rpm;
+    float32 speed_filt_rpm;
+    float32 speed_iq_ref;
 } FocState;
 
 typedef struct

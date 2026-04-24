@@ -31,6 +31,10 @@ extern AppState  app_state;
 
 void initConfig(void);
 void commitConfigShadow(void);
+void applyConfigShadow(void);
+void requestConfigActivation(void);
+bool consumeConfigActivationRequest(void);
+bool isConfigActivationPending(void);
 void updateFocResolverOffset(float32 resolver_offset);
 
 #endif /* APP_CONFIG_H_ */

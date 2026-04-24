@@ -41,14 +41,22 @@ typedef struct
 
   PiConfig pi_config_id;
   PiConfig pi_config_iq;
+  PiConfig pi_config_speed;
 } FocConfig;
+
+typedef enum
+{
+  CONTROL_MODE_CURRENT = 0U,
+  CONTROL_MODE_SPEED   = 1U
+} ControlMode;
 
 typedef struct
 {
-  float32 speedRefHz;
+  float32 speedSetpointRpm;
   float32 voltageRef;
   float32 id_ref;
   float32 iq_ref;
+  uint8   controlMode;
 } FocSetpoints;
 
 typedef struct
