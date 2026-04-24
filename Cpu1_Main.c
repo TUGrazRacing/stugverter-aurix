@@ -41,6 +41,6 @@ void core1_main (void)
 
   while (1)
   {
-    controllerCore1Task();
+    controllerSpeedControlTask();
   }
 }

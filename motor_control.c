@@ -4,73 +4,44 @@
 #include "resolver_math.h"
 #include "foc.h"
 #include "current_math.h"
-#include "pwm.h"
 #include "gate_driver.h"
 #include "stream.h"
-#include "pi.h"
+#include "speed.h"
 #include "IfxCpu.h"
 #include "IfxStm.h"
-#include <math.h>
 
 IFX_INTERRUPT(controllerStep, 0, ISR_PRIORITY_ADC);
 
-#define ADC_TO_CURR 0.1221 //(5.0f/4096) / 0.01f
-#define TWO_PI_F 6.283185307179586f
-#define SPEED_FILTER_ALPHA 0.15f
+typedef struct
+{
+    uint16 curr_u_raw;
+    uint16 curr_v_raw;
+    uint16 sin_raw;
+    uint16 cos_raw;
+} ControllerAdcSample;
+
+typedef struct
+{
+    ControllerAdcSample adc_sample;
+    float32 theta_resolver_mech;
+} ControllerRuntime;
 
 static volatile uint32 g_control_loop_counter;
 static volatile uint64 g_control_loop_last_tick;
+static ControllerRuntime controller_runtime;
 
 static void controllerApplyPendingConfig(void);
+static void controllerReadAdcSample(void);
+static void controllerUpdateSpeedMeasurement(void);
+static void controllerRunCurrentLoop(void);
+static void controllerPublishLoopTiming(void);
 
 void controllerStep(void)
 {
-    static uint16 sin_raw, cos_raw, curr_u_raw, curr_v_raw;
-    static float32 prev_theta_resolver_mech;
-    static bool speed_init_done;
-
-    readAdc(&curr_u_raw, &curr_v_raw, &sin_raw, &cos_raw);
-    static float32 theta_resolver_mech;
-    theta_resolver_mech = resolverGetMechanicalAngle(sin_raw, cos_raw);
-
-    {
-        const float32 loop_hz = (float32)app_config.pwm.frequency;
-        if ((loop_hz > 0.0f) && speed_init_done)
-        {
-            float32 delta_theta = theta_resolver_mech - prev_theta_resolver_mech;
-            while (delta_theta > (TWO_PI_F * 0.5f))
-            {
-                delta_theta -= TWO_PI_F;
-            }
-            while (delta_theta < -(TWO_PI_F * 0.5f))
-            {
-                delta_theta += TWO_PI_F;
-            }
-
-            {
-                float32 speed_rpm = (delta_theta * loop_hz * 60.0f) / TWO_PI_F;
-                app_state.foc.speed_mech_rpm = speed_rpm;
-                app_state.foc.speed_filt_rpm = (SPEED_FILTER_ALPHA * speed_rpm) + ((1.0f - SPEED_FILTER_ALPHA) * app_state.foc.speed_filt_rpm);
-            }
-        }
-        else
-        {
-            app_state.foc.speed_mech_rpm = 0.0f;
-            app_state.foc.speed_filt_rpm = 0.0f;
-            speed_init_done = true;
-        }
-
-        prev_theta_resolver_mech = theta_resolver_mech;
-    }
-
-    static ThreePhaseCurrents currents;
-    currentsGet(&currents, curr_u_raw, curr_v_raw);
-    static ThreePhaseDuty dutycycles;
-    focStep(&dutycycles, theta_resolver_mech, &currents);
-    setDutyCycles(dutycycles.u * 100.0f, dutycycles.v * 100.0f, dutycycles.w * 100.0f);
-
-    g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
-    g_control_loop_counter++;
+    controllerReadAdcSample();
+    controllerUpdateSpeedMeasurement();
+    controllerRunCurrentLoop();
+    controllerPublishLoopTiming();
     Stream_OnControlLoop();
 }
 
@@ -78,6 +49,7 @@ void controllerInit(void)
 {
     initConfig(); //get default config
     Stream_Init();
+    Speed_Reset(&app_state.foc);
 
     gatedriverInit();
     initCurrents(&app_config.current, &app_config.adc);
@@ -88,6 +60,7 @@ void controllerInit(void)
 
     gatedriverEnable();
 
+    controller_runtime.theta_resolver_mech = 0.0f;
     g_control_loop_counter = 0U;
     g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
 }
@@ -102,38 +75,12 @@ void controllerBackgroundTask(void)
     controllerApplyPendingConfig();
 }
 
-void controllerCore1Task(void)
+void controllerSpeedControlTask(void)
 {
-    static uint8 prev_mode = CONTROL_MODE_CURRENT;
-    static uint32 last_decimated_counter;
-
-    const uint32 decimated_counter = controllerGetLoopCounter() / 10U;
-    if (decimated_counter == last_decimated_counter)
-    {
-        return;
-    }
-    last_decimated_counter = decimated_counter;
-
-    if (app_setpoints.foc.controlMode == CONTROL_MODE_SPEED)
-    {
-        if (prev_mode != CONTROL_MODE_SPEED)
-        {
-            app_state.foc.pi_state_speed.integral = 0.0f;
-        }
-
-        app_state.foc.speed_iq_ref = PI_Run(&app_config.foc.pi_config_speed,
-                                            &app_state.foc.pi_state_speed,
-                                            app_setpoints.foc.speedSetpointRpm,
-                                            app_state.foc.speed_filt_rpm);
-
-        app_setpoints.foc.iq_ref = app_state.foc.speed_iq_ref;
-    }
-    else
-    {
-        app_state.foc.speed_iq_ref = app_setpoints.foc.iq_ref;
-    }
-
-    prev_mode = app_setpoints.foc.controlMode;
+    Speed_RunControlTask(&app_config.foc,
+                         &app_setpoints.foc,
+                         &app_state.foc,
+                         controllerGetLoopCounter());
 }
 
 uint32 controllerGetLoopCounter(void)
@@ -160,9 +107,42 @@ static void controllerApplyPendingConfig(void)
 
     app_state.foc.pi_state_id.integral = 0.0f;
     app_state.foc.pi_state_iq.integral = 0.0f;
-    app_state.foc.pi_state_speed.integral = 0.0f;
+    Speed_Reset(&app_state.foc);
 
     gatedriverEnable();
 
     IfxCpu_restoreInterrupts(interrupt_state);
+}
+
+static void controllerReadAdcSample(void)
+{
+    readAdc(&controller_runtime.adc_sample.curr_u_raw,
+            &controller_runtime.adc_sample.curr_v_raw,
+            &controller_runtime.adc_sample.sin_raw,
+            &controller_runtime.adc_sample.cos_raw);
+}
+
+static void controllerUpdateSpeedMeasurement(void)
+{
+    controller_runtime.theta_resolver_mech = resolverGetMechanicalAngle(controller_runtime.adc_sample.sin_raw,
+                                                                        controller_runtime.adc_sample.cos_raw);
+    Speed_UpdateMeasurement(&app_state.foc,
+                            controller_runtime.theta_resolver_mech,
+                            (float32)app_config.pwm.frequency);
+}
+
+static void controllerRunCurrentLoop(void)
+{
+    ThreePhaseCurrents currents;
+    ThreePhaseDuty dutycycles;
+
+    currentsGet(&currents, controller_runtime.adc_sample.curr_u_raw, controller_runtime.adc_sample.curr_v_raw);
+    focStep(&dutycycles, controller_runtime.theta_resolver_mech, &currents);
+    setDutyCycles(dutycycles.u * 100.0f, dutycycles.v * 100.0f, dutycycles.w * 100.0f);
+}
+
+static void controllerPublishLoopTiming(void)
+{
+    g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
+    g_control_loop_counter++;
 }

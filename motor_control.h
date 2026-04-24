@@ -2,6 +2,6 @@
 
 void controllerInit(void);
 void controllerBackgroundTask(void);
-void controllerCore1Task(void);
+void controllerSpeedControlTask(void);
 uint32 controllerGetLoopCounter(void);
 uint64 controllerGetLastLoopTick(void);
