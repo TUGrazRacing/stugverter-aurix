@@ -6,15 +6,11 @@
 #include "current_math.h"
 #include "pwm.h"
 #include "gate_driver.h"
-<<<<<<< HEAD
-#include "stream.h"
-=======
 #include "logger.h"
 #include "pi.h"
 #include "IfxCpu.h"
 #include "IfxStm.h"
 #include <math.h>
->>>>>>> temp_branch
 
 IFX_INTERRUPT(controllerStep, 0, ISR_PRIORITY_ADC);
 
@@ -72,13 +68,9 @@ void controllerStep(void)
     static ThreePhaseDuty dutycycles;
     focStep(&dutycycles, theta_resolver_mech, &currents);
     setDutyCycles(dutycycles.u * 100.0f, dutycycles.v * 100.0f, dutycycles.w * 100.0f);
-<<<<<<< HEAD
-    Stream_OnControlLoop();
-=======
 
     g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
     g_control_loop_counter++;
->>>>>>> temp_branch
 }
 
 void controllerInit(void)
