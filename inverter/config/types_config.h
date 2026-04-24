@@ -13,15 +13,15 @@
 
 typedef struct
 {
-  uint16 steps; //4096 = 12bit
-  float supply; //5.0V
+  uint16 steps;  /* ADC full-scale steps, e.g. 4096 for 12 bit. */
+  float supply;  /* ADC reference voltage in V. */
 } AdcConfig;
 
 typedef struct
 {
   uint16 offset_u_adcsteps;
   uint16 offset_v_adcsteps;
-  float32 current_sense_factor;
+  float32 current_sense_factor; /* Current sensor transfer gain in V/A. */
 } CurrentConfig;
 
 typedef struct

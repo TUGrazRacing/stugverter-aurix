@@ -18,12 +18,12 @@ typedef struct
 static const Parameter param_table[] = {
     // --- ADC Config (0x1000) ---
     {0x1000, &app_config.adc.steps,                &app_config_shadow.adc.steps,                TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x01, "ADC_STEPS",     ""},
-    {0x1001, &app_config.adc.supply,               &app_config_shadow.adc.supply,               TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x01, "ADC_SUPPLY",    "mV"},
+    {0x1001, &app_config.adc.supply,               &app_config_shadow.adc.supply,               TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x01, "ADC_SUPPLY",    "V"},
 
     // --- Current Config (0x1100) ---
     {0x1100, &app_config.current.offset_u_adcsteps,    &app_config_shadow.current.offset_u_adcsteps,    TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_OFFS_U",    ""},
     {0x1101, &app_config.current.offset_v_adcsteps,    &app_config_shadow.current.offset_v_adcsteps,    TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_OFFS_V",    ""},
-    {0x1102, &app_config.current.current_sense_factor, &app_config_shadow.current.current_sense_factor, TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_SENSE_FAC", "A/"}, // e.g. A/V or A/LSB
+    {0x1102, &app_config.current.current_sense_factor, &app_config_shadow.current.current_sense_factor, TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_SENSE_FAC", "V/A"},
 
     // --- PWM Config (0x1200) ---
     {0x1200, &app_config.pwm.frequency,            &app_config_shadow.pwm.frequency,            TYPE_UINT32,  ACCESS_WRITE_AFTER_RESTART, 0x03, "PWM_FREQ",      "Hz"},

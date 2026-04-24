@@ -11,6 +11,8 @@ AppState  app_state;
 static volatile uint8 config_activation_pending;
 
 #define ADC_STEPS 4096U
+#define ADC_REFERENCE_V 3.3f
+#define ADC_MIDSCALE_STEPS (ADC_STEPS / 2U)
 
 void initConfig(void)
 {
@@ -25,7 +27,7 @@ void initConfig(void)
 
     /* ADC */
     app_config.adc.steps  = ADC_STEPS;
-    app_config.adc.supply = 3.3f;
+    app_config.adc.supply = ADC_REFERENCE_V;
 
     /* PWM */
     app_config.pwm.frequency = 20e3;
@@ -40,8 +42,8 @@ void initConfig(void)
     app_config.resolver.pole_pairs = 4U;
 
     /* Current sensor offsets */
-    app_config.current.offset_u_adcsteps = 1361U;
-    app_config.current.offset_v_adcsteps = 1366U;
+    app_config.current.offset_u_adcsteps = ADC_MIDSCALE_STEPS;
+    app_config.current.offset_v_adcsteps = ADC_MIDSCALE_STEPS;
     app_config.current.current_sense_factor = 0.01f;
 
     /* FOC defaults */
