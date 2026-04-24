@@ -17,6 +17,7 @@ static FocState *foc_state = NULL_PTR;
 static void focOpenLoop (void);
 static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents *currents);
 static void focCalibrateZeroOffset (float32 theta_measured);
+static void focLimitVoltageVector(CurrentsDQ *v_dq, float32 limit);
 
 void focInit (FocConfig *config, FocState *state)
 {
@@ -81,6 +82,9 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
 {
   float32 sinVal, cosVal;
   float32 theta_corr;
+  float32 v_limit_id;
+  float32 v_limit_iq;
+  float32 v_limit;
 
   if ((foc_config == NULL_PTR) || (foc_state == NULL_PTR) || (currents == NULL_PTR))
   {
@@ -98,6 +102,10 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
 
   foc_state->v_dq.d = PI_Run(&foc_config->pi_config_id, &foc_state->pi_state_id, app_setpoints.foc.id_ref, foc_state->i_dq.d);
   foc_state->v_dq.q = PI_Run(&foc_config->pi_config_iq, &foc_state->pi_state_iq, app_setpoints.foc.iq_ref, foc_state->i_dq.q);
+  v_limit_id = fmaxf(fabsf(foc_config->pi_config_id.outMax), fabsf(foc_config->pi_config_id.outMin));
+  v_limit_iq = fmaxf(fabsf(foc_config->pi_config_iq.outMax), fabsf(foc_config->pi_config_iq.outMin));
+  v_limit = fminf(v_limit_id, v_limit_iq);
+  focLimitVoltageVector(&foc_state->v_dq, v_limit);
 
   FOC_InvParkTransform(&foc_state->v_dq, &foc_state->v_ab, sinVal, cosVal);
   // Stores result straight into state
@@ -140,4 +148,25 @@ static void focCalibrateZeroOffset (float32 theta_measured)
     foc_state->calibrated = true;
     starttime = 0U;
   }
+}
+
+static void focLimitVoltageVector(CurrentsDQ *v_dq, float32 limit)
+{
+  float32 magnitude;
+  float32 scale;
+
+  if ((v_dq == NULL_PTR) || (limit <= 0.0f))
+  {
+    return;
+  }
+
+  magnitude = sqrtf((v_dq->d * v_dq->d) + (v_dq->q * v_dq->q));
+  if (magnitude <= limit)
+  {
+    return;
+  }
+
+  scale = limit / magnitude;
+  v_dq->d *= scale;
+  v_dq->q *= scale;
 }

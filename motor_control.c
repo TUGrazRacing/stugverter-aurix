@@ -24,6 +24,8 @@ typedef struct
 {
     ControllerAdcSample adc_sample;
     float32 theta_resolver_mech;
+    boolean current_filter_initialized;
+    ThreePhaseCurrents current_filtered;
 } ControllerRuntime;
 
 static volatile uint32 g_control_loop_counter;
@@ -35,6 +37,8 @@ static void controllerReadAdcSample(void);
 static void controllerUpdateSpeedMeasurement(void);
 static void controllerRunCurrentLoop(void);
 static void controllerPublishLoopTiming(void);
+static float32 controllerClamp(float32 value, float32 min, float32 max);
+static float32 controllerClampAbs(float32 value, float32 abs_limit);
 
 void controllerStep(void)
 {
@@ -61,6 +65,10 @@ void controllerInit(void)
     gatedriverEnable();
 
     controller_runtime.theta_resolver_mech = 0.0f;
+    controller_runtime.current_filter_initialized = FALSE;
+    controller_runtime.current_filtered.u = 0.0f;
+    controller_runtime.current_filtered.v = 0.0f;
+    controller_runtime.current_filtered.w = 0.0f;
     g_control_loop_counter = 0U;
     g_control_loop_last_tick = (uint64)IfxStm_get(&MODULE_STM0);
     app_state.foc.control_loop_counter = g_control_loop_counter;
@@ -82,7 +90,8 @@ void controllerSpeedControlTask(void)
     Speed_RunControlTask(&app_config.foc,
                          &app_setpoints.foc,
                          &app_state.foc,
-                         controllerGetLoopCounter());
+                         controllerGetLoopCounter(),
+                         (float32)app_config.pwm.frequency);
 }
 
 uint32 controllerGetLoopCounter(void)
@@ -110,6 +119,7 @@ static void controllerApplyPendingConfig(void)
     app_state.foc.pi_state_id.integral = 0.0f;
     app_state.foc.pi_state_iq.integral = 0.0f;
     Speed_Reset(&app_state.foc);
+    controller_runtime.current_filter_initialized = FALSE;
 
     gatedriverEnable();
 
@@ -136,20 +146,44 @@ static void controllerUpdateSpeedMeasurement(void)
     app_state.foc.resolver_mech_angle = controller_runtime.theta_resolver_mech;
     Speed_UpdateMeasurement(&app_state.foc,
                             controller_runtime.theta_resolver_mech,
-                            (float32)app_config.pwm.frequency);
+                            (float32)app_config.pwm.frequency,
+                            app_config.foc.speed_filter_alpha);
 }
 
 static void controllerRunCurrentLoop(void)
 {
-    ThreePhaseCurrents currents;
+    ThreePhaseCurrents currents_raw;
+    float32 alpha;
+    float32 max_delta;
+    float32 u_pre;
+    float32 v_pre;
     ThreePhaseDuty dutycycles;
 
-    currentsGet(&currents, controller_runtime.adc_sample.curr_u_raw, controller_runtime.adc_sample.curr_v_raw);
-    app_state.foc.adc_curr_u = currents.u;
-    app_state.foc.adc_curr_v = currents.v;
-    app_state.foc.adc_curr_w = currents.w;
-    app_state.foc.i_uvw = currents;
-    focStep(&dutycycles, controller_runtime.theta_resolver_mech, &currents);
+    currentsGet(&currents_raw, controller_runtime.adc_sample.curr_u_raw, controller_runtime.adc_sample.curr_v_raw);
+
+    app_state.foc.adc_curr_u = currents_raw.u;
+    app_state.foc.adc_curr_v = currents_raw.v;
+    app_state.foc.adc_curr_w = currents_raw.w;
+
+    alpha = controllerClamp(app_config.current.filter_alpha, 0.0f, 1.0f);
+    max_delta = app_config.current.max_delta_a;
+
+    if (controller_runtime.current_filter_initialized == FALSE)
+    {
+        controller_runtime.current_filtered = currents_raw;
+        controller_runtime.current_filter_initialized = TRUE;
+    }
+    else
+    {
+        u_pre = controller_runtime.current_filtered.u + controllerClampAbs(currents_raw.u - controller_runtime.current_filtered.u, max_delta);
+        v_pre = controller_runtime.current_filtered.v + controllerClampAbs(currents_raw.v - controller_runtime.current_filtered.v, max_delta);
+        controller_runtime.current_filtered.u = (alpha * u_pre) + ((1.0f - alpha) * controller_runtime.current_filtered.u);
+        controller_runtime.current_filtered.v = (alpha * v_pre) + ((1.0f - alpha) * controller_runtime.current_filtered.v);
+        controller_runtime.current_filtered.w = -(controller_runtime.current_filtered.u + controller_runtime.current_filtered.v);
+    }
+
+    app_state.foc.i_uvw = controller_runtime.current_filtered;
+    focStep(&dutycycles, controller_runtime.theta_resolver_mech, &controller_runtime.current_filtered);
     setDutyCycles(dutycycles.u * 100.0f, dutycycles.v * 100.0f, dutycycles.w * 100.0f);
 }
 
@@ -159,4 +193,39 @@ static void controllerPublishLoopTiming(void)
     g_control_loop_counter++;
     app_state.foc.control_loop_tick = g_control_loop_last_tick;
     app_state.foc.control_loop_counter = g_control_loop_counter;
+}
+
+static float32 controllerClamp(float32 value, float32 min, float32 max)
+{
+    if (value < min)
+    {
+        return min;
+    }
+
+    if (value > max)
+    {
+        return max;
+    }
+
+    return value;
+}
+
+static float32 controllerClampAbs(float32 value, float32 abs_limit)
+{
+    if (abs_limit <= 0.0f)
+    {
+        return value;
+    }
+
+    if (value > abs_limit)
+    {
+        return abs_limit;
+    }
+
+    if (value < -abs_limit)
+    {
+        return -abs_limit;
+    }
+
+    return value;
 }

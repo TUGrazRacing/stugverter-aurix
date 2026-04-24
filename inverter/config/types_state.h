@@ -37,6 +37,8 @@ typedef struct
     float32 speed_mech_rpm;
     float32 speed_filt_rpm;
     float32 speed_iq_ref;
+    float32 speed_setpoint_ramped_rpm;
+    float32 iq_ref_ramped;
     float32 resolver_mech_angle;
     uint32  control_loop_counter;
     uint64  control_loop_tick;

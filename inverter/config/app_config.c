@@ -45,27 +45,32 @@ void initConfig(void)
     app_config.current.offset_u_adcsteps = ADC_MIDSCALE_STEPS;
     app_config.current.offset_v_adcsteps = ADC_MIDSCALE_STEPS;
     app_config.current.current_sense_factor = 0.01f;
+    app_config.current.filter_alpha = 0.35f;
+    app_config.current.max_delta_a = 3.0f;
 
     /* FOC defaults */
     app_config.foc.motor_polepairs   = 7U;
     app_config.foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL; //5 seconds
     app_config.foc.resolver_offset   = 0.0f;
+    app_config.foc.speed_filter_alpha = 0.08f;
+    app_config.foc.speed_setpoint_ramp_rpm_per_s = 2500.0f;
+    app_config.foc.iq_ref_slew_a_per_s = 200.0f;
 
     //PI Controller ID
-    app_config.foc.pi_config_id.Kp    = 0.05f;
-    app_config.foc.pi_config_id.Ki    = 0.05f;
-    app_config.foc.pi_config_id.outMax = 0.5f;
-    app_config.foc.pi_config_id.outMin = -0.5f;
+    app_config.foc.pi_config_id.Kp    = 0.03f;
+    app_config.foc.pi_config_id.Ki    = 0.0008f;
+    app_config.foc.pi_config_id.outMax = 0.55f;
+    app_config.foc.pi_config_id.outMin = -0.55f;
 
     //PI Controller IQ
-    app_config.foc.pi_config_iq.Kp    = 0.05f;
-    app_config.foc.pi_config_iq.Ki    = 0.05f;
-    app_config.foc.pi_config_iq.outMax = 0.5f;
-    app_config.foc.pi_config_iq.outMin = -0.5f;
+    app_config.foc.pi_config_iq.Kp    = 0.03f;
+    app_config.foc.pi_config_iq.Ki    = 0.0008f;
+    app_config.foc.pi_config_iq.outMax = 0.55f;
+    app_config.foc.pi_config_iq.outMin = -0.55f;
 
     /* Speed PI (output is Iq reference in A) */
-    app_config.foc.pi_config_speed.Kp = 0.02f;
-    app_config.foc.pi_config_speed.Ki = 0.002f;
+    app_config.foc.pi_config_speed.Kp = 0.01f;
+    app_config.foc.pi_config_speed.Ki = 0.0002f;
     app_config.foc.pi_config_speed.outMax = 8.0f;
     app_config.foc.pi_config_speed.outMin = -8.0f;
 
@@ -88,6 +93,8 @@ void initConfig(void)
     app_state.foc.speed_mech_rpm = 0.0f;
     app_state.foc.speed_filt_rpm = 0.0f;
     app_state.foc.speed_iq_ref = 0.0f;
+    app_state.foc.speed_setpoint_ramped_rpm = 0.0f;
+    app_state.foc.iq_ref_ramped = 0.0f;
     app_state.foc.resolver_mech_angle = 0.0f;
     app_state.foc.control_loop_counter = 0U;
     app_state.foc.control_loop_tick = 0U;
