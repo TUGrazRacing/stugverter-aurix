@@ -4,6 +4,9 @@
 #include "IfxCpu.h"
 #include <string.h>
 
+#define STREAM_ISR_LOCK_RETRIES 8U
+#define STREAM_TX_FRAMES_PER_POLL 8U
+
 typedef struct
 {
     bool active;
@@ -35,6 +38,7 @@ static IfxCpu_mutexLock stream_lock;
 static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *payload, uint8_t payload_len);
 static bool Stream_DequeueFrame(StreamFrame_t *frame);
 static void Stream_PurgeFrames(uint8_t stream_id);
+static bool Stream_TryLockFromIsr(void);
 static void Stream_Lock(void);
 
 void Stream_Init(void)
@@ -139,7 +143,7 @@ void Stream_OnControlLoop(void)
     uint32_t current_loop_count = controllerGetLoopCounter();
     uint64_t current_ticks = controllerGetLastLoopTick();
 
-    if (!IfxCpu_acquireMutex(&stream_lock))
+    if (!Stream_TryLockFromIsr())
     {
         return;
     }
@@ -191,15 +195,17 @@ void Stream_OnControlLoop(void)
 void Stream_TransmitPending(void)
 {
     StreamFrame_t frame;
+    uint8_t frames_sent = 0U;
 
     if (!Protocol_HasUdpSender())
     {
         return;
     }
 
-    while (Stream_DequeueFrame(&frame))
+    while ((frames_sent < STREAM_TX_FRAMES_PER_POLL) && Stream_DequeueFrame(&frame))
     {
         Protocol_SendStreamData(frame.stream_id, frame.sequence, frame.timestamp_ticks, frame.payload, frame.payload_len);
+        frames_sent++;
     }
 }
 
@@ -234,10 +240,7 @@ static bool Stream_DequeueFrame(StreamFrame_t *frame)
         return false;
     }
 
-    if (!IfxCpu_acquireMutex(&stream_lock))
-    {
-        return false;
-    }
+    Stream_Lock();
 
     if (frame_count == 0U)
     {
@@ -250,6 +253,19 @@ static bool Stream_DequeueFrame(StreamFrame_t *frame)
     frame_count--;
     IfxCpu_releaseMutex(&stream_lock);
     return true;
+}
+
+static bool Stream_TryLockFromIsr(void)
+{
+    for (uint8_t attempt = 0U; attempt < STREAM_ISR_LOCK_RETRIES; attempt++)
+    {
+        if (IfxCpu_acquireMutex(&stream_lock))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 static void Stream_Lock(void)

@@ -24,11 +24,9 @@
 #define EVADC_QINR_RF            (1u << 5)
 #define EVADC_QINR_EXTR          (1u << 7)
 
-#define EVADC_SAMPLE_TIME_STCS    0x1Fu
-#define EVADC_INPUT_PRECHARGE     IfxEvadc_IdlePrecharge_referenceBy2
-#define EVADC_CONVERSION_MODE     IfxEvadc_ChannelNoiseReduction_level2
-#define EVADC_RESULT_FILTER_MODE  IfxEvadc_DataModificationMode_resultFilteringMode
-#define EVADC_RESULT_FILTER_FIR3  IfxEvadc_DataReductionControlMode_3
+#define EVADC_SAMPLE_TIME_STCS    0x0Fu
+#define EVADC_INPUT_PRECHARGE     IfxEvadc_IdlePrecharge_currentLevel
+#define EVADC_CONVERSION_MODE     IfxEvadc_ChannelNoiseReduction_standardConversion
 
 /* If you want different pins on each group during sync conversion,
  * map master CH0 onto these local channels with aliasing.
@@ -63,8 +61,6 @@ static void initGroup (uint32 group)
   MODULE_EVADC.G[group].CHCTR[CHANNEL].B.SYNC = (group == MASTER_GROUP) ? 1u : 0u;
 
   MODULE_EVADC.G[group].RCR[RESREG0].U = 0;
-  MODULE_EVADC.G[group].RCR[RESREG0].B.DMM = EVADC_RESULT_FILTER_MODE;
-  MODULE_EVADC.G[group].RCR[RESREG0].B.DRCTR = EVADC_RESULT_FILTER_FIR3;
 }
 
 static void initAlias (void)
