@@ -80,9 +80,9 @@ void initConfig(void)
     app_state.foc.adc_curr_v_raw = 0U;
     app_state.foc.adc_sin_raw = 0U;
     app_state.foc.adc_cos_raw = 0U;
-    app_state.foc.adc_curr_u = 0.0f;
-    app_state.foc.adc_curr_v = 0.0f;
-    app_state.foc.adc_curr_w = 0.0f;
+    app_state.foc.adc_curr_u = 0U;
+    app_state.foc.adc_curr_v = 0U;
+    app_state.foc.adc_curr_w = 0U;
     app_state.foc.i_uvw.u = 0.0f;
     app_state.foc.i_uvw.v = 0.0f;
     app_state.foc.i_uvw.w = 0.0f;

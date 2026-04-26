@@ -2,6 +2,8 @@
 #include "pi.h"
 
 #define SPEED_TWO_PI_F 6.283185307179586f
+#define SPEED_MAX_VALID_RPM 30000.0f
+#define SPEED_MIN_VALID_LOOP_HZ 1.0f
 
 typedef struct
 {
@@ -9,10 +11,12 @@ typedef struct
     float32 previous_theta_mech_rad;
     uint8 previous_control_mode;
     uint32 last_decimated_counter;
+    boolean control_task_initialized;
 } SpeedRuntime;
 
 static SpeedRuntime speed_runtime;
 
+static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, float32 loop_hz, float32 filter_alpha);
 static float32 Speed_NormalizeDeltaAngle(float32 delta_rad);
 static float32 Speed_Clamp(float32 value, float32 min, float32 max);
 static float32 Speed_SlewTowards(float32 current, float32 target, float32 max_delta);
@@ -25,6 +29,7 @@ void Speed_Reset(FocState *state)
     speed_runtime.previous_theta_mech_rad = 0.0f;
     speed_runtime.previous_control_mode = CONTROL_MODE_CURRENT;
     speed_runtime.last_decimated_counter = 0U;
+    speed_runtime.control_task_initialized = FALSE;
 
     if (state != NULL_PTR)
     {
@@ -37,43 +42,15 @@ void Speed_Reset(FocState *state)
     }
 }
 
-void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, float32 loop_hz, float32 filter_alpha)
-{
-    float32 alpha;
-
-    if (state == NULL_PTR)
-    {
-        return;
-    }
-
-    alpha = Speed_Clamp(filter_alpha, 0.0f, 1.0f);
-
-    if ((loop_hz <= 0.0f) || (speed_runtime.measurement_initialized == FALSE))
-    {
-        state->speed_mech_rpm = 0.0f;
-        state->speed_filt_rpm = 0.0f;
-        speed_runtime.previous_theta_mech_rad = theta_mech_rad;
-        speed_runtime.measurement_initialized = TRUE;
-        return;
-    }
-
-    {
-        float32 delta_theta = Speed_NormalizeDeltaAngle(theta_mech_rad - speed_runtime.previous_theta_mech_rad);
-        float32 speed_rpm = (delta_theta * loop_hz * 60.0f) / SPEED_TWO_PI_F;
-
-        state->speed_mech_rpm = speed_rpm;
-        state->speed_filt_rpm = (alpha * speed_rpm) + ((1.0f - alpha) * state->speed_filt_rpm);
-        speed_runtime.previous_theta_mech_rad = theta_mech_rad;
-    }
-}
-
 void Speed_RunControlTask(const FocConfig *config,
                           FocSetpoints *setpoints,
                           FocState *state,
                           uint32 control_loop_counter,
-                          float32 current_loop_hz)
+                          float32 current_loop_hz,
+                          float32 theta_mech_rad)
 {
     uint32 decimated_counter;
+    uint32 decimated_delta;
     float32 dt_s;
 
     if ((config == NULL_PTR) || (setpoints == NULL_PTR) || (state == NULL_PTR))
@@ -87,13 +64,24 @@ void Speed_RunControlTask(const FocConfig *config,
     }
 
     decimated_counter = control_loop_counter / SPEED_CONTROL_LOOP_DIVIDER;
-    if (decimated_counter == speed_runtime.last_decimated_counter)
+    if (speed_runtime.control_task_initialized == FALSE)
+    {
+        speed_runtime.last_decimated_counter = decimated_counter;
+        speed_runtime.control_task_initialized = TRUE;
+        Speed_UpdateMeasurement(state, theta_mech_rad, current_loop_hz / (float32)SPEED_CONTROL_LOOP_DIVIDER, config->speed_filter_alpha);
+        return;
+    }
+
+    decimated_delta = decimated_counter - speed_runtime.last_decimated_counter;
+    if (decimated_delta == 0U)
     {
         return;
     }
 
     speed_runtime.last_decimated_counter = decimated_counter;
-    dt_s = ((float32)SPEED_CONTROL_LOOP_DIVIDER) / current_loop_hz;
+    dt_s = ((float32)SPEED_CONTROL_LOOP_DIVIDER * (float32)decimated_delta) / current_loop_hz;
+
+    Speed_UpdateMeasurement(state, theta_mech_rad, 1.0f / dt_s, config->speed_filter_alpha);
 
     if (setpoints->controlMode == CONTROL_MODE_SPEED)
     {
@@ -105,6 +93,41 @@ void Speed_RunControlTask(const FocConfig *config,
     }
 
     speed_runtime.previous_control_mode = setpoints->controlMode;
+}
+
+static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, float32 loop_hz, float32 filter_alpha)
+{
+    float32 alpha;
+    float32 delta_theta;
+    float32 speed_rpm;
+
+    if (state == NULL_PTR)
+    {
+        return;
+    }
+
+    alpha = Speed_Clamp(filter_alpha, 0.0f, 1.0f);
+
+    if ((loop_hz <= SPEED_MIN_VALID_LOOP_HZ) || (speed_runtime.measurement_initialized == FALSE))
+    {
+        state->speed_mech_rpm = 0.0f;
+        state->speed_filt_rpm = 0.0f;
+        speed_runtime.previous_theta_mech_rad = theta_mech_rad;
+        speed_runtime.measurement_initialized = TRUE;
+        return;
+    }
+
+    delta_theta = Speed_NormalizeDeltaAngle(theta_mech_rad - speed_runtime.previous_theta_mech_rad);
+    speed_rpm = (delta_theta * loop_hz * 60.0f) / SPEED_TWO_PI_F;
+
+    if ((speed_rpm >= SPEED_MAX_VALID_RPM) || (speed_rpm <= -SPEED_MAX_VALID_RPM))
+    {
+        return;
+    }
+
+    state->speed_mech_rpm = speed_rpm;
+    state->speed_filt_rpm = (alpha * speed_rpm) + ((1.0f - alpha) * state->speed_filt_rpm);
+    speed_runtime.previous_theta_mech_rad = theta_mech_rad;
 }
 
 static float32 Speed_NormalizeDeltaAngle(float32 delta_rad)

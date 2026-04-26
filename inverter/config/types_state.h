@@ -19,9 +19,9 @@ typedef struct
     uint16 adc_curr_v_raw;
     uint16 adc_sin_raw;
     uint16 adc_cos_raw;
-    float32 adc_curr_u;
-    float32 adc_curr_v;
-    float32 adc_curr_w;
+    uint16 adc_curr_u;
+    uint16 adc_curr_v;
+    uint16 adc_curr_w;
 
     ThreePhaseCurrents i_uvw;
     CurrentsAB     i_ab;

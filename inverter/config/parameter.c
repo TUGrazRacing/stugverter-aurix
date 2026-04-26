@@ -108,9 +108,9 @@ static const Parameter param_table[] = {
     {0x2501, &app_state.foc.adc_curr_v_raw,        NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_CURR_V",    ""},
     {0x2502, &app_state.foc.adc_sin_raw,           NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_RES_SIN",   ""},
     {0x2503, &app_state.foc.adc_cos_raw,           NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_RES_COS",   ""},
-    {0x2504, &app_state.foc.adc_curr_u,            NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x25, "ADC_I_U",       "A"},
-    {0x2505, &app_state.foc.adc_curr_v,            NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x25, "ADC_I_V",       "A"},
-    {0x2506, &app_state.foc.adc_curr_w,            NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x25, "ADC_I_W",       "A"},
+    {0x2504, &app_state.foc.adc_curr_u,            NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_I_U",       ""},
+    {0x2505, &app_state.foc.adc_curr_v,            NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_I_V",       ""},
+    {0x2506, &app_state.foc.adc_curr_w,            NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_I_W",       ""},
 
     // --- Current Loop Runtime (0x2600) ---
     {0x2600, &app_state.foc.i_uvw.u,               NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x26, "I_U",           "A"},

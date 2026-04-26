@@ -37,6 +37,7 @@ static void controllerReadAdcSample(void);
 static void controllerUpdateSpeedMeasurement(void);
 static void controllerRunCurrentLoop(void);
 static void controllerPublishLoopTiming(void);
+static uint16 controllerCurrentToAdcSteps(float32 current, uint16 offset_adcsteps);
 static float32 controllerClamp(float32 value, float32 min, float32 max);
 static float32 controllerClampAbs(float32 value, float32 abs_limit);
 
@@ -91,7 +92,8 @@ void controllerSpeedControlTask(void)
                          &app_setpoints.foc,
                          &app_state.foc,
                          controllerGetLoopCounter(),
-                         (float32)app_config.pwm.frequency);
+                         (float32)app_config.pwm.frequency,
+                         app_state.foc.resolver_mech_angle);
 }
 
 uint32 controllerGetLoopCounter(void)
@@ -137,6 +139,8 @@ static void controllerReadAdcSample(void)
     app_state.foc.adc_curr_v_raw = controller_runtime.adc_sample.curr_v_raw;
     app_state.foc.adc_sin_raw = controller_runtime.adc_sample.sin_raw;
     app_state.foc.adc_cos_raw = controller_runtime.adc_sample.cos_raw;
+    app_state.foc.adc_curr_u = controller_runtime.adc_sample.curr_u_raw;
+    app_state.foc.adc_curr_v = controller_runtime.adc_sample.curr_v_raw;
 }
 
 static void controllerUpdateSpeedMeasurement(void)
@@ -144,10 +148,6 @@ static void controllerUpdateSpeedMeasurement(void)
     controller_runtime.theta_resolver_mech = resolverGetMechanicalAngle(controller_runtime.adc_sample.sin_raw,
                                                                         controller_runtime.adc_sample.cos_raw);
     app_state.foc.resolver_mech_angle = controller_runtime.theta_resolver_mech;
-    Speed_UpdateMeasurement(&app_state.foc,
-                            controller_runtime.theta_resolver_mech,
-                            (float32)app_config.pwm.frequency,
-                            app_config.foc.speed_filter_alpha);
 }
 
 static void controllerRunCurrentLoop(void)
@@ -161,9 +161,10 @@ static void controllerRunCurrentLoop(void)
 
     currentsGet(&currents_raw, controller_runtime.adc_sample.curr_u_raw, controller_runtime.adc_sample.curr_v_raw);
 
-    app_state.foc.adc_curr_u = currents_raw.u;
-    app_state.foc.adc_curr_v = currents_raw.v;
-    app_state.foc.adc_curr_w = currents_raw.w;
+    /* W current is reconstructed from the two measured phase currents. */
+    app_state.foc.adc_curr_w = controllerCurrentToAdcSteps(currents_raw.w,
+                                                           (uint16)(((uint32)app_config.current.offset_u_adcsteps
+                                                                   + (uint32)app_config.current.offset_v_adcsteps) / 2U));
 
     alpha = controllerClamp(app_config.current.filter_alpha, 0.0f, 1.0f);
     max_delta = app_config.current.max_delta_a;
@@ -193,6 +194,32 @@ static void controllerPublishLoopTiming(void)
     g_control_loop_counter++;
     app_state.foc.control_loop_tick = g_control_loop_last_tick;
     app_state.foc.control_loop_counter = g_control_loop_counter;
+}
+
+static uint16 controllerCurrentToAdcSteps(float32 current, uint16 offset_adcsteps)
+{
+    float32 factor;
+    float32 adc_steps;
+
+    if ((app_config.adc.steps == 0U) || (app_config.adc.supply <= 0.0f) || (app_config.current.current_sense_factor <= 0.0f))
+    {
+        return offset_adcsteps;
+    }
+
+    factor = app_config.adc.supply / (((float32)app_config.adc.steps) * app_config.current.current_sense_factor);
+    adc_steps = ((current / factor) + (float32)offset_adcsteps) + 0.5f;
+
+    if (adc_steps <= 0.0f)
+    {
+        return 0U;
+    }
+
+    if (adc_steps >= (float32)(app_config.adc.steps - 1U))
+    {
+        return (uint16)(app_config.adc.steps - 1U);
+    }
+
+    return (uint16)adc_steps;
 }
 
 static float32 controllerClamp(float32 value, float32 min, float32 max)
