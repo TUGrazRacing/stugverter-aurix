@@ -12,7 +12,6 @@ static volatile uint8 config_activation_pending;
 
 #define ADC_STEPS 4096U
 #define ADC_REFERENCE_V 3.3f
-#define ADC_MIDSCALE_STEPS (ADC_STEPS / 2U)
 
 void initConfig(void)
 {
@@ -37,13 +36,13 @@ void initConfig(void)
     app_config.resolver.cos_min = ADC_STEPS-1;
     app_config.resolver.sin_max = 0U;
     app_config.resolver.cos_max = 0U;
-    app_config.resolver.offset_sin = 2050U;
-    app_config.resolver.offset_cos = 2050U;
+    app_config.resolver.offset_sin = 2040U;
+    app_config.resolver.offset_cos = 2040U;
     app_config.resolver.pole_pairs = 4U;
 
     /* Current sensor offsets */
-    app_config.current.offset_u_adcsteps = ADC_MIDSCALE_STEPS;
-    app_config.current.offset_v_adcsteps = ADC_MIDSCALE_STEPS;
+    app_config.current.offset_u_adcsteps = 2031;
+    app_config.current.offset_v_adcsteps = 2033;
     app_config.current.current_sense_factor = 0.01f;
     app_config.current.filter_alpha = 0.35f;
     app_config.current.max_delta_a = 3.0f;

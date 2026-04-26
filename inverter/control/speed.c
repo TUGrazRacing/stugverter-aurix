@@ -202,5 +202,7 @@ static void Speed_RunCurrentModeMirror(const FocConfig *config, FocSetpoints *se
     max_iq_step = config->iq_ref_slew_a_per_s * dt_s;
     state->iq_ref_ramped = Speed_SlewTowards(state->iq_ref_ramped, setpoints->iq_ref, max_iq_step);
     state->speed_iq_ref = state->iq_ref_ramped;
-    setpoints->iq_ref = state->iq_ref_ramped;
+    /* NOTE: In CURRENT mode, do NOT modify setpoints->iq_ref. Per ethernet_protocol.md section 8,
+     * the host writes ID_REF/IQ_REF directly in CURRENT mode. We only track the ramped value
+     * in state->iq_ref_ramped for telemetry (IQ_REF_RMP). */
 }

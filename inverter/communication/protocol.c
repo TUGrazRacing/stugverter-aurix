@@ -471,12 +471,14 @@ void Protocol_SendStreamData(uint8_t stream_id,
   }
 
   Protocol_SendUdpPayload(tx_payload, payload_len);
+  /*
   Protocol_Log("PROTOCOL: stream UDP id=%u seq=%u ts=%llu count=%u payload=%u\r\n",
                (unsigned int)stream_id,
                (unsigned int)sequence,
                (unsigned long long)timestamp_ticks,
                1U,
                (unsigned int)payload_len);
+  */
 }
 
 static bool Protocol_SendUdpPayload(const uint8_t *payload, uint16_t payload_len)
