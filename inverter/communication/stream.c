@@ -5,7 +5,7 @@
 #include <string.h>
 
 #define STREAM_ISR_LOCK_RETRIES 8U
-#define STREAM_TX_FRAMES_PER_POLL 8U
+#define STREAM_TX_PACKETS_PER_POLL 8U
 
 typedef struct
 {
@@ -37,9 +37,11 @@ static IfxCpu_mutexLock stream_lock;
 
 static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *payload, uint8_t payload_len);
 static bool Stream_DequeueFrame(StreamFrame_t *frame);
+static bool Stream_PeekFrame(StreamFrame_t *frame);
 static void Stream_PurgeFrames(uint8_t stream_id);
 static bool Stream_TryLockFromIsr(void);
 static void Stream_Lock(void);
+static void Stream_AppendFrame(uint8_t *packet_samples, uint16_t *packet_len, const StreamFrame_t *frame);
 
 void Stream_Init(void)
 {
@@ -195,17 +197,49 @@ void Stream_OnControlLoop(void)
 void Stream_TransmitPending(void)
 {
     StreamFrame_t frame;
-    uint8_t frames_sent = 0U;
+    uint8_t packets_sent = 0U;
 
     if (!Protocol_HasUdpSender())
     {
         return;
     }
 
-    while ((frames_sent < STREAM_TX_FRAMES_PER_POLL) && Stream_DequeueFrame(&frame))
+    while ((packets_sent < STREAM_TX_PACKETS_PER_POLL) && Stream_DequeueFrame(&frame))
     {
-        Protocol_SendStreamData(frame.stream_id, frame.sequence, frame.timestamp_ticks, frame.payload, frame.payload_len);
-        frames_sent++;
+        uint8_t packet_samples[PROTOCOL_MAX_PAYLOAD - STREAM_PACKET_HEADER_BYTES];
+        uint16_t packet_len = 0U;
+        uint8_t sample_count = 0U;
+        uint16_t sample_bytes = (uint16_t)(STREAM_SAMPLE_HEADER_BYTES + frame.payload_len);
+
+        Stream_AppendFrame(packet_samples, &packet_len, &frame);
+        sample_count++;
+
+        while (sample_count < 255U)
+        {
+            StreamFrame_t next_frame;
+
+            if (!Stream_PeekFrame(&next_frame))
+            {
+                break;
+            }
+
+            if ((next_frame.stream_id != frame.stream_id) || (next_frame.payload_len != frame.payload_len) ||
+                ((uint16_t)(packet_len + sample_bytes) > sizeof(packet_samples)))
+            {
+                break;
+            }
+
+            if (!Stream_DequeueFrame(&next_frame))
+            {
+                break;
+            }
+
+            Stream_AppendFrame(packet_samples, &packet_len, &next_frame);
+            sample_count++;
+        }
+
+        Protocol_SendStreamBatch(frame.stream_id, sample_count, packet_samples, packet_len);
+        packets_sent++;
     }
 }
 
@@ -251,6 +285,26 @@ static bool Stream_DequeueFrame(StreamFrame_t *frame)
     *frame = frame_queue[frame_tail];
     frame_tail = (uint8_t)((frame_tail + 1U) % STREAM_FRAME_BUFFER_SIZE);
     frame_count--;
+    IfxCpu_releaseMutex(&stream_lock);
+    return true;
+}
+
+static bool Stream_PeekFrame(StreamFrame_t *frame)
+{
+    if (frame == NULL)
+    {
+        return false;
+    }
+
+    Stream_Lock();
+
+    if (frame_count == 0U)
+    {
+        IfxCpu_releaseMutex(&stream_lock);
+        return false;
+    }
+
+    *frame = frame_queue[frame_tail];
     IfxCpu_releaseMutex(&stream_lock);
     return true;
 }
@@ -302,5 +356,22 @@ static void Stream_PurgeFrames(uint8_t stream_id)
         frame_queue[frame_head] = kept[i];
         frame_head = (uint8_t)((frame_head + 1U) % STREAM_FRAME_BUFFER_SIZE);
         frame_count++;
+    }
+}
+
+static void Stream_AppendFrame(uint8_t *packet_samples, uint16_t *packet_len, const StreamFrame_t *frame)
+{
+    packet_samples[(*packet_len)++] = (uint8_t)(frame->sequence & 0xFFU);
+    packet_samples[(*packet_len)++] = (uint8_t)((frame->sequence >> 8) & 0xFFU);
+
+    for (uint8_t i = 0U; i < 8U; i++)
+    {
+        packet_samples[(*packet_len)++] = (uint8_t)((frame->timestamp_ticks >> (8U * i)) & 0xFFU);
+    }
+
+    if (frame->payload_len > 0U)
+    {
+        memcpy(&packet_samples[*packet_len], frame->payload, frame->payload_len);
+        *packet_len = (uint16_t)(*packet_len + frame->payload_len);
     }
 }

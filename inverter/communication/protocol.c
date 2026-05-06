@@ -438,16 +438,16 @@ static void Protocol_SendError(uint16_t address, uint8_t reason)
   Protocol_SendPacket(PROTOCOL_CMD_ERROR, payload, sizeof(payload));
 }
 
-void Protocol_SendStreamData(uint8_t stream_id,
-                             uint16_t sequence,
-                             uint64_t timestamp_ticks,
-                             const uint8_t *data,
-                             uint8_t data_len)
+void Protocol_SendStreamBatch(uint8_t stream_id,
+                              uint8_t sample_count,
+                              const uint8_t *samples,
+                              uint16_t samples_len)
 {
   uint8_t tx_payload[PROTOCOL_MAX_PAYLOAD];
   uint16_t payload_len = 0U;
 
-  if ((stream_udp_pcb == NULL) || ((uint16_t)(14U + data_len) > PROTOCOL_MAX_PAYLOAD))
+  if ((stream_udp_pcb == NULL) || (sample_count == 0U) || (samples == NULL) ||
+      ((uint16_t)(STREAM_PACKET_HEADER_BYTES + samples_len) > PROTOCOL_MAX_PAYLOAD))
   {
     return;
   }
@@ -455,28 +455,19 @@ void Protocol_SendStreamData(uint8_t stream_id,
   tx_payload[payload_len++] = PROTOCOL_START_BYTE_0;
   tx_payload[payload_len++] = PROTOCOL_START_BYTE_1;
   tx_payload[payload_len++] = stream_id;
-  tx_payload[payload_len++] = 1U;
-  tx_payload[payload_len++] = (uint8_t)(sequence & 0xFFU);
-  tx_payload[payload_len++] = (uint8_t)((sequence >> 8) & 0xFFU);
+  tx_payload[payload_len++] = sample_count;
 
-  for (uint8_t i = 0U; i < 8U; i++)
+  if (samples_len > 0U)
   {
-    tx_payload[payload_len++] = (uint8_t)((timestamp_ticks >> (8U * i)) & 0xFFU);
-  }
-
-  if ((data_len > 0U) && (data != NULL))
-  {
-    memcpy(&tx_payload[payload_len], data, data_len);
-    payload_len = (uint16_t)(payload_len + data_len);
+    memcpy(&tx_payload[payload_len], samples, samples_len);
+    payload_len = (uint16_t)(payload_len + samples_len);
   }
 
   Protocol_SendUdpPayload(tx_payload, payload_len);
   /*
-  Protocol_Log("PROTOCOL: stream UDP id=%u seq=%u ts=%llu count=%u payload=%u\r\n",
+  Protocol_Log("PROTOCOL: stream UDP id=%u count=%u payload=%u\r\n",
                (unsigned int)stream_id,
-               (unsigned int)sequence,
-               (unsigned long long)timestamp_ticks,
-               1U,
+               (unsigned int)sample_count,
                (unsigned int)payload_len);
   */
 }
