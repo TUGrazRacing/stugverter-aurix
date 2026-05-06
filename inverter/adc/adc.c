@@ -24,9 +24,10 @@
 #define EVADC_QINR_RF            (1u << 5)
 #define EVADC_QINR_EXTR          (1u << 7)
 
-#define EVADC_SAMPLE_TIME_STCS    0x0Fu
-#define EVADC_INPUT_PRECHARGE     IfxEvadc_IdlePrecharge_currentLevel
-#define EVADC_CONVERSION_MODE     IfxEvadc_ChannelNoiseReduction_standardConversion
+#define EVADC_ANALOG_CLOCK_DIVIDER IfxEvadc_ClockDividerFactor_maxFrequency
+#define EVADC_SAMPLE_TIME_STCS     0x00u
+#define EVADC_INPUT_PRECHARGE      IfxEvadc_AnalogInputPrechargeControl_noPrecharge
+#define EVADC_CONVERSION_MODE      IfxEvadc_ChannelNoiseReduction_standardConversion
 
 /* If you want different pins on each group during sync conversion,
  * map master CH0 onto these local channels with aliasing.
@@ -44,7 +45,14 @@ static void wait_us (uint32 us)
 
 static void initGroup (uint32 group)
 {
-  MODULE_EVADC.G[group].ANCFG.B.DIVA = 0;
+  MODULE_EVADC.G[group].ANCFG.U = 0;
+  MODULE_EVADC.G[group].ANCFG.B.DIVA = EVADC_ANALOG_CLOCK_DIVIDER;
+  MODULE_EVADC.G[group].ANCFG.B.BE = 0;
+  MODULE_EVADC.G[group].ANCFG.B.RPE = 0;
+  MODULE_EVADC.G[group].ANCFG.B.IPE = 0;
+  MODULE_EVADC.G[group].ANCFG.B.ACSD = IfxEvadc_AnalogClockSynchronizationDelay_0;
+  MODULE_EVADC.G[group].ANCFG.B.SSE = IfxEvadc_SampleSynchronization_off;
+  MODULE_EVADC.G[group].ANCFG.B.DCMSB = IfxEvadc_MsbConversionTime_singleClockCycle;
   MODULE_EVADC.G[group].ANCFG.B.DPCAL = 1;
 
   MODULE_EVADC.G[group].ICLASS[INPUTCLASS].U = 0;
@@ -61,6 +69,8 @@ static void initGroup (uint32 group)
   MODULE_EVADC.G[group].CHCTR[CHANNEL].B.SYNC = (group == MASTER_GROUP) ? 1u : 0u;
 
   MODULE_EVADC.G[group].RCR[RESREG0].U = 0;
+  MODULE_EVADC.G[group].RCR[RESREG0].B.DMM = IfxEvadc_DataModificationMode_standardDataReduction;
+  MODULE_EVADC.G[group].RCR[RESREG0].B.DRCTR = IfxEvadc_DataReductionControlMode_0;
 }
 
 static void initAlias (void)
@@ -150,6 +160,7 @@ static void initQueue (void)
 
 void adcInit (void)
 {
+  Ifx_EVADC_GLOBCFG globcfg;
   uint16 password = IfxScuWdt_getCpuWatchdogPassword();
   IfxScuWdt_clearCpuEndinit(password);
   MODULE_EVADC.CLC.U = 0x00000000u; // or MODULE_EVADC.CLC.B.DISR = 0;
@@ -157,7 +168,11 @@ void adcInit (void)
   while (MODULE_EVADC.CLC.B.DISS)
     ;
 
-  MODULE_EVADC.GLOBCFG.B.SUPLEV = 0;
+  globcfg.U = MODULE_EVADC.GLOBCFG.U;
+  globcfg.B.CPWC = 1;
+  globcfg.B.USC = IfxEvadc_AnalogClockGenerationMode_unsynchronized;
+  globcfg.B.SUPLEV = 0;
+  MODULE_EVADC.GLOBCFG.U = globcfg.U;
 
   MODULE_EVADC.G[G0_GROUP].ARBCFG.B.ANONC = 0;
   MODULE_EVADC.G[G1_GROUP].ARBCFG.B.ANONC = 0;
