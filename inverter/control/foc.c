@@ -35,8 +35,14 @@ void focStep (ThreePhaseDuty *dutycycles, float32 theta_resolver_mech, const Thr
   // 1. Compute the FOC algorithm (updates foc_state->duty_3ph internally)
   if (foc_state->calibrated)
   {
+    if (app_setpoints.foc.controlMode == CONTROL_MODE_OPEN_LOOP)
+    {
+      focOpenLoop();
+    }
+    else
+    {
       focCurrentControlClosedLoop(theta_resolver_mech, currents);
-      //focOpenLoop();
+    }
   }
   else
   {
@@ -50,6 +56,7 @@ void focStep (ThreePhaseDuty *dutycycles, float32 theta_resolver_mech, const Thr
 
 static void focOpenLoop (void)
 {
+  float32 electrical_rpm;
   float32 sinVal, cosVal;
 
   if ((foc_config == NULL_PTR) || (foc_state == NULL_PTR) || (pwm_config == NULL_PTR))
@@ -57,7 +64,8 @@ static void focOpenLoop (void)
     return;
   }
 
-  foc_state->electricalAngle += ((app_setpoints.foc.speedSetpointRpm / 60.0f) * FOC_TWO_PI * (1.0f / (float32) pwm_config->frequency));
+  electrical_rpm = app_setpoints.foc.speedSetpointRpm * (float32)foc_config->motor_polepairs;
+  foc_state->electricalAngle += ((electrical_rpm / 60.0f) * FOC_TWO_PI * (1.0f / (float32) pwm_config->frequency));
 
   if (foc_state->electricalAngle >= FOC_TWO_PI)
   {
@@ -109,7 +117,7 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
   if (foc_config->motor_decoupling_enable)
   {
     /* Calculate electrical angular velocity from mechanical speed */
-    foc_state->omega_elec = focCalcOmegaElec(foc_state->speed_filt_rpm, foc_config->motor_polepairs);
+    foc_state->omega_elec = focCalcOmegaElec(foc_state->speed_mech_rpm, foc_config->motor_polepairs);
 
     /* Apply cross-coupling and back-EMF compensation */
     focApplyVoltageDecoupling(

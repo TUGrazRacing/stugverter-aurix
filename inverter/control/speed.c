@@ -2,7 +2,6 @@
 #include "pi.h"
 
 #define SPEED_TWO_PI_F 6.283185307179586f
-#define SPEED_MAX_VALID_RPM 30000.0f
 #define SPEED_MIN_VALID_LOOP_HZ 1.0f
 
 typedef struct
@@ -16,12 +15,10 @@ typedef struct
 
 static SpeedRuntime speed_runtime;
 
-static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, float32 loop_hz, float32 filter_alpha);
+static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, float32 loop_hz);
 static float32 Speed_NormalizeDeltaAngle(float32 delta_rad);
-static float32 Speed_Clamp(float32 value, float32 min, float32 max);
-static float32 Speed_SlewTowards(float32 current, float32 target, float32 max_delta);
-static void Speed_RunClosedLoop(const FocConfig *config, FocSetpoints *setpoints, FocState *state, float32 dt_s);
-static void Speed_RunCurrentModeMirror(const FocConfig *config, FocSetpoints *setpoints, FocState *state, float32 dt_s);
+static void Speed_RunClosedLoop(const FocConfig *config, FocSetpoints *setpoints, FocState *state);
+static void Speed_RunCurrentModeMirror(FocSetpoints *setpoints, FocState *state);
 
 void Speed_Reset(FocState *state)
 {
@@ -34,10 +31,7 @@ void Speed_Reset(FocState *state)
     if (state != NULL_PTR)
     {
         state->speed_mech_rpm = 0.0f;
-        state->speed_filt_rpm = 0.0f;
         state->speed_iq_ref = 0.0f;
-        state->speed_setpoint_ramped_rpm = 0.0f;
-        state->iq_ref_ramped = 0.0f;
         state->pi_state_speed.integral = 0.0f;
     }
 }
@@ -68,7 +62,7 @@ void Speed_RunControlTask(const FocConfig *config,
     {
         speed_runtime.last_decimated_counter = decimated_counter;
         speed_runtime.control_task_initialized = TRUE;
-        Speed_UpdateMeasurement(state, theta_mech_rad, current_loop_hz / (float32)SPEED_CONTROL_LOOP_DIVIDER, config->speed_filter_alpha);
+        Speed_UpdateMeasurement(state, theta_mech_rad, current_loop_hz / (float32)SPEED_CONTROL_LOOP_DIVIDER);
         return;
     }
 
@@ -81,23 +75,22 @@ void Speed_RunControlTask(const FocConfig *config,
     speed_runtime.last_decimated_counter = decimated_counter;
     dt_s = ((float32)SPEED_CONTROL_LOOP_DIVIDER * (float32)decimated_delta) / current_loop_hz;
 
-    Speed_UpdateMeasurement(state, theta_mech_rad, 1.0f / dt_s, config->speed_filter_alpha);
+    Speed_UpdateMeasurement(state, theta_mech_rad, 1.0f / dt_s);
 
     if (setpoints->controlMode == CONTROL_MODE_SPEED)
     {
-        Speed_RunClosedLoop(config, setpoints, state, dt_s);
+        Speed_RunClosedLoop(config, setpoints, state);
     }
     else
     {
-        Speed_RunCurrentModeMirror(config, setpoints, state, dt_s);
+        Speed_RunCurrentModeMirror(setpoints, state);
     }
 
     speed_runtime.previous_control_mode = setpoints->controlMode;
 }
 
-static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, float32 loop_hz, float32 filter_alpha)
+static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, float32 loop_hz)
 {
-    float32 alpha;
     float32 delta_theta;
     float32 speed_rpm;
 
@@ -106,12 +99,9 @@ static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, flo
         return;
     }
 
-    alpha = Speed_Clamp(filter_alpha, 0.0f, 1.0f);
-
     if ((loop_hz <= SPEED_MIN_VALID_LOOP_HZ) || (speed_runtime.measurement_initialized == FALSE))
     {
         state->speed_mech_rpm = 0.0f;
-        state->speed_filt_rpm = 0.0f;
         speed_runtime.previous_theta_mech_rad = theta_mech_rad;
         speed_runtime.measurement_initialized = TRUE;
         return;
@@ -120,13 +110,7 @@ static void Speed_UpdateMeasurement(FocState *state, float32 theta_mech_rad, flo
     delta_theta = Speed_NormalizeDeltaAngle(theta_mech_rad - speed_runtime.previous_theta_mech_rad);
     speed_rpm = (delta_theta * loop_hz * 60.0f) / SPEED_TWO_PI_F;
 
-    if ((speed_rpm >= SPEED_MAX_VALID_RPM) || (speed_rpm <= -SPEED_MAX_VALID_RPM))
-    {
-        return;
-    }
-
     state->speed_mech_rpm = speed_rpm;
-    state->speed_filt_rpm = (alpha * speed_rpm) + ((1.0f - alpha) * state->speed_filt_rpm);
     speed_runtime.previous_theta_mech_rad = theta_mech_rad;
 }
 
@@ -145,87 +129,25 @@ static float32 Speed_NormalizeDeltaAngle(float32 delta_rad)
     return delta_rad;
 }
 
-static float32 Speed_Clamp(float32 value, float32 min, float32 max)
-{
-    if (value < min)
-    {
-        return min;
-    }
-
-    if (value > max)
-    {
-        return max;
-    }
-
-    return value;
-}
-
-static float32 Speed_SlewTowards(float32 current, float32 target, float32 max_delta)
-{
-    float32 delta = target - current;
-
-    if (max_delta <= 0.0f)
-    {
-        return target;
-    }
-
-    if (delta > max_delta)
-    {
-        delta = max_delta;
-    }
-    else if (delta < -max_delta)
-    {
-        delta = -max_delta;
-    }
-
-    return current + delta;
-}
-
-static void Speed_RunClosedLoop(const FocConfig *config, FocSetpoints *setpoints, FocState *state, float32 dt_s)
+static void Speed_RunClosedLoop(const FocConfig *config, FocSetpoints *setpoints, FocState *state)
 {
     float32 iq_ref_raw;
-    float32 speed_setpoint_ramped;
-    float32 max_speed_step;
-    float32 max_iq_step;
 
     if (speed_runtime.previous_control_mode != CONTROL_MODE_SPEED)
     {
         state->pi_state_speed.integral = 0.0f;
-        state->speed_setpoint_ramped_rpm = state->speed_filt_rpm;
-        state->iq_ref_ramped = setpoints->iq_ref;
     }
-
-    max_speed_step = config->speed_setpoint_ramp_rpm_per_s * dt_s;
-    speed_setpoint_ramped = Speed_SlewTowards(state->speed_setpoint_ramped_rpm,
-                                              setpoints->speedSetpointRpm,
-                                              max_speed_step);
-    state->speed_setpoint_ramped_rpm = speed_setpoint_ramped;
 
     iq_ref_raw = PI_Run(&config->pi_config_speed,
                         &state->pi_state_speed,
-                        speed_setpoint_ramped,
-                        state->speed_filt_rpm);
+                        setpoints->speedSetpointRpm,
+                        state->speed_mech_rpm);
 
-    max_iq_step = config->iq_ref_slew_a_per_s * dt_s;
-    state->iq_ref_ramped = Speed_SlewTowards(state->iq_ref_ramped, iq_ref_raw, max_iq_step);
-    state->speed_iq_ref = state->iq_ref_ramped;
-    setpoints->iq_ref = state->iq_ref_ramped;
+    state->speed_iq_ref = iq_ref_raw;
+    setpoints->iq_ref = iq_ref_raw;
 }
 
-static void Speed_RunCurrentModeMirror(const FocConfig *config, FocSetpoints *setpoints, FocState *state, float32 dt_s)
+static void Speed_RunCurrentModeMirror(FocSetpoints *setpoints, FocState *state)
 {
-    float32 max_iq_step;
-
-    if (speed_runtime.previous_control_mode == CONTROL_MODE_SPEED)
-    {
-        state->iq_ref_ramped = setpoints->iq_ref;
-    }
-
-    state->speed_setpoint_ramped_rpm = setpoints->speedSetpointRpm;
-    max_iq_step = config->iq_ref_slew_a_per_s * dt_s;
-    state->iq_ref_ramped = Speed_SlewTowards(state->iq_ref_ramped, setpoints->iq_ref, max_iq_step);
-    state->speed_iq_ref = state->iq_ref_ramped;
-    /* NOTE: In CURRENT mode, do NOT modify setpoints->iq_ref. Per ethernet_protocol.md section 8,
-     * the host writes ID_REF/IQ_REF directly in CURRENT mode. We only track the ramped value
-     * in state->iq_ref_ramped for telemetry (IQ_REF_RMP). */
+    state->speed_iq_ref = setpoints->iq_ref;
 }
