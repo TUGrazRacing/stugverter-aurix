@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Firmware: Build",
+            "type": "shell",
+            "command": "C:\\Infineon\\AURIX-Studio-1.10.28\\tools\\Compilers\\Tasking_1.1r8\\ctc\\bin\\amk.exe",
+            "args": [
+                "-G",
+                "${workspaceFolder}/TriCore Debug (TASKING)",
+                "-f",
+                "makefile"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Firmware: Flash TC387",
+            "type": "shell",
+            "command": "C:\\Infineon\\AURIX-Studio-1.10.28\\tools\\AurixFlasherSoftwareTool_v3.0.14\\AURIXFlasher.exe",
+            "args": [
+                "-hex",
+                "${workspaceFolder}/TriCore Debug (TASKING)/stugverter-aurix.hex",
+                "-erase",
+                "on",
+                "-prog",
+                "on",
+                "-ver",
+                "on",
+                "-connect",
+                "6",
+                "-start",
+                "on"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/TriCore Debug (TASKING)"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Firmware: Build and Flash",
+            "dependsOn": [
+                "Firmware: Build",
+                "Firmware: Flash TC387"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        }
+    ]
+}

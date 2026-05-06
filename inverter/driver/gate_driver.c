@@ -14,6 +14,14 @@
 #define GATEDRIVER_EN_V_HIGH     (&IfxPort_P14_7)
 #define GATEDRIVER_EN_W_HIGH     (&IfxPort_P21_3)
 
+#define GATEDRIVER_DATA_U_LOW
+#define GATEDRIVER_DATA_V_LOW
+#define GATEDRIVER_DATA_W_LOW
+#define GATEDRIVER_DATA_U_HIGH
+#define GATEDRIVER_DATA_V_HIGH
+#define GATEDRIVER_DATA_W_HIGH
+
+
 /*********************************************************************************************************************/
 /*------------------------------------------------Global Variables---------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -30,6 +38,11 @@ const IfxPort_Io_ConfigPin gatedriver_config[] = {
 /*********************************************************************************************************************/
 /*---------------------------------------------Function Implementations----------------------------------------------*/
 /*********************************************************************************************************************/
+
+void gatedriverDataCapture(void)
+{
+
+}
 
 void gatedriverInit(void)
 {

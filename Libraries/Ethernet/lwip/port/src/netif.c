@@ -362,7 +362,7 @@ static uint16 GetRxFrameSize(IfxGeth_RxDescr *descr)
   else
   {
     /* Subtract CRC */
-	len = (rdes3 & 0x7FFF) - 4U;
+	len = (uint16)(rdes3 & 0x7FFF) - 4U;
   }
 
   return len;

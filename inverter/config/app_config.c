@@ -41,14 +41,14 @@ void initConfig(void)
     app_config.resolver.pole_pairs = 4U;
 
     /* Current sensor offsets */
-    app_config.current.offset_u_adcsteps = 2031;
-    app_config.current.offset_v_adcsteps = 2033;
+    app_config.current.offset_u_adcsteps = 2047;
+    app_config.current.offset_v_adcsteps = 2049;
     app_config.current.current_sense_factor = 0.01f;
     app_config.current.filter_alpha = 0.35f;
     app_config.current.max_delta_a = 3.0f;
 
     /* FOC defaults */
-    app_config.foc.motor_polepairs   = 7U;
+    app_config.foc.motor_polepairs   = 4U;
     app_config.foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL; //5 seconds
     app_config.foc.resolver_offset   = 0.0f;
     app_config.foc.speed_filter_alpha = 0.08f;
@@ -101,7 +101,7 @@ void initConfig(void)
     app_state.resolver.prev_elec_angle = 0.0f;
     app_state.resolver.sector          = 0;
 
-    app_setpoints.foc.speedSetpointRpm = 1200.0f;
+    app_setpoints.foc.speedSetpointRpm = 500.0f;
     app_setpoints.foc.voltageRef  = 0.15f;
     app_setpoints.foc.id_ref      = 0.0f;
     app_setpoints.foc.iq_ref      = 5.0f;

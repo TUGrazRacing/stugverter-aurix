@@ -1,10 +1,18 @@
-#include "ethernet.h"
-#include "protocol.h"
+#include <ethernet_comm.h>
+#include "Configuration.h"
+#include "IfxCpu.h"
+#include "Ifx_Lwip.h"
+#include "IfxStm.h"
 #include "UART_Logging.h"
-#include "lwip/tcp.h"
+#include "lwip/dhcp.h"
+#include "lwip/ip4_addr.h"
+#include "lwip/netif.h"
 #include "lwip/pbuf.h"
-#include <stdio.h>
+#include "lwip/tcp.h"
+#include "protocol.h"
+#include <stdbool.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 
 #define ETHERNET_DEBUG_ENABLE 1
@@ -38,9 +46,24 @@ typedef struct
     uint8_t tx_count;
 } EthernetControlSession;
 
+
+typedef struct
+{
+    bool initialized;
+    bool linkUp;
+    bool dhcpRunning;
+    uint32 lastIpAddr;
+} EthernetRuntimeState;
 static struct tcp_pcb *g_listen_pcb;
 static EthernetControlSession g_session;
 
+static EthernetRuntimeState g_state;
+
+static void Ethernet_ConfigureTimer(void);
+static void Ethernet_ControlServerInit(void);
+static void Ethernet_ApplyStaticAddress(struct netif *netif);
+static void Ethernet_UpdateNetworkState(void);
+static void Ethernet_LogNetifIp(const char *prefix, struct netif *netif);
 static err_t Ethernet_OnAccept(void *arg, struct tcp_pcb *new_pcb, err_t err);
 static err_t Ethernet_OnReceive(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
 static err_t Ethernet_OnSent(void *arg, struct tcp_pcb *tpcb, uint16_t len);
@@ -61,10 +84,75 @@ static void Ethernet_TxReset(void);
 
 static void Ethernet_Log(const char *fmt, ...);
 
+IFX_INTERRUPT(updateLwIPStackISR, CPU_WHICH_SERVICE_ETHERNET, ISR_PRIORITY_OS_TICK)
+{
+    IfxStm_increaseCompare(&MODULE_STM0, IfxStm_Comparator_0, IFX_CFG_STM_TICKS_PER_MS);
+    g_TickCount_1ms++;
+    Ifx_Lwip_onTimerTick();
+}
+
 void Ethernet_Init(void)
 {
+    eth_addr_t ethAddr;
+
     memset(&g_session, 0, sizeof(g_session));
+    memset(&g_state, 0, sizeof(g_state));
+
+    Ethernet_ConfigureTimer();
+
+    IfxGeth_enableModule(&MODULE_GETH);
+    Ethernet_Log("ETH: GETH module enabled\r\n");
+
+    MAC_ADDR(&ethAddr, 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED);
+    Ifx_Lwip_init(ethAddr);
+    Ethernet_Log("ETH: lwIP initialized\r\n");
+
+    Ethernet_ControlServerInit();
+
+    if (ETHERNET_USE_DHCP == 0U)
+    {
+        Ethernet_ApplyStaticAddress(Ifx_Lwip_getNetIf());
+    }
+    else
+    {
+        g_state.dhcpRunning = true;
+    }
+
+    g_state.initialized = true;
+}
+
+void Ethernet_Process(void)
+{
+    if (!g_state.initialized)
+    {
+        return;
+    }
+
+    Ifx_Lwip_pollTimerFlags();
+    Ifx_Lwip_pollReceiveFlags();
+    Ethernet_UpdateNetworkState();
+    Ethernet_TxFlush();
+}
+
+static void Ethernet_ConfigureTimer(void)
+{
+    IfxStm_CompareConfig stmCompareConfig;
+
+    IfxStm_initCompareConfig(&stmCompareConfig);
+    stmCompareConfig.triggerPriority     = ISR_PRIORITY_OS_TICK;
+    stmCompareConfig.comparatorInterrupt = IfxStm_ComparatorInterrupt_ir0;
+    stmCompareConfig.ticks               = IFX_CFG_STM_TICKS_PER_MS * 10U;
+    stmCompareConfig.typeOfService       = IfxSrc_Tos_cpu2;
+
+    IfxStm_initCompare(&MODULE_STM0, &stmCompareConfig);
+}
+
+static void Ethernet_ControlServerInit(void)
+{
+    Protocol_Init();
+    Protocol_NetworkInit();
     Protocol_SetTxHandler(Ethernet_SendBytes);
+
     Ethernet_Log("ETH: init TCP control server port=%u\r\n", (unsigned int)ETHERNET_CONTROL_TCP_PORT);
 
     g_listen_pcb = tcp_new();
@@ -87,10 +175,131 @@ void Ethernet_Init(void)
     Ethernet_Log("ETH: TCP control server listening\r\n");
 }
 
-void Ethernet_Process(void)
+static void Ethernet_ApplyStaticAddress(struct netif *netif)
 {
-    /* lwIP callbacks drive RX/TX. */
-    Ethernet_TxFlush();
+    ip4_addr_t ipAddr;
+    ip4_addr_t netmask;
+    ip4_addr_t gateway;
+
+    if (netif == NULL)
+    {
+        return;
+    }
+
+    IP4_ADDR(&ipAddr,
+             ETHERNET_STATIC_IP_0,
+             ETHERNET_STATIC_IP_1,
+             ETHERNET_STATIC_IP_2,
+             ETHERNET_STATIC_IP_3);
+    IP4_ADDR(&netmask,
+             ETHERNET_STATIC_NETMASK_0,
+             ETHERNET_STATIC_NETMASK_1,
+             ETHERNET_STATIC_NETMASK_2,
+             ETHERNET_STATIC_NETMASK_3);
+    IP4_ADDR(&gateway,
+             ETHERNET_STATIC_GATEWAY_0,
+             ETHERNET_STATIC_GATEWAY_1,
+             ETHERNET_STATIC_GATEWAY_2,
+             ETHERNET_STATIC_GATEWAY_3);
+
+    dhcp_release_and_stop(netif);
+    netif_set_addr(netif, &ipAddr, &netmask, &gateway);
+    g_state.lastIpAddr = ip4_addr_get_u32(&ipAddr);
+
+    Ethernet_LogNetifIp("ETH: static address applied", netif);
+}
+
+static void Ethernet_UpdateNetworkState(void)
+{
+    struct netif *netif = Ifx_Lwip_getNetIf();
+    bool linkUp = netif_is_link_up(netif) ? true : false;
+
+    if (linkUp != g_state.linkUp)
+    {
+        g_state.linkUp = linkUp;
+
+        if (g_state.linkUp)
+        {
+            Ethernet_Log("ETH: link up\r\n");
+
+#if ETHERNET_USE_DHCP
+            if (!g_state.dhcpRunning)
+            {
+                err_t dhcpErr = dhcp_start(netif);
+                if (dhcpErr == ERR_OK)
+                {
+                    g_state.dhcpRunning = true;
+                    Ethernet_Log("ETH: DHCP started\r\n");
+                }
+                else
+                {
+                    Ethernet_Log("ETH: DHCP start failed err=%d\r\n", (int)dhcpErr);
+                }
+            }
+#else
+            Ethernet_ApplyStaticAddress(netif);
+#endif
+        }
+        else
+        {
+            Ethernet_Log("ETH: link down\r\n");
+
+#if ETHERNET_USE_DHCP
+            if (g_state.dhcpRunning)
+            {
+                dhcp_release_and_stop(netif);
+                g_state.dhcpRunning = false;
+                Ethernet_Log("ETH: DHCP stopped\r\n");
+            }
+
+            ip4_addr_t zeroIp;
+            ip4_addr_set_zero(&zeroIp);
+            netif_set_addr(netif, &zeroIp, &zeroIp, &zeroIp);
+#endif
+            g_state.lastIpAddr = 0U;
+        }
+    }
+
+    if (linkUp)
+    {
+        const ip4_addr_t *ip = netif_ip4_addr(netif);
+        uint32 currentIpAddr = ip4_addr_get_u32(ip);
+
+        if ((currentIpAddr != 0U) && (currentIpAddr != g_state.lastIpAddr))
+        {
+            g_state.lastIpAddr = currentIpAddr;
+            Ethernet_LogNetifIp((ETHERNET_USE_DHCP != 0U) ? "ETH: DHCP address assigned" : "ETH: static address active", netif);
+        }
+    }
+}
+
+static void Ethernet_LogNetifIp(const char *prefix, struct netif *netif)
+{
+    char msg[160];
+
+    const ip4_addr_t *ip   = netif_ip4_addr(netif);
+    const ip4_addr_t *mask = netif_ip4_netmask(netif);
+    const ip4_addr_t *gw   = netif_ip4_gw(netif);
+
+    int len = snprintf(msg, sizeof(msg),
+        "%s IP=%u.%u.%u.%u MASK=%u.%u.%u.%u GW=%u.%u.%u.%u\r\n",
+        prefix,
+        (unsigned int)ip4_addr1(ip),   (unsigned int)ip4_addr2(ip),
+        (unsigned int)ip4_addr3(ip),   (unsigned int)ip4_addr4(ip),
+        (unsigned int)ip4_addr1(mask), (unsigned int)ip4_addr2(mask),
+        (unsigned int)ip4_addr3(mask), (unsigned int)ip4_addr4(mask),
+        (unsigned int)ip4_addr1(gw),   (unsigned int)ip4_addr2(gw),
+        (unsigned int)ip4_addr3(gw),   (unsigned int)ip4_addr4(gw));
+
+    if (len > 0)
+    {
+        if ((size_t)len >= sizeof(msg))
+        {
+            len = (int)(sizeof(msg) - 1U);
+        }
+
+        sendUARTMessage(msg, (Ifx_SizeT)len);
+    }
 }
 
 static err_t Ethernet_OnAccept(void *arg, struct tcp_pcb *new_pcb, err_t err)

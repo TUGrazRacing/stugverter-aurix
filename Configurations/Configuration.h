@@ -55,6 +55,24 @@
 #define ETH_TXCTL_PIN               IfxGeth_TXCTL_P11_6_OUT
 #define ETH_TXCLK_PIN               IfxGeth_TXCLK_P11_4_OUT
 
+/* Ethernet address mode. Set to 0 for static IP, 1 for DHCP. */
+#define ETHERNET_USE_DHCP            1U
+
+#define ETHERNET_STATIC_IP_0         192U
+#define ETHERNET_STATIC_IP_1         168U
+#define ETHERNET_STATIC_IP_2         0U
+#define ETHERNET_STATIC_IP_3         10U
+
+#define ETHERNET_STATIC_NETMASK_0    255U
+#define ETHERNET_STATIC_NETMASK_1    255U
+#define ETHERNET_STATIC_NETMASK_2    255U
+#define ETHERNET_STATIC_NETMASK_3    0U
+
+#define ETHERNET_STATIC_GATEWAY_0    192U
+#define ETHERNET_STATIC_GATEWAY_1    168U
+#define ETHERNET_STATIC_GATEWAY_2    0U
+#define ETHERNET_STATIC_GATEWAY_3    1U
+
 #define IFX_CFG_STM_TICKS_PER_MS    (100000)                /* Value of the system timer in ticks per millisecond   */
 
 #define CPU_WHICH_SERVICE_ETHERNET  2                       /* Define the CPU which services the Ethernet           */
