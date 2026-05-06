@@ -132,6 +132,7 @@ void Ethernet_Process(void)
     Ifx_Lwip_pollReceiveFlags();
     Ethernet_UpdateNetworkState();
     Ethernet_TxFlush();
+    Stream_TransmitPending();
 }
 
 static void Ethernet_ConfigureTimer(void)

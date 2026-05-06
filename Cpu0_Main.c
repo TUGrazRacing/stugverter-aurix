@@ -1,7 +1,7 @@
+#include <controller.h>
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
-#include "motor_control.h"
 
 
 /*********************************************************************************************************************/

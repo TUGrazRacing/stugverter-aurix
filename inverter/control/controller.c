@@ -1,5 +1,5 @@
+#include <controller.h>
 #include "pwm.h"
-#include "motor_control.h"
 #include "adc.h"
 #include "resolver_math.h"
 #include "foc.h"

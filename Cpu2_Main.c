@@ -46,7 +46,6 @@ void core2_main(void)
     IfxCpu_emitEvent(&g_cpuSyncEvent);
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
 
-    initUART();
     Ethernet_Init();
 
     while (1)

@@ -1,6 +1,6 @@
 #include "stream.h"
 #include "parameter.h"
-#include "motor_control.h"
+#include "controller.h"
 #include "IfxCpu.h"
 #include <string.h>
 

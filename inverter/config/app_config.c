@@ -1,5 +1,6 @@
 #include <app_config.h>
 #include <IfxStm.h>
+#include <string.h>
 
 AppConfig app_config;
 AppConfig app_config_shadow;
