@@ -1,0 +1,10 @@
+{
+    "C_Cpp.default.configurationName": "TASKING AURIX",
+    "C_Cpp.intelliSenseEngine": "Tag Parser",
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "C_Cpp.formatting": "Disabled",
+    "editor.formatOnSave": false,
+    "[c]": {
+        "editor.defaultFormatter": null
+    }
+}

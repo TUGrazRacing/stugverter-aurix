@@ -28,6 +28,7 @@ typedef struct
     CurrentsAB     v_ab;
     CurrentsDQ     i_dq;
     CurrentsDQ     v_dq;
+    CurrentsDQ     v_dq_decoupled;  /* Voltage after decoupling compensation */
     ThreePhaseDuty duty_3ph;
 
     PiState pi_state_id;
@@ -40,6 +41,7 @@ typedef struct
     float32 speed_setpoint_ramped_rpm;
     float32 iq_ref_ramped;
     float32 resolver_mech_angle;
+    float32 omega_elec;                 /* Electrical angular velocity [rad/s] for decoupling */
     uint32  control_loop_counter;
     uint64  control_loop_tick;
 } FocState;

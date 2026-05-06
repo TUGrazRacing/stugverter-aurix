@@ -1,6 +1,43 @@
 {
     "configurations": [
         {
+            "name": "TASKING AURIX",
+            "includePath": [
+                "${workspaceFolder}",
+                "${workspaceFolder}/inverter",
+                "${workspaceFolder}/inverter/config",
+                "${workspaceFolder}/inverter/control",
+                "${workspaceFolder}/inverter/math",
+                "${workspaceFolder}/inverter/adc",
+                "${workspaceFolder}/inverter/communication",
+                "${workspaceFolder}/inverter/driver",
+                "${workspaceFolder}/inverter/pwm",
+                "${workspaceFolder}/Libraries",
+                "${workspaceFolder}/Libraries/iLLD/TC38A/Tricore",
+                "${workspaceFolder}/Libraries/Infra",
+                "${workspaceFolder}/Libraries/Service",
+                "${workspaceFolder}/Configurations",
+                "C:/Infineon/AURIX-Studio-1.10.28/tools/Compilers/Tasking_1.1r8/ctc/include",
+                "C:/Infineon/AURIX-Studio-1.10.28/plugins/com.infineon.aurixstudio.libraries.feature_*/libraries/iLLD/include"
+            ],
+            "defines": [
+                "__TASKING__",
+                "_TASKING_C_TRICORE_",
+                "IFX_USE_SW_MANAGED_INT=0"
+            ],
+            "compilerPath": "C:/Infineon/AURIX-Studio-1.10.28/tools/Compilers/Tasking_1.1r8/ctc/bin/ctc.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "linux-gcc-arm",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "C:/Infineon/AURIX-Studio-1.10.28/tools/Compilers/Tasking_1.1r8/ctc/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        },
+        {
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**"

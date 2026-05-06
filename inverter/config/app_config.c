@@ -1,6 +1,4 @@
 #include <app_config.h>
-#include <string.h>
-#include <limits.h>
 #include <IfxStm.h>
 
 AppConfig app_config;
@@ -55,13 +53,21 @@ void initConfig(void)
     app_config.foc.speed_setpoint_ramp_rpm_per_s = 2500.0f;
     app_config.foc.iq_ref_slew_a_per_s = 200.0f;
 
-    //PI Controller ID
+    /* Motor Parameters for Decoupling (Fischer TI085-052-070-04B7S-07S04BE2) */
+    app_config.foc.motor_rs = 0.126f;                  /* Stator resistance [Ohm] */
+    app_config.foc.motor_ld = 0.000393f;               /* D-axis inductance [H] (0.393 mH phase) */
+    app_config.foc.motor_lq = 0.000393f;               /* Q-axis inductance [H] (SPM motor: Ld ≈ Lq) */
+    app_config.foc.motor_psi_pm = 0.492f;              /* PM flux linkage [Wb] (= torque constant) */
+    app_config.foc.motor_iron_loss_id_offset = 0.0f;   /* Iron loss compensation [A], tune for efficiency */
+    app_config.foc.motor_decoupling_enable = false;    /* Decoupling disabled by default, enable after tuning */
+
+    /* PI Controller ID */
     app_config.foc.pi_config_id.Kp    = 0.03f;
     app_config.foc.pi_config_id.Ki    = 0.0008f;
     app_config.foc.pi_config_id.outMax = 0.55f;
     app_config.foc.pi_config_id.outMin = -0.55f;
 
-    //PI Controller IQ
+    /* PI Controller IQ */
     app_config.foc.pi_config_iq.Kp    = 0.03f;
     app_config.foc.pi_config_iq.Ki    = 0.0008f;
     app_config.foc.pi_config_iq.outMax = 0.55f;
@@ -95,6 +101,9 @@ void initConfig(void)
     app_state.foc.speed_setpoint_ramped_rpm = 0.0f;
     app_state.foc.iq_ref_ramped = 0.0f;
     app_state.foc.resolver_mech_angle = 0.0f;
+    app_state.foc.omega_elec = 0.0f;                  /* Electrical angular velocity [rad/s] */
+    app_state.foc.v_dq_decoupled.d = 0.0f;            /* Decoupled d-axis voltage [V] */
+    app_state.foc.v_dq_decoupled.q = 0.0f;            /* Decoupled q-axis voltage [V] */
     app_state.foc.control_loop_counter = 0U;
     app_state.foc.control_loop_tick = 0U;
 

@@ -33,12 +33,13 @@ static const Parameter param_table[] = {
     // --- FOC Config (0x1300) ---
     {0x1300, &app_config.foc.motor_polepairs,      &app_config_shadow.foc.motor_polepairs,      TYPE_UINT8,   ACCESS_WRITE_AFTER_RESTART, 0x04, "MOTOR_POLES",   ""},
     {0x1301, &app_setpoints.foc.speedSetpointRpm,  &app_setpoints.foc.speedSetpointRpm,         TYPE_FLOAT32, ACCESS_WRITE_LIVE,          0x04, "SPEED_SET",    "rpm"},
-    {0x1302, &app_setpoints.foc.voltageRef,        &app_setpoints.foc.voltageRef,               TYPE_FLOAT32, ACCESS_WRITE_LIVE,          0x04, "VOLT_REF",      "V"},
-    {0x1303, &app_config.foc.calibration_ticks,    &app_config_shadow.foc.calibration_ticks,    TYPE_UINT64,  ACCESS_WRITE_AFTER_RESTART, 0x04, "CALIB_TICKS",   ""},
-    {0x1304, &app_config.foc.resolver_offset,      &app_config_shadow.foc.resolver_offset,      TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x04, "RES_OFFSET",    "deg"},
-    {0x1305, &app_setpoints.foc.id_ref,            &app_setpoints.foc.id_ref,                   TYPE_FLOAT32, ACCESS_WRITE_LIVE,          0x04, "ID_REF",        "A"},
-    {0x1306, &app_setpoints.foc.iq_ref,            &app_setpoints.foc.iq_ref,                   TYPE_FLOAT32, ACCESS_WRITE_LIVE,          0x04, "IQ_REF",        "A"},
-    {0x1307, &app_setpoints.foc.controlMode,       &app_setpoints.foc.controlMode,              TYPE_UINT8,   ACCESS_WRITE_LIVE,          0x04, "CTRL_MODE",     ""},
+    {0x1302, &app_setpoints.foc.voltageRef,        &app_setpoints.foc.voltageRef,               TYPE_FLOAT32, ACCESS_WRITE_LIVE,          0x04, "VOLT_REF",     "V"},
+    {0x1303, &app_config.foc.calibration_ticks,    &app_config_shadow.foc.calibration_ticks,    TYPE_UINT64,  ACCESS_WRITE_AFTER_RESTART, 0x04, "CALIB_TICKS",  ""},
+    {0x1304, &app_config.foc.resolver_offset,      &app_config_shadow.foc.resolver_offset,      TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x04, "RES_OFFSET",   "deg"},
+    {0x1305, &app_setpoints.foc.id_ref,            &app_setpoints.foc.id_ref,                   TYPE_FLOAT32, ACCESS_WRITE_LIVE,          0x04, "ID_REF",       "A"},
+    {0x1306, &app_setpoints.foc.iq_ref,            &app_setpoints.foc.iq_ref,                   TYPE_FLOAT32, ACCESS_WRITE_LIVE,          0x04, "IQ_REF",       "A"},
+    {0x1307, &app_setpoints.foc.controlMode,       &app_setpoints.foc.controlMode,              TYPE_UINT8,   ACCESS_WRITE_LIVE,          0x04, "CTRL_MODE",    ""},
+
 
     // --- FOC PI ID Config (0x1400) ---
     {0x1400, &app_config.foc.pi_config_id.Kp,      &app_config_shadow.foc.pi_config_id.Kp,      TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x05, "ID_PI_KP",      ""},
@@ -69,6 +70,14 @@ static const Parameter param_table[] = {
     {0x1604, &app_config.resolver.offset_sin,      &app_config_shadow.resolver.offset_sin,      TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x08, "RES_OFF_SIN",   ""},
     {0x1605, &app_config.resolver.offset_cos,      &app_config_shadow.resolver.offset_cos,      TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x08, "RES_OFF_COS",   ""},
     {0x1606, &app_config.resolver.pole_pairs,      &app_config_shadow.resolver.pole_pairs,      TYPE_UINT8,   ACCESS_WRITE_AFTER_RESTART, 0x08, "RES_POLES",     ""},
+
+    // --- Motor Decoupling Config (0x1800) ---
+    {0x1800, &app_config.foc.motor_decoupling_enable,      &app_config_shadow.foc.motor_decoupling_enable,      TYPE_UINT8,   ACCESS_WRITE_AFTER_RESTART, 0x09, "DEC_EN",        ""},
+    {0x1801, &app_config.foc.motor_rs,                     &app_config_shadow.foc.motor_rs,                     TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x09, "MOTOR_RS",      "Ohm"},
+    {0x1802, &app_config.foc.motor_ld,                     &app_config_shadow.foc.motor_ld,                     TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x09, "MOTOR_LD",      "H"},
+    {0x1803, &app_config.foc.motor_lq,                     &app_config_shadow.foc.motor_lq,                     TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x09, "MOTOR_LQ",      "H"},
+    {0x1804, &app_config.foc.motor_psi_pm,                 &app_config_shadow.foc.motor_psi_pm,                 TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x09, "MOTOR_PSI",     "Wb"},
+    {0x1805, &app_config.foc.motor_iron_loss_id_offset,    &app_config_shadow.foc.motor_iron_loss_id_offset,    TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x09, "IRON_ID_OFFS",  "A"},
 
     // --- FOC State (0x2000) ---
     {0x2000, &app_state.foc.electricalAngle,       NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x20, "ELEC_ANGLE",    "deg"},

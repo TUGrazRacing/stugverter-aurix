@@ -44,6 +44,14 @@ typedef struct
   float32 speed_setpoint_ramp_rpm_per_s;  /* Speed command ramp in rpm/s. */
   float32 iq_ref_slew_a_per_s;            /* Iq command slew in A/s. */
 
+  /* Motor Parameters for Decoupling */
+  float32 motor_rs;                       /* Stator resistance [Ohm] */
+  float32 motor_ld;                       /* D-axis inductance [H] */
+  float32 motor_lq;                       /* Q-axis inductance [H] */
+  float32 motor_psi_pm;                   /* Permanent magnet flux linkage [Wb] */
+  float32 motor_iron_loss_id_offset;      /* Iron loss compensation current [A], typically ~0 */
+  bool    motor_decoupling_enable;        /* Enable voltage decoupling */
+
   PiConfig pi_config_id;
   PiConfig pi_config_iq;
   PiConfig pi_config_speed;

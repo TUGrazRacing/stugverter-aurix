@@ -5,6 +5,7 @@
 #include <types_state.h>
 #include "Ifx_Types.h"
 #include "foc_math.h"
+#include "foc_decoupling.h"
 #include "pi.h"
 #include "foc_types.h"
 

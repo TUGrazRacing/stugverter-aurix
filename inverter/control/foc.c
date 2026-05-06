@@ -85,6 +85,7 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
   float32 v_limit_id;
   float32 v_limit_iq;
   float32 v_limit;
+  VoltageDecoupled v_decoupled;
 
   if ((foc_config == NULL_PTR) || (foc_state == NULL_PTR) || (currents == NULL_PTR))
   {
@@ -100,13 +101,46 @@ static void focCurrentControlClosedLoop (float32 theta, const ThreePhaseCurrents
   cosVal = cosf(theta_corr);
   FOC_ParkTransform(&foc_state->i_ab, &foc_state->i_dq, sinVal, cosVal);
 
+  /* Run current PI controllers */
   foc_state->v_dq.d = PI_Run(&foc_config->pi_config_id, &foc_state->pi_state_id, app_setpoints.foc.id_ref, foc_state->i_dq.d);
   foc_state->v_dq.q = PI_Run(&foc_config->pi_config_iq, &foc_state->pi_state_iq, app_setpoints.foc.iq_ref, foc_state->i_dq.q);
+
+  /* Apply voltage decoupling if enabled */
+  if (foc_config->motor_decoupling_enable)
+  {
+    /* Calculate electrical angular velocity from mechanical speed */
+    foc_state->omega_elec = focCalcOmegaElec(foc_state->speed_filt_rpm, foc_config->motor_polepairs);
+
+    /* Apply cross-coupling and back-EMF compensation */
+    focApplyVoltageDecoupling(
+        foc_state->v_dq.d,
+        foc_state->v_dq.q,
+        foc_state->i_dq.d,
+        foc_state->i_dq.q,
+        foc_state->omega_elec,
+        foc_config->motor_ld,
+        foc_config->motor_lq,
+        foc_config->motor_psi_pm,
+        foc_config->motor_rs,
+        &v_decoupled
+    );
+
+    /* Store decoupled voltage for logging */
+    foc_state->v_dq_decoupled.d = v_decoupled.d_voltage;
+    foc_state->v_dq_decoupled.q = v_decoupled.q_voltage;
+
+    /* Use decoupled voltage */
+    foc_state->v_dq.d = v_decoupled.d_voltage;
+    foc_state->v_dq.q = v_decoupled.q_voltage;
+  }
+
+  /* Apply voltage limiting */
   v_limit_id = fmaxf(fabsf(foc_config->pi_config_id.outMax), fabsf(foc_config->pi_config_id.outMin));
   v_limit_iq = fmaxf(fabsf(foc_config->pi_config_iq.outMax), fabsf(foc_config->pi_config_iq.outMin));
   v_limit = fminf(v_limit_id, v_limit_iq);
   focLimitVoltageVector(&foc_state->v_dq, v_limit);
 
+  /* Transform back to three-phase and apply modulation */
   FOC_InvParkTransform(&foc_state->v_dq, &foc_state->v_ab, sinVal, cosVal);
   // Stores result straight into state
   focSVPWM(&foc_state->v_ab, &foc_state->duty_3ph);
