@@ -443,11 +443,11 @@ void Protocol_SendStreamBatch(uint8_t stream_id,
                               const uint8_t *samples,
                               uint16_t samples_len)
 {
-  uint8_t tx_payload[PROTOCOL_MAX_PAYLOAD];
+  uint8_t tx_payload[PROTOCOL_UDP_MAX_PAYLOAD];
   uint16_t payload_len = 0U;
 
   if ((stream_udp_pcb == NULL) || (sample_count == 0U) || (samples == NULL) ||
-      ((uint16_t)(STREAM_PACKET_HEADER_BYTES + samples_len) > PROTOCOL_MAX_PAYLOAD))
+      ((uint16_t)(STREAM_PACKET_HEADER_BYTES + samples_len) > PROTOCOL_UDP_MAX_PAYLOAD))
   {
     return;
   }

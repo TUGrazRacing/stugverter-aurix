@@ -13,7 +13,7 @@ typedef struct
     uint8_t stream_id;
     uint8_t sample_count;
     uint16_t payload_len;
-    uint8_t payload[PROTOCOL_MAX_PAYLOAD - STREAM_PACKET_HEADER_BYTES];
+    uint8_t payload[STREAM_PACKET_PAYLOAD_BYTES];
 } StreamPacket_t;
 
 typedef struct
@@ -31,7 +31,7 @@ typedef struct
     uint32_t batch_max_age_loops;
     uint16_t batch_payload_len;
     uint32_t batch_first_loop_count;
-    uint8_t  batch_payload[PROTOCOL_MAX_PAYLOAD - STREAM_PACKET_HEADER_BYTES];
+    uint8_t  batch_payload[STREAM_PACKET_PAYLOAD_BYTES];
 } StreamInfo_t;
 
 typedef struct
@@ -43,7 +43,7 @@ typedef struct
 } StreamFrame_t;
 
 static StreamInfo_t streams[STREAM_MAX_STREAMS];
-static StreamPacket_t packet_queue[STREAM_FRAME_BUFFER_SIZE];
+static StreamPacket_t packet_queue[STREAM_PACKET_BUFFER_SIZE];
 static uint8_t packet_head;
 static uint8_t packet_tail;
 static uint8_t packet_count;
@@ -253,15 +253,15 @@ static bool Stream_QueuePacket(const StreamPacket_t *packet)
         return false;
     }
 
-    if (packet_count == STREAM_FRAME_BUFFER_SIZE)
+    if (packet_count == STREAM_PACKET_BUFFER_SIZE)
     {
-        packet_tail = (uint8_t)((packet_tail + 1U) % STREAM_FRAME_BUFFER_SIZE);
+        packet_tail = (uint8_t)((packet_tail + 1U) % STREAM_PACKET_BUFFER_SIZE);
         packet_count--;
     }
 
     packet_queue[packet_head] = *packet;
 
-    packet_head = (uint8_t)((packet_head + 1U) % STREAM_FRAME_BUFFER_SIZE);
+    packet_head = (uint8_t)((packet_head + 1U) % STREAM_PACKET_BUFFER_SIZE);
     packet_count++;
     return true;
 }
@@ -282,7 +282,7 @@ static bool Stream_DequeuePacket(StreamPacket_t *packet)
     }
 
     *packet = packet_queue[packet_tail];
-    packet_tail = (uint8_t)((packet_tail + 1U) % STREAM_FRAME_BUFFER_SIZE);
+    packet_tail = (uint8_t)((packet_tail + 1U) % STREAM_PACKET_BUFFER_SIZE);
     packet_count--;
     IfxCpu_releaseMutex(&stream_lock);
     return true;
@@ -311,7 +311,7 @@ static void Stream_Lock(void)
 
 static void Stream_PurgePackets(uint8_t stream_id)
 {
-    StreamPacket_t kept[STREAM_FRAME_BUFFER_SIZE];
+    StreamPacket_t kept[STREAM_PACKET_BUFFER_SIZE];
     uint8_t kept_count = 0U;
     uint8_t read_idx = packet_tail;
 
@@ -323,7 +323,7 @@ static void Stream_PurgePackets(uint8_t stream_id)
             kept[kept_count++] = packet;
         }
 
-        read_idx = (uint8_t)((read_idx + 1U) % STREAM_FRAME_BUFFER_SIZE);
+        read_idx = (uint8_t)((read_idx + 1U) % STREAM_PACKET_BUFFER_SIZE);
     }
 
     packet_head = 0U;
@@ -333,7 +333,7 @@ static void Stream_PurgePackets(uint8_t stream_id)
     for (uint8_t i = 0U; i < kept_count; i++)
     {
         packet_queue[packet_head] = kept[i];
-        packet_head = (uint8_t)((packet_head + 1U) % STREAM_FRAME_BUFFER_SIZE);
+        packet_head = (uint8_t)((packet_head + 1U) % STREAM_PACKET_BUFFER_SIZE);
         packet_count++;
     }
 }
@@ -431,7 +431,7 @@ static uint8_t Stream_MaxSamplesPerPacket(uint8_t payload_len)
         return 0U;
     }
 
-    max_samples = (uint16_t)((PROTOCOL_MAX_PAYLOAD - STREAM_PACKET_HEADER_BYTES) / sample_bytes);
+    max_samples = (uint16_t)(STREAM_PACKET_PAYLOAD_BYTES / sample_bytes);
     if (max_samples > 255U)
     {
         max_samples = 255U;

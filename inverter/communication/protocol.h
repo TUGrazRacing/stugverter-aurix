@@ -27,6 +27,7 @@
 #define PROTOCOL_ERROR_OTHER         0x03
 
 #define PROTOCOL_MAX_PAYLOAD        250
+#define PROTOCOL_UDP_MAX_PAYLOAD    1472U
 #define PROTOCOL_UDP_STREAM_PORT    3040U
 
 typedef void (*Protocol_TxBytesFn)(const uint8_t *data, uint16_t len);
