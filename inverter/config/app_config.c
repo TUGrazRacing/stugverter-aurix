@@ -43,16 +43,11 @@ void initConfig(void)
     app_config.current.offset_u_adcsteps = 2047;
     app_config.current.offset_v_adcsteps = 2049;
     app_config.current.current_sense_factor = 0.01f;
-    app_config.current.filter_alpha = 0.35f;
-    app_config.current.max_delta_a = 3.0f;
 
     /* FOC defaults */
     app_config.foc.motor_polepairs   = 4U;
     app_config.foc.calibration_ticks = (uint64)IfxStm_getFrequency(&MODULE_STM0) * 5ULL; //5 seconds
     app_config.foc.resolver_offset   = 0.0f;
-    app_config.foc.speed_filter_alpha = 0.08f;
-    app_config.foc.speed_setpoint_ramp_rpm_per_s = 2500.0f;
-    app_config.foc.iq_ref_slew_a_per_s = 200.0f;
 
     /* Motor Parameters for Decoupling (Fischer TI085-052-070-04B7S-07S04BE2) */
     app_config.foc.motor_rs = 0.126f;                  /* Stator resistance [Ohm] */
@@ -97,10 +92,7 @@ void initConfig(void)
     app_state.foc.pi_state_iq.integral = 0.0f;
     app_state.foc.pi_state_speed.integral = 0.0f;
     app_state.foc.speed_mech_rpm = 0.0f;
-    app_state.foc.speed_filt_rpm = 0.0f;
     app_state.foc.speed_iq_ref = 0.0f;
-    app_state.foc.speed_setpoint_ramped_rpm = 0.0f;
-    app_state.foc.iq_ref_ramped = 0.0f;
     app_state.foc.resolver_mech_angle = 0.0f;
     app_state.foc.omega_elec = 0.0f;                  /* Electrical angular velocity [rad/s] */
     app_state.foc.v_dq_decoupled.d = 0.0f;            /* Decoupled d-axis voltage [V] */

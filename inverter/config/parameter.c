@@ -24,8 +24,6 @@ static const Parameter param_table[] = {
     {0x1100, &app_config.current.offset_u_adcsteps,    &app_config_shadow.current.offset_u_adcsteps,    TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_OFFS_U",    ""},
     {0x1101, &app_config.current.offset_v_adcsteps,    &app_config_shadow.current.offset_v_adcsteps,    TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_OFFS_V",    ""},
     {0x1102, &app_config.current.current_sense_factor, &app_config_shadow.current.current_sense_factor, TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_SENSE_FAC", "V/A"},
-    {0x1103, &app_config.current.filter_alpha,         &app_config_shadow.current.filter_alpha,         TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_FILT_A",    ""},
-    {0x1104, &app_config.current.max_delta_a,          &app_config_shadow.current.max_delta_a,          TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x02, "CUR_DMAX",      "A"},
 
     // --- PWM Config (0x1200) ---
     {0x1200, &app_config.pwm.frequency,            &app_config_shadow.pwm.frequency,            TYPE_UINT32,  ACCESS_WRITE_AFTER_RESTART, 0x03, "PWM_FREQ",      "Hz"},
@@ -58,9 +56,6 @@ static const Parameter param_table[] = {
     {0x1701, &app_config.foc.pi_config_speed.Ki,      &app_config_shadow.foc.pi_config_speed.Ki,      TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x07, "SPD_PI_KI",     ""},
     {0x1702, &app_config.foc.pi_config_speed.outMax,  &app_config_shadow.foc.pi_config_speed.outMax,  TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x07, "SPD_PI_MAX",    "A"},
     {0x1703, &app_config.foc.pi_config_speed.outMin,  &app_config_shadow.foc.pi_config_speed.outMin,  TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x07, "SPD_PI_MIN",    "A"},
-    {0x1704, &app_config.foc.speed_filter_alpha,         &app_config_shadow.foc.speed_filter_alpha,         TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x07, "SPD_FILT_A",    ""},
-    {0x1705, &app_config.foc.speed_setpoint_ramp_rpm_per_s, &app_config_shadow.foc.speed_setpoint_ramp_rpm_per_s, TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x07, "SPD_RMP",       "rpm/s"},
-    {0x1706, &app_config.foc.iq_ref_slew_a_per_s,         &app_config_shadow.foc.iq_ref_slew_a_per_s,         TYPE_FLOAT32, ACCESS_WRITE_AFTER_RESTART, 0x07, "IQ_SLEW",       "A/s"},
 
     // --- Resolver Config (0x1600) ---
     {0x1600, &app_config.resolver.sin_max,         &app_config_shadow.resolver.sin_max,         TYPE_UINT16,  ACCESS_WRITE_AFTER_RESTART, 0x08, "RES_SIN_MAX",   ""},
@@ -108,9 +103,6 @@ static const Parameter param_table[] = {
     {0x2401, &app_state.resolver.sector,           NULL,                                        TYPE_INT8,    ACCESS_READ_ONLY,          0x24, "SECTOR",        ""},
     {0x2402, &app_state.foc.speed_mech_rpm,        NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "SPEED_RPM",     "rpm"},
     {0x2403, &app_state.foc.speed_iq_ref,          NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "SPD_IQ_REF",    "A"},
-    {0x2404, &app_state.foc.speed_filt_rpm,        NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "SPD_RPM_FILT",  "rpm"},
-    {0x2405, &app_state.foc.speed_setpoint_ramped_rpm, NULL,                                    TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "SPD_RPM_RMP",   "rpm"},
-    {0x2406, &app_state.foc.iq_ref_ramped,         NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x24, "IQ_REF_RMP",    "A"},
 
     // --- ADC Runtime State (0x2500) ---
     {0x2500, &app_state.foc.adc_curr_u_raw,        NULL,                                        TYPE_UINT16,  ACCESS_READ_ONLY,          0x25, "ADC_CURR_U",    ""},

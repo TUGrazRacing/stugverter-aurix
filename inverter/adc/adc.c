@@ -1,198 +1,179 @@
 #include "adc.h"
 
-#include <IfxCpu_Irq.h>
-#include <IfxCpu.h>
-#include <IfxSrc.h>
-#include <IfxStm.h>
-#include <IfxScuWdt.h>
+#define MASTER_GROUP                 IfxEvadc_GroupId_0
 
-#define G0_GROUP                 0u
-#define G1_GROUP                 1u
-#define G2_GROUP                 2u
-#define G3_GROUP                 3u
-#define MASTER_GROUP             G0_GROUP
+#define ADC_QUEUE                    IfxEvadc_RequestSource_queue0
+#define ADC_INPUT_CLASS              IfxEvadc_InputClasses_group0
+#define ADC_RESULT_REGISTER          IfxEvadc_ChannelResult_0
+#define ADC_TRIGGER_SOURCE           IfxEvadc_TriggerSource_11
+#define ADC_TRIGGER_MODE             IfxEvadc_TriggerMode_uponRisingEdge
+#define ADC_GATING_MODE              IfxEvadc_GatingMode_always
+#define ADC_SAMPLE_TIME_SECONDS      ((float32)IFXEVADC_SAMPLETIME_MIN / (float32)IFXEVADC_ANALOG_FREQUENCY_MAX)
+#define ADC_QUEUE_EXTERNAL_TRIGGER   (1u << IFX_EVADC_G_Q_QINR_EXTR_OFF)
 
-#define CHANNEL                  0u
-#define QUEUE                    0u
-#define INPUTCLASS               0u
-#define RESREG0                  0u
-
-#define EVADC_TRIGGER_SOURCE     11u
-#define EVADC_TRIGGER_MODE       1u   /* rising edge */
-#define EVADC_GATING_MODE        1u   /* always */
-
-#define EVADC_QINR_RF            (1u << 5)
-#define EVADC_QINR_EXTR          (1u << 7)
-
-#define EVADC_SAMPLE_TIME_STCS    0x0Fu
-#define EVADC_INPUT_PRECHARGE     IfxEvadc_IdlePrecharge_currentLevel
-#define EVADC_CONVERSION_MODE     IfxEvadc_ChannelNoiseReduction_standardConversion
-
-/* If you want different pins on each group during sync conversion,
- * map master CH0 onto these local channels with aliasing.
- * Change these to your actual pin/channel numbers.
+/* The current iLLD does not expose a wrapper for GxALIAS. Keep the pin mapping
+ * in one place until the library grows a channel alias API.
  */
-#define G0_ALIAS_CH             2u
-#define G1_ALIAS_CH             0u
-#define G2_ALIAS_CH             0u
-#define G3_ALIAS_CH             0u
+#define G0_ALIAS_CH                  IfxEvadc_ChannelId_2
+#define G1_ALIAS_CH                  IfxEvadc_ChannelId_0
+#define G2_ALIAS_CH                  IfxEvadc_ChannelId_0
+#define G3_ALIAS_CH                  IfxEvadc_ChannelId_0
 
-static void wait_us (uint32 us)
+typedef struct
 {
-  IfxStm_waitTicks(&MODULE_STM0, IfxStm_getTicksFromMicroseconds(&MODULE_STM0, us));
+    IfxEvadc_Adc_Group group;
+    IfxEvadc_Adc_Channel channel;
+} AdcGroupRuntime;
+
+static IfxEvadc_Adc adc;
+static AdcGroupRuntime adc_groups[4];
+
+static void adcInitModule(void)
+{
+    IfxEvadc_Adc_Config config;
+
+    IfxEvadc_Adc_initModuleConfig(&config, &MODULE_EVADC);
+    config.analogClockGenerationMode = IfxEvadc_AnalogClockGenerationMode_unsynchronized;
+    config.supplyVoltage = IfxEvadc_SupplyVoltageLevelControl_automaticControl;
+    config.startupCalibrationControl = IfxEvadc_StartupCalibration_noAction;
+    config.globalInputClass[0].conversionMode = IfxEvadc_ChannelNoiseReduction_standardConversion;
+    config.globalInputClass[1].conversionMode = IfxEvadc_ChannelNoiseReduction_standardConversion;
+
+    (void)IfxEvadc_Adc_initModule(&adc, &config);
 }
 
-static void initGroup (uint32 group)
+static void adcConfigureFastGroupClass(IfxEvadc_Adc_GroupConfig *config)
 {
-  MODULE_EVADC.G[group].ANCFG.B.DIVA = 0;
-  MODULE_EVADC.G[group].ANCFG.B.DPCAL = 1;
+    uint8 input_class;
 
-  MODULE_EVADC.G[group].ICLASS[INPUTCLASS].U = 0;
-  MODULE_EVADC.G[group].ICLASS[INPUTCLASS].B.STCS = EVADC_SAMPLE_TIME_STCS;
-  MODULE_EVADC.G[group].ICLASS[INPUTCLASS].B.AIPS = EVADC_INPUT_PRECHARGE;
-  MODULE_EVADC.G[group].ICLASS[INPUTCLASS].B.CMS = EVADC_CONVERSION_MODE;
+    config->analogFrequency = IFXEVADC_ANALOG_FREQUENCY_MAX;
+    config->disablePostCalibration = TRUE;
+    config->doubleClockForMSBConversionSelection = FALSE;
+    config->sampleSynchronizationEnabled = IfxEvadc_SampleSynchronization_off;
+    config->analogClockSynchronizationDelay = IfxEvadc_AnalogClockSynchronizationDelay_0;
+    config->calibrationSampleTimeControlMode = IfxEvadc_CalibrationSampleTimeControl_2;
+    config->referencePrechargeEnabled = FALSE;
+    config->inputBufferEnabled = FALSE;
+    config->analogConverterMode = IfxEvadc_AnalogConverterMode_normalOperation;
+    config->inputClasses = ADC_INPUT_CLASS;
 
-  MODULE_EVADC.G[group].CHCTR[CHANNEL].U = 0;
-  MODULE_EVADC.G[group].CHCTR[CHANNEL].B.ICLSEL = INPUTCLASS;
-  MODULE_EVADC.G[group].CHCTR[CHANNEL].B.RESREG = RESREG0;
-  MODULE_EVADC.G[group].CHCTR[CHANNEL].B.RESTGT = 0;
-
-  /* Only the master requests synchronized conversion */
-  MODULE_EVADC.G[group].CHCTR[CHANNEL].B.SYNC = (group == MASTER_GROUP) ? 1u : 0u;
-
-  MODULE_EVADC.G[group].RCR[RESREG0].U = 0;
+    for (input_class = 0u; input_class < IFXEVADC_NUM_INPUTCLASSES; input_class++)
+    {
+        config->inputClass[input_class].sampleTime = ADC_SAMPLE_TIME_SECONDS;
+        config->inputClass[input_class].conversionMode = IfxEvadc_ChannelNoiseReduction_standardConversion;
+        config->inputClass[input_class].analogInputPrechargeControlStandard =
+            IfxEvadc_AnalogInputPrechargeControl_noPrecharge;
+    }
 }
 
-static void initAlias (void)
+static void adcInitGroup(IfxEvadc_GroupId group_id, boolean master)
 {
-  /* Master-requested CH0 can be remapped per group */
-  MODULE_EVADC.G[G0_GROUP].ALIAS.U = 0;
-  MODULE_EVADC.G[G0_GROUP].ALIAS.B.ALIAS0 = G0_ALIAS_CH;
+    IfxEvadc_Adc_GroupConfig config;
+    AdcGroupRuntime *runtime = &adc_groups[(uint8)group_id];
 
-  MODULE_EVADC.G[G1_GROUP].ALIAS.U = 0;
-  MODULE_EVADC.G[G1_GROUP].ALIAS.B.ALIAS0 = G1_ALIAS_CH;
+    IfxEvadc_Adc_initGroupConfig(&config, &adc);
+    config.groupId = group_id;
+    config.master = master ? group_id : MASTER_GROUP;
 
-  MODULE_EVADC.G[G2_GROUP].ALIAS.U = 0;
-  MODULE_EVADC.G[G2_GROUP].ALIAS.B.ALIAS0 = G2_ALIAS_CH;
+    adcConfigureFastGroupClass(&config);
 
-  MODULE_EVADC.G[G3_GROUP].ALIAS.U = 0;
-  MODULE_EVADC.G[G3_GROUP].ALIAS.B.ALIAS0 = G3_ALIAS_CH;
+    if (master)
+    {
+        config.startupCalibration = TRUE;
+        config.arbiter.requestSlotQueue0Enabled = TRUE;
+        config.queueRequest[0].triggerConfig.gatingMode = ADC_GATING_MODE;
+        config.queueRequest[0].triggerConfig.triggerMode = ADC_TRIGGER_MODE;
+        config.queueRequest[0].triggerConfig.triggerSource = ADC_TRIGGER_SOURCE;
+        config.queueRequest[0].requestSlotPrio = IfxEvadc_RequestSlotPriority_highest;
+        config.queueRequest[0].requestSlotStartMode = IfxEvadc_RequestSlotStartMode_cancelInjectRepeat;
+    }
+
+    (void)IfxEvadc_Adc_initGroup(&runtime->group, &config);
 }
 
-static void initSync (void)
+static void adcInitChannel(IfxEvadc_GroupId group_id, boolean master)
 {
-  /* G0 = master */
-  MODULE_EVADC.G[G0_GROUP].SYNCTR.U = 0;
-  MODULE_EVADC.G[G0_GROUP].SYNCTR.B.STSEL = 0; /* 00b = master */
-  MODULE_EVADC.G[G0_GROUP].SYNCTR.B.EVALR1 = 1;
-  MODULE_EVADC.G[G0_GROUP].SYNCTR.B.EVALR2 = 1;
-  MODULE_EVADC.G[G0_GROUP].SYNCTR.B.EVALR3 = 1;
+    IfxEvadc_Adc_ChannelConfig config;
+    AdcGroupRuntime *runtime = &adc_groups[(uint8)group_id];
 
-  /* All synchronized slave groups follow the master sync signal on CI1. */
-  MODULE_EVADC.G[G1_GROUP].SYNCTR.U = 0;
-  MODULE_EVADC.G[G1_GROUP].SYNCTR.B.STSEL = 1;
-  MODULE_EVADC.G[G1_GROUP].SYNCTR.B.EVALR1 = 1;
-  MODULE_EVADC.G[G1_GROUP].SYNCTR.B.EVALR2 = 1;
-  MODULE_EVADC.G[G1_GROUP].SYNCTR.B.EVALR3 = 1;
+    IfxEvadc_Adc_initChannelConfig(&config, &runtime->group);
+    config.channelId = IfxEvadc_ChannelId_0;
+    config.inputClass = ADC_INPUT_CLASS;
+    config.resultRegister = ADC_RESULT_REGISTER;
+    config.resultPriority = master ? ISR_PRIORITY_ADC : 0;
+    config.resultServProvider = ISR_PROVIDER_ADC;
+    config.resultSrcNr = IfxEvadc_SrcNr_group0;
+    config.synchonize = master;
+    config.dataModificationMode = IfxEvadc_DataModificationMode_standardDataReduction;
+    config.dataReductionControlMode = IfxEvadc_DataReductionControlMode_0;
+    config.waitForReadMode = IfxEvadc_WaitForRead_overwriteMode;
+    config.fifoMode = IfxEvadc_FifoMode_seperateResultRegister;
 
-  MODULE_EVADC.G[G2_GROUP].SYNCTR.U = 0;
-  MODULE_EVADC.G[G2_GROUP].SYNCTR.B.STSEL = 1;
-  MODULE_EVADC.G[G2_GROUP].SYNCTR.B.EVALR1 = 1;
-  MODULE_EVADC.G[G2_GROUP].SYNCTR.B.EVALR2 = 1;
-  MODULE_EVADC.G[G2_GROUP].SYNCTR.B.EVALR3 = 1;
-
-  MODULE_EVADC.G[G3_GROUP].SYNCTR.U = 0;
-  MODULE_EVADC.G[G3_GROUP].SYNCTR.B.STSEL = 1;
-  MODULE_EVADC.G[G3_GROUP].SYNCTR.B.EVALR1 = 1;
-  MODULE_EVADC.G[G3_GROUP].SYNCTR.B.EVALR2 = 1;
-  MODULE_EVADC.G[G3_GROUP].SYNCTR.B.EVALR3 = 1;
+    (void)IfxEvadc_Adc_initChannel(&runtime->channel, &config);
 }
 
-static void initInterrupt (void)
+static void adcForceNoInputPrecharge(IfxEvadc_GroupId group_id)
 {
-  MODULE_EVADC.G[MASTER_GROUP].REFCLR.B.REV0 = 1;
-  MODULE_EVADC.G[MASTER_GROUP].RCR[RESREG0].B.SRGEN = 1;
-  MODULE_EVADC.G[MASTER_GROUP].REVNP0.B.REV0NP = 0;
+    uint8 input_class;
+    Ifx_EVADC_G *group = adc_groups[(uint8)group_id].group.group;
 
-  IfxSrc_init(&SRC_VADC_G0_SR0, ISR_PROVIDER_ADC, ISR_PRIORITY_ADC);
-  IfxSrc_enable(&SRC_VADC_G0_SR0);
+    IfxEvadc_enableAccess(&MODULE_EVADC, (IfxEvadc_Protection)(IfxEvadc_Protection_initGroup0 + group_id));
+
+    for (input_class = 0u; input_class < IFXEVADC_NUM_INPUTCLASSES; input_class++)
+    {
+        IfxEvadc_setAnalogInputPrechargeControlStandard(group,
+                                                         input_class,
+                                                         IfxEvadc_AnalogInputPrechargeControl_noPrecharge);
+    }
+
+    IfxEvadc_disableAccess(&MODULE_EVADC, (IfxEvadc_Protection)(IfxEvadc_Protection_initGroup0 + group_id));
 }
 
-static void initQueue (void)
+static void adcApplyChannelAlias(IfxEvadc_GroupId group_id, IfxEvadc_ChannelId channel_id)
 {
-  Ifx_EVADC_G_Q_QCTRL qctrl;
-  qctrl.U = 0;
-  qctrl.B.XTWC = 1;
-  qctrl.B.XTSEL = EVADC_TRIGGER_SOURCE;
-  qctrl.B.XTMODE = EVADC_TRIGGER_MODE;
-  MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QCTRL.U = qctrl.U;
-
-  MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QMR.B.ENGT = EVADC_GATING_MODE;
-  MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QMR.B.ENTR = 1;
-
-  /* Queue arbiter enable */
-  MODULE_EVADC.G[G0_GROUP].ARBPR.U = 0;
-  MODULE_EVADC.G[G0_GROUP].ARBPR.B.ASEN0 = 1;
-
-  MODULE_EVADC.G[G1_GROUP].ARBPR.U = 0;
-  MODULE_EVADC.G[G1_GROUP].ARBPR.B.ASEN0 = 1;
-
-  MODULE_EVADC.G[G2_GROUP].ARBPR.U = 0;
-  MODULE_EVADC.G[G2_GROUP].ARBPR.B.ASEN0 = 1;
-
-  MODULE_EVADC.G[G3_GROUP].ARBPR.U = 0;
-  MODULE_EVADC.G[G3_GROUP].ARBPR.B.ASEN0 = 1;
-
-  MODULE_EVADC.G[MASTER_GROUP].Q[QUEUE].QINR.U = ((uint32) CHANNEL << 0) |
-  EVADC_QINR_RF |
-  EVADC_QINR_EXTR;
+    IfxEvadc_enableAccess(&MODULE_EVADC, (IfxEvadc_Protection)(IfxEvadc_Protection_initGroup0 + group_id));
+    MODULE_EVADC.G[group_id].ALIAS.U = 0u;
+    MODULE_EVADC.G[group_id].ALIAS.B.ALIAS0 = channel_id;
+    IfxEvadc_disableAccess(&MODULE_EVADC, (IfxEvadc_Protection)(IfxEvadc_Protection_initGroup0 + group_id));
 }
 
-void adcInit (void)
+static void adcInitAlias(void)
 {
-  uint16 password = IfxScuWdt_getCpuWatchdogPassword();
-  IfxScuWdt_clearCpuEndinit(password);
-  MODULE_EVADC.CLC.U = 0x00000000u; // or MODULE_EVADC.CLC.B.DISR = 0;
-  IfxScuWdt_setCpuEndinit(password);
-  while (MODULE_EVADC.CLC.B.DISS)
-    ;
-
-  MODULE_EVADC.GLOBCFG.B.SUPLEV = 0;
-
-  MODULE_EVADC.G[G0_GROUP].ARBCFG.B.ANONC = 0;
-  MODULE_EVADC.G[G1_GROUP].ARBCFG.B.ANONC = 0;
-  MODULE_EVADC.G[G2_GROUP].ARBCFG.B.ANONC = 0;
-  MODULE_EVADC.G[G3_GROUP].ARBCFG.B.ANONC = 0;
-
-  initGroup(G0_GROUP);
-  initGroup(G1_GROUP);
-  initGroup(G2_GROUP);
-  initGroup(G3_GROUP);
-
-  initAlias();
-  initSync();
-
-  MODULE_EVADC.G[G0_GROUP].ARBCFG.B.ANONC = 3;
-  MODULE_EVADC.G[G1_GROUP].ARBCFG.B.ANONC = 3;
-  MODULE_EVADC.G[G2_GROUP].ARBCFG.B.ANONC = 3;
-  MODULE_EVADC.G[G3_GROUP].ARBCFG.B.ANONC = 3;
-
-  wait_us(5);
-
-  MODULE_EVADC.GLOBCFG.B.SUCAL = 1;
-  while ((MODULE_EVADC.G[G0_GROUP].ARBCFG.B.CAL != 0) || (MODULE_EVADC.G[G1_GROUP].ARBCFG.B.CAL != 0)
-      || (MODULE_EVADC.G[G2_GROUP].ARBCFG.B.CAL != 0) || (MODULE_EVADC.G[G3_GROUP].ARBCFG.B.CAL != 0))
-  {
-  }
-
-  initQueue();
-  initInterrupt();
+    adcApplyChannelAlias(IfxEvadc_GroupId_0, G0_ALIAS_CH);
+    adcApplyChannelAlias(IfxEvadc_GroupId_1, G1_ALIAS_CH);
+    adcApplyChannelAlias(IfxEvadc_GroupId_2, G2_ALIAS_CH);
+    adcApplyChannelAlias(IfxEvadc_GroupId_3, G3_ALIAS_CH);
 }
 
-void readAdc (uint16 *g0, uint16 *g1, uint16 *g2, uint16 *g3)
+void adcInit(void)
 {
-  *g0 = (uint16) MODULE_EVADC.G[G0_GROUP].RES[RESREG0].B.RESULT;
-  *g1 = (uint16) MODULE_EVADC.G[G1_GROUP].RES[RESREG0].B.RESULT;
-  *g2 = (uint16) MODULE_EVADC.G[G2_GROUP].RES[RESREG0].B.RESULT;
-  *g3 = (uint16) MODULE_EVADC.G[G3_GROUP].RES[RESREG0].B.RESULT;
+    adcInitModule();
+
+    adcInitGroup(IfxEvadc_GroupId_1, FALSE);
+    adcInitGroup(IfxEvadc_GroupId_2, FALSE);
+    adcInitGroup(IfxEvadc_GroupId_3, FALSE);
+    adcInitGroup(IfxEvadc_GroupId_0, TRUE);
+
+    adcInitChannel(IfxEvadc_GroupId_0, TRUE);
+    adcInitChannel(IfxEvadc_GroupId_1, FALSE);
+    adcInitChannel(IfxEvadc_GroupId_2, FALSE);
+    adcInitChannel(IfxEvadc_GroupId_3, FALSE);
+
+    adcForceNoInputPrecharge(IfxEvadc_GroupId_0);
+    adcForceNoInputPrecharge(IfxEvadc_GroupId_1);
+    adcForceNoInputPrecharge(IfxEvadc_GroupId_2);
+    adcForceNoInputPrecharge(IfxEvadc_GroupId_3);
+
+    adcInitAlias();
+    IfxEvadc_Adc_addToQueue(&adc_groups[0].channel,
+                             ADC_QUEUE,
+                             IFXEVADC_QUEUE_REFILL | ADC_QUEUE_EXTERNAL_TRIGGER);
+}
+
+void readAdc(uint16 *g0, uint16 *g1, uint16 *g2, uint16 *g3)
+{
+    *g0 = (uint16)IfxEvadc_Adc_getResult(&adc_groups[0].channel).B.RESULT;
+    *g1 = (uint16)IfxEvadc_Adc_getResult(&adc_groups[1].channel).B.RESULT;
+    *g2 = (uint16)IfxEvadc_Adc_getResult(&adc_groups[2].channel).B.RESULT;
+    *g3 = (uint16)IfxEvadc_Adc_getResult(&adc_groups[3].channel).B.RESULT;
 }

@@ -22,8 +22,6 @@ typedef struct
   uint16 offset_u_adcsteps;
   uint16 offset_v_adcsteps;
   float32 current_sense_factor; /* Current sensor transfer gain in V/A. */
-  float32 filter_alpha;         /* 0..1, higher = faster response / less filtering. */
-  float32 max_delta_a;          /* Per-sample current slew clamp in A, <=0 disables. */
 } CurrentConfig;
 
 typedef struct
@@ -40,9 +38,6 @@ typedef struct
 
   uint64 calibration_ticks;
   float32 resolver_offset;
-  float32 speed_filter_alpha;             /* 0..1, speed estimate low-pass alpha. */
-  float32 speed_setpoint_ramp_rpm_per_s;  /* Speed command ramp in rpm/s. */
-  float32 iq_ref_slew_a_per_s;            /* Iq command slew in A/s. */
 
   /* Motor Parameters for Decoupling */
   float32 motor_rs;                       /* Stator resistance [Ohm] */
@@ -60,7 +55,8 @@ typedef struct
 typedef enum
 {
   CONTROL_MODE_CURRENT = 0U,
-  CONTROL_MODE_SPEED   = 1U
+  CONTROL_MODE_SPEED   = 1U,
+  CONTROL_MODE_OPEN_LOOP = 3U
 } ControlMode;
 
 typedef struct

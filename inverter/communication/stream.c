@@ -5,7 +5,16 @@
 #include <string.h>
 
 #define STREAM_ISR_LOCK_RETRIES 8U
-#define STREAM_TX_FRAMES_PER_POLL 8U
+#define STREAM_TX_PACKETS_PER_POLL 8U
+#define STREAM_BATCH_TARGET_LATENCY_LOOPS 100U
+
+typedef struct
+{
+    uint8_t stream_id;
+    uint8_t sample_count;
+    uint16_t payload_len;
+    uint8_t payload[STREAM_PACKET_PAYLOAD_BYTES];
+} StreamPacket_t;
 
 typedef struct
 {
@@ -17,11 +26,16 @@ typedef struct
     uint8_t  num_regs;
     uint8_t  reg_lengths[STREAM_MAX_REGS];
     uint16_t regs[STREAM_MAX_REGS];
+    uint8_t  batch_sample_count;
+    uint8_t  batch_target_samples;
+    uint32_t batch_max_age_loops;
+    uint16_t batch_payload_len;
+    uint32_t batch_first_loop_count;
+    uint8_t  batch_payload[STREAM_PACKET_PAYLOAD_BYTES];
 } StreamInfo_t;
 
 typedef struct
 {
-    uint8_t stream_id;
     uint16_t sequence;
     uint64_t timestamp_ticks;
     uint8_t  payload_len;
@@ -29,25 +43,30 @@ typedef struct
 } StreamFrame_t;
 
 static StreamInfo_t streams[STREAM_MAX_STREAMS];
-static StreamFrame_t frame_queue[STREAM_FRAME_BUFFER_SIZE];
-static uint8_t frame_head;
-static uint8_t frame_tail;
-static uint8_t frame_count;
+static StreamPacket_t packet_queue[STREAM_PACKET_BUFFER_SIZE];
+static uint8_t packet_head;
+static uint8_t packet_tail;
+static uint8_t packet_count;
 static IfxCpu_mutexLock stream_lock;
 
-static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *payload, uint8_t payload_len);
-static bool Stream_DequeueFrame(StreamFrame_t *frame);
-static void Stream_PurgeFrames(uint8_t stream_id);
+static bool Stream_QueuePacket(const StreamPacket_t *packet);
+static bool Stream_DequeuePacket(StreamPacket_t *packet);
+static void Stream_PurgePackets(uint8_t stream_id);
 static bool Stream_TryLockFromIsr(void);
 static void Stream_Lock(void);
+static void Stream_AppendFrame(StreamInfo_t *stream, const StreamFrame_t *frame, uint32_t current_loop_count);
+static void Stream_FlushBatch(StreamInfo_t *stream);
+static void Stream_FlushStaleBatches(uint32_t current_loop_count);
+static uint8_t Stream_MaxSamplesPerPacket(uint8_t payload_len);
+static uint8_t Stream_TargetSamplesPerPacket(uint8_t loop_divider, uint8_t payload_len);
 
 void Stream_Init(void)
 {
     memset(streams, 0, sizeof(streams));
-    memset(frame_queue, 0, sizeof(frame_queue));
-    frame_head = 0U;
-    frame_tail = 0U;
-    frame_count = 0U;
+    memset(packet_queue, 0, sizeof(packet_queue));
+    packet_head = 0U;
+    packet_tail = 0U;
+    packet_count = 0U;
     stream_lock = 0U;
 }
 
@@ -111,6 +130,8 @@ bool Stream_Start(uint8_t id, uint8_t loop_divider, const uint16_t *regs, uint8_
     next_stream.loop_divider = loop_divider;
     next_stream.next_loop_count = controllerGetLoopCounter() + (uint32_t)loop_divider;
     next_stream.num_regs = num_regs;
+    next_stream.batch_target_samples = Stream_TargetSamplesPerPacket(loop_divider, (uint8_t)total_payload);
+    next_stream.batch_max_age_loops = (uint32_t)loop_divider * (uint32_t)next_stream.batch_target_samples;
     streams[free_idx] = next_stream;
 
     IfxCpu_releaseMutex(&stream_lock);
@@ -127,8 +148,9 @@ bool Stream_Stop(uint8_t id)
     {
         if (streams[i].active && (streams[i].id == id))
         {
+            Stream_FlushBatch(&streams[i]);
             streams[i].active = false;
-            Stream_PurgeFrames(id);
+            Stream_PurgePackets(id);
             stopped = true;
             break;
         }
@@ -184,8 +206,19 @@ void Stream_OnControlLoop(void)
 
             if (valid)
             {
-                (void)Stream_QueueFrame(streams[i].id, streams[i].sequence++, current_ticks, payload, payload_idx);
+                StreamFrame_t frame;
+                frame.sequence = streams[i].sequence++;
+                frame.timestamp_ticks = current_ticks;
+                frame.payload_len = payload_idx;
+                memcpy(frame.payload, payload, payload_idx);
+                Stream_AppendFrame(&streams[i], &frame, current_loop_count);
             }
+        }
+
+        if (streams[i].active && (streams[i].batch_sample_count > 0U) &&
+            ((uint32_t)(current_loop_count - streams[i].batch_first_loop_count) >= streams[i].batch_max_age_loops))
+        {
+            Stream_FlushBatch(&streams[i]);
         }
     }
 
@@ -194,63 +227,63 @@ void Stream_OnControlLoop(void)
 
 void Stream_TransmitPending(void)
 {
-    StreamFrame_t frame;
-    uint8_t frames_sent = 0U;
+    StreamPacket_t packet;
+    uint8_t packets_sent = 0U;
 
     if (!Protocol_HasUdpSender())
     {
         return;
     }
 
-    while ((frames_sent < STREAM_TX_FRAMES_PER_POLL) && Stream_DequeueFrame(&frame))
+    Stream_Lock();
+    Stream_FlushStaleBatches(controllerGetLoopCounter());
+    IfxCpu_releaseMutex(&stream_lock);
+
+    while ((packets_sent < STREAM_TX_PACKETS_PER_POLL) && Stream_DequeuePacket(&packet))
     {
-        Protocol_SendStreamData(frame.stream_id, frame.sequence, frame.timestamp_ticks, frame.payload, frame.payload_len);
-        frames_sent++;
+        Protocol_SendStreamBatch(packet.stream_id, packet.sample_count, packet.payload, packet.payload_len);
+        packets_sent++;
     }
 }
 
-static bool Stream_QueueFrame(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *payload, uint8_t payload_len)
+static bool Stream_QueuePacket(const StreamPacket_t *packet)
 {
-    if ((payload == NULL) || (payload_len > sizeof(frame_queue[0].payload)))
+    if ((packet == NULL) || (packet->sample_count == 0U) || (packet->payload_len > sizeof(packet_queue[0].payload)))
     {
         return false;
     }
 
-    if (frame_count == STREAM_FRAME_BUFFER_SIZE)
+    if (packet_count == STREAM_PACKET_BUFFER_SIZE)
     {
-        frame_tail = (uint8_t)((frame_tail + 1U) % STREAM_FRAME_BUFFER_SIZE);
-        frame_count--;
+        packet_tail = (uint8_t)((packet_tail + 1U) % STREAM_PACKET_BUFFER_SIZE);
+        packet_count--;
     }
 
-    frame_queue[frame_head].stream_id = stream_id;
-    frame_queue[frame_head].sequence = sequence;
-    frame_queue[frame_head].timestamp_ticks = timestamp_ticks;
-    frame_queue[frame_head].payload_len = payload_len;
-    memcpy(frame_queue[frame_head].payload, payload, payload_len);
+    packet_queue[packet_head] = *packet;
 
-    frame_head = (uint8_t)((frame_head + 1U) % STREAM_FRAME_BUFFER_SIZE);
-    frame_count++;
+    packet_head = (uint8_t)((packet_head + 1U) % STREAM_PACKET_BUFFER_SIZE);
+    packet_count++;
     return true;
 }
 
-static bool Stream_DequeueFrame(StreamFrame_t *frame)
+static bool Stream_DequeuePacket(StreamPacket_t *packet)
 {
-    if (frame == NULL)
+    if (packet == NULL)
     {
         return false;
     }
 
     Stream_Lock();
 
-    if (frame_count == 0U)
+    if (packet_count == 0U)
     {
         IfxCpu_releaseMutex(&stream_lock);
         return false;
     }
 
-    *frame = frame_queue[frame_tail];
-    frame_tail = (uint8_t)((frame_tail + 1U) % STREAM_FRAME_BUFFER_SIZE);
-    frame_count--;
+    *packet = packet_queue[packet_tail];
+    packet_tail = (uint8_t)((packet_tail + 1U) % STREAM_PACKET_BUFFER_SIZE);
+    packet_count--;
     IfxCpu_releaseMutex(&stream_lock);
     return true;
 }
@@ -276,31 +309,158 @@ static void Stream_Lock(void)
     }
 }
 
-static void Stream_PurgeFrames(uint8_t stream_id)
+static void Stream_PurgePackets(uint8_t stream_id)
 {
-    StreamFrame_t kept[STREAM_FRAME_BUFFER_SIZE];
+    StreamPacket_t kept[STREAM_PACKET_BUFFER_SIZE];
     uint8_t kept_count = 0U;
-    uint8_t read_idx = frame_tail;
+    uint8_t read_idx = packet_tail;
 
-    for (uint8_t i = 0U; i < frame_count; i++)
+    for (uint8_t i = 0U; i < packet_count; i++)
     {
-        StreamFrame_t frame = frame_queue[read_idx];
-        if (frame.stream_id != stream_id)
+        StreamPacket_t packet = packet_queue[read_idx];
+        if (packet.stream_id != stream_id)
         {
-            kept[kept_count++] = frame;
+            kept[kept_count++] = packet;
         }
 
-        read_idx = (uint8_t)((read_idx + 1U) % STREAM_FRAME_BUFFER_SIZE);
+        read_idx = (uint8_t)((read_idx + 1U) % STREAM_PACKET_BUFFER_SIZE);
     }
 
-    frame_head = 0U;
-    frame_tail = 0U;
-    frame_count = 0U;
+    packet_head = 0U;
+    packet_tail = 0U;
+    packet_count = 0U;
 
     for (uint8_t i = 0U; i < kept_count; i++)
     {
-        frame_queue[frame_head] = kept[i];
-        frame_head = (uint8_t)((frame_head + 1U) % STREAM_FRAME_BUFFER_SIZE);
-        frame_count++;
+        packet_queue[packet_head] = kept[i];
+        packet_head = (uint8_t)((packet_head + 1U) % STREAM_PACKET_BUFFER_SIZE);
+        packet_count++;
     }
+}
+
+static void Stream_AppendFrame(StreamInfo_t *stream, const StreamFrame_t *frame, uint32_t current_loop_count)
+{
+    uint16_t sample_bytes;
+
+    if ((stream == NULL) || (frame == NULL))
+    {
+        return;
+    }
+
+    sample_bytes = (uint16_t)(STREAM_SAMPLE_HEADER_BYTES + frame->payload_len);
+
+    if (stream->batch_target_samples == 0U)
+    {
+        return;
+    }
+
+    if ((stream->batch_sample_count > 0U) &&
+        ((stream->batch_sample_count >= stream->batch_target_samples) ||
+         ((uint16_t)(stream->batch_payload_len + sample_bytes) > sizeof(stream->batch_payload))))
+    {
+        Stream_FlushBatch(stream);
+    }
+
+    if (stream->batch_sample_count == 0U)
+    {
+        stream->batch_first_loop_count = current_loop_count;
+    }
+
+    stream->batch_payload[stream->batch_payload_len++] = (uint8_t)(frame->sequence & 0xFFU);
+    stream->batch_payload[stream->batch_payload_len++] = (uint8_t)((frame->sequence >> 8) & 0xFFU);
+
+    for (uint8_t i = 0U; i < 8U; i++)
+    {
+        stream->batch_payload[stream->batch_payload_len++] = (uint8_t)((frame->timestamp_ticks >> (8U * i)) & 0xFFU);
+    }
+
+    if (frame->payload_len > 0U)
+    {
+        memcpy(&stream->batch_payload[stream->batch_payload_len], frame->payload, frame->payload_len);
+        stream->batch_payload_len = (uint16_t)(stream->batch_payload_len + frame->payload_len);
+    }
+
+    stream->batch_sample_count++;
+
+    if (stream->batch_sample_count >= stream->batch_target_samples)
+    {
+        Stream_FlushBatch(stream);
+    }
+}
+
+static void Stream_FlushBatch(StreamInfo_t *stream)
+{
+    StreamPacket_t packet;
+
+    if ((stream == NULL) || (stream->batch_sample_count == 0U))
+    {
+        return;
+    }
+
+    packet.stream_id = stream->id;
+    packet.sample_count = stream->batch_sample_count;
+    packet.payload_len = stream->batch_payload_len;
+    memcpy(packet.payload, stream->batch_payload, stream->batch_payload_len);
+
+    (void)Stream_QueuePacket(&packet);
+
+    stream->batch_sample_count = 0U;
+    stream->batch_payload_len = 0U;
+    stream->batch_first_loop_count = 0U;
+}
+
+static void Stream_FlushStaleBatches(uint32_t current_loop_count)
+{
+    for (int i = 0; i < (int)STREAM_MAX_STREAMS; i++)
+    {
+        if (streams[i].active && (streams[i].batch_sample_count > 0U) &&
+            ((uint32_t)(current_loop_count - streams[i].batch_first_loop_count) >= streams[i].batch_max_age_loops))
+        {
+            Stream_FlushBatch(&streams[i]);
+        }
+    }
+}
+
+static uint8_t Stream_MaxSamplesPerPacket(uint8_t payload_len)
+{
+    uint16_t sample_bytes = (uint16_t)(STREAM_SAMPLE_HEADER_BYTES + payload_len);
+    uint16_t max_samples;
+
+    if (sample_bytes == 0U)
+    {
+        return 0U;
+    }
+
+    max_samples = (uint16_t)(STREAM_PACKET_PAYLOAD_BYTES / sample_bytes);
+    if (max_samples > 255U)
+    {
+        max_samples = 255U;
+    }
+
+    return (uint8_t)max_samples;
+}
+
+static uint8_t Stream_TargetSamplesPerPacket(uint8_t loop_divider, uint8_t payload_len)
+{
+    uint8_t max_samples = Stream_MaxSamplesPerPacket(payload_len);
+    uint16_t latency_limited_samples;
+
+    if ((max_samples == 0U) || (loop_divider == 0U))
+    {
+        return 0U;
+    }
+
+    latency_limited_samples = (uint16_t)((STREAM_BATCH_TARGET_LATENCY_LOOPS + (uint32_t)loop_divider - 1U) /
+                                         (uint32_t)loop_divider);
+    if (latency_limited_samples == 0U)
+    {
+        latency_limited_samples = 1U;
+    }
+
+    if (latency_limited_samples > max_samples)
+    {
+        latency_limited_samples = max_samples;
+    }
+
+    return (uint8_t)latency_limited_samples;
 }

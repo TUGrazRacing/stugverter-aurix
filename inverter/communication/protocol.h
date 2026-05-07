@@ -27,6 +27,7 @@
 #define PROTOCOL_ERROR_OTHER         0x03
 
 #define PROTOCOL_MAX_PAYLOAD        250
+#define PROTOCOL_UDP_MAX_PAYLOAD    1472U
 #define PROTOCOL_UDP_STREAM_PORT    3040U
 
 typedef void (*Protocol_TxBytesFn)(const uint8_t *data, uint16_t len);
@@ -37,6 +38,6 @@ void Protocol_SetTxHandler(Protocol_TxBytesFn handler);
 void Protocol_ProcessBytes(const uint8_t *data, uint16_t len);
 void Protocol_NetworkInit(void);
 bool Protocol_HasUdpSender(void);
-void Protocol_SendStreamData(uint8_t stream_id, uint16_t sequence, uint64_t timestamp_ticks, const uint8_t *data, uint8_t data_len);
+void Protocol_SendStreamBatch(uint8_t stream_id, uint8_t sample_count, const uint8_t *samples, uint16_t samples_len);
 
 #endif
