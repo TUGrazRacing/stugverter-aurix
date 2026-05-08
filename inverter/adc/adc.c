@@ -6,7 +6,7 @@
 #define ADC_INPUT_CLASS              IfxEvadc_InputClasses_group0
 #define ADC_RESULT_REGISTER          IfxEvadc_ChannelResult_0
 #define ADC_TRIGGER_SOURCE           IfxEvadc_TriggerSource_11
-#define ADC_TRIGGER_MODE             IfxEvadc_TriggerMode_uponRisingEdge
+#define ADC_TRIGGER_MODE             IfxEvadc_TriggerMode_uponFallingEdge
 #define ADC_GATING_MODE              IfxEvadc_GatingMode_always
 #define ADC_SAMPLE_TIME_SECONDS      ((float32)IFXEVADC_SAMPLETIME_MIN / (float32)IFXEVADC_ANALOG_FREQUENCY_MAX)
 #define ADC_QUEUE_EXTERNAL_TRIGGER   (1u << IFX_EVADC_G_Q_QINR_EXTR_OFF)

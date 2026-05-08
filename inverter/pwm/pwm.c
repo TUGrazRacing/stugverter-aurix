@@ -30,13 +30,15 @@
 /*********************************************************************************************************************/
 #include <pwm.h>
 #include "IfxGtm_Pwm.h"
+#include "IfxGtm_Atom.h"
+#include "IfxGtm_PinMap.h"
 #include "IfxPort.h"
 #include "IfxPort_Pinmap.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
 /*********************************************************************************************************************/
-#define NUM_OF_CHANNELS         (4)                                    /* Number of PWM complementary pairs          */
+#define NUM_OF_CHANNELS         (3)                                    /* Number of PWM complementary pairs          */
 #define ISR_PRIORITY_ATOM       (20)                                   /* Interrupt priority number                  */
 
 #define PHASE_U_HS              &IfxGtm_ATOM1_0_TOUT0_P02_0_OUT        /* Pin which will be driven by the PWM, P02.0 */
@@ -46,11 +48,14 @@
 #define PHASE_W_HS              &IfxGtm_ATOM1_2_TOUT2_P02_2_OUT        /* Pin which will be driven by the PWM, P02.2 */
 #define PHASE_W_LS              &IfxGtm_ATOM1_2N_TOUT5_P02_5_OUT       /* Pin which will be driven by the PWM, P02.5 */
 #define TRG_OUT                 &IfxGtm_ATOM1_3_TOUT3_P02_3_OUT        /* Pin which will be driven by the pin*/
+#define TRG_CH                  IfxGtm_Atom_Ch_3
 
-#define PHASE_U_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
-#define PHASE_V_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
-#define PHASE_W_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
-#define TRG_DUTY                (1.0f) //close to 0
+//adc sample point in ticks (10ns steps)
+#define TRIGGER_OFFSET -50 //0 -> center of pwm high time -50 = 500ns before
+
+#define PHASE_U_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
+#define PHASE_V_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
+#define PHASE_W_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global variables--------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -85,6 +90,46 @@ void interruptGtmAtom(void)
 /* Period interrupt callback function */
 void IfxGtm_periodEventFunction(void *data)
 {
+}
+
+static void pwmInitAdcTriggerChannel(void)
+{
+    Ifx_GTM_ATOM *atom = &MODULE_GTM.ATOM[IfxGtm_Atom_1];
+    Ifx_GTM_ATOM_AGC *agc = &atom->AGC;
+    uint32 fullPeriodTicks = (uint32)((g_gtmAtom3phInv.pwm.sourceFrequency / (float32)pwm_config->frequency) + 0.5f);
+
+    //at center of pwm high time, cnt -> 0 (resets) -> rising edge
+    //then counts up until trigger point, where it resets -> falling edge
+    //counter counts from 0 -> (fullPeriodTicks - 1)
+    //trigger at 0 means exactly at high pwm.
+    uint32 triggerPoint = (fullPeriodTicks - 1) + TRIGGER_OFFSET;
+
+
+    /* Match the PMSM FOC timer-trigger channel: reset from the PWM trigger
+     * chain and use CM1 as the precise ADC sample point.
+     */
+    IfxGtm_Atom_Ch_configurePwmMode(atom,
+                                    TRG_CH,
+                                    IfxGtm_Cmu_Clk_0,
+                                    Ifx_ActiveState_high,
+                                    IfxGtm_Atom_Ch_ResetEvent_onTrigger,
+                                    IfxGtm_Atom_Ch_OutputTrigger_forward);
+    IfxGtm_Atom_Ch_setCounterValue(atom, TRG_CH, 0u);
+    IfxGtm_Atom_Ch_setCompare(atom, TRG_CH, fullPeriodTicks, triggerPoint + 1u);
+    IfxGtm_Atom_Ch_setCompareShadow(atom, TRG_CH, fullPeriodTicks, triggerPoint + 1u);
+
+    IfxGtm_Atom_Agc_enableChannelUpdate(agc, TRG_CH, TRUE);
+    IfxGtm_Atom_Agc_enableChannel(agc, TRG_CH, TRUE, TRUE);
+    IfxGtm_Atom_Agc_enableChannelOutput(agc, TRG_CH, TRUE, TRUE);
+    IfxGtm_PinMap_setAtomTout((IfxGtm_Atom_ToutMap *)TRG_OUT,
+                              IfxPort_OutputMode_pushPull,
+                              IfxPort_PadDriver_cmosAutomotiveSpeed1);
+
+    IfxGtm_Trig_toEVadc(&MODULE_GTM,
+                        IfxGtm_Trig_AdcGroup_0,
+                        IfxGtm_Trig_AdcTrig_3,
+                        IfxGtm_Trig_AdcTrigSource_atom1,
+                        IfxGtm_Trig_AdcTrigChannel_3);
 }
 
 /* This function initializes the ATOM */
@@ -137,16 +182,6 @@ void pwmInit(PwmConfig* pconfig)
     output[2].outputMode            = IfxPort_OutputMode_pushPull;              /* Output mode                       */
     output[2].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;   /* Pad driver                        */
 
-    /* CH3 configurations */
-    output[3].pin                   = (IfxGtm_Pwm_ToutMap*)TRG_OUT;          /* Phase W PWM High-side             */
-    output[3].complementaryPin      = NULL_PTR;          /* Phase W PWM Low-side              */
-    output[3].polarity              = Ifx_ActiveState_high;                     /* Active low/high of pin            */
-    output[3].complementaryPolarity = Ifx_ActiveState_low;                      /* Active low/high of pin            */
-    output[3].outputMode            = IfxPort_OutputMode_pushPull;              /* Output mode                       */
-    output[3].padDriver             = IfxPort_PadDriver_cmosAutomotiveSpeed1;   /* Pad driver                        */
-
-
-
     /* 3. Dead-time configuration */
 
     dtmConfig[0].deadTime.rising    = 1e-6f;                /* Rising Dead time in seconds                           */
@@ -157,9 +192,6 @@ void pwmInit(PwmConfig* pconfig)
 
     dtmConfig[2].deadTime.rising    = 1e-6f;                /* Rising Dead time in seconds                           */
     dtmConfig[2].deadTime.falling   = 1e-6f;                /* Falling Dead time in seconds                          */
-
-    dtmConfig[3].deadTime.rising    = 0;                /* Rising Dead time in seconds                           */
-    dtmConfig[3].deadTime.falling   = 0;                /* Falling Dead time in seconds                          */
 
     /* 4. [Optional] Interrupt configuration, Example configuration of interrupt for base channel                    */
 
@@ -201,16 +233,6 @@ void pwmInit(PwmConfig* pconfig)
     channelConfig[2].mscOut       = NULL_PTR;                    /* MSC configuration for this channel               */
     channelConfig[2].interrupt    = NULL_PTR;                    /* Interrupt configuration for this channel         */
 
-    /*Sync channel TRG configuration.*/
-    channelConfig[3].timerCh      = IfxGtm_Pwm_SubModule_Ch_3;   /* Atom channel index to be used for sync channel   */
-    channelConfig[3].phase        = 0.0f;                        /* Phase shift in radians (range: 0.0 .. 2pi;
-                                                                  * only for edge aligned sync channels)             */
-    channelConfig[3].duty         = TRG_DUTY;                /* PWM duty in % (range: 0.0 .. 100.0)              */
-    channelConfig[3].dtm          = &dtmConfig[3];               /* Dead time configuration for this channel         */
-    channelConfig[3].output       = &output[3];                  /* Pin connections and polarities for this channel  */
-    channelConfig[3].mscOut       = NULL_PTR;                    /* MSC configuration for this channel               */
-    channelConfig[3].interrupt    = NULL_PTR;                    /* Interrupt configuration for this channel         */
-
     /* 6. Other configurations */
     config.cluster                = IfxGtm_Cluster_1;                  /* Cluster                                    */
     config.subModule              = IfxGtm_Pwm_SubModule_atom;         /* Sub module                                 */
@@ -243,18 +265,12 @@ void pwmInit(PwmConfig* pconfig)
 
     IfxGtm_Pwm_init(&g_gtmAtom3phInv.pwm, &g_gtmAtom3phInv.channels[0], &config);
 
-    IfxGtm_Trig_toEVadc(&MODULE_GTM,
-                                IfxGtm_Trig_AdcGroup_0, //group 0 is master adc group
-                                IfxGtm_Trig_AdcTrig_3, //trigger source in user manual device specific appendix
-                                IfxGtm_Trig_AdcTrigSource_atom1,
-                                IfxGtm_Trig_AdcTrigChannel_3); //group 0 is triggered by channel 3
-
+    pwmInitAdcTriggerChannel();
 
     /* 8. Store the current duty values and dead-times for runtime calls */
     g_gtmAtom3phInv.dutyCycles[0]= channelConfig[0].duty;
     g_gtmAtom3phInv.dutyCycles[1]= channelConfig[1].duty;
     g_gtmAtom3phInv.dutyCycles[2]= channelConfig[2].duty;
-    g_gtmAtom3phInv.dutyCycles[3]= channelConfig[3].duty;
     g_gtmAtom3phInv.deadTimes[0]= channelConfig[0].dtm->deadTime;
     g_gtmAtom3phInv.deadTimes[1]= channelConfig[1].dtm->deadTime;
     g_gtmAtom3phInv.deadTimes[2]= channelConfig[2].dtm->deadTime;
@@ -266,19 +282,12 @@ void pwmInit(PwmConfig* pconfig)
 void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW)
 {
 //    logPush(&(LogData_t){dutyU, dutyV, dutyW});
-    /* 1. Map inputs to the global structure based on your init config:
-     * Channel 0 = Phase V
-     * Channel 1 = Phase U
-     * Channel 2 = Phase W
-     * Channel 3 = Trigger (Keep as is or set to fixed value)
-     */
-
     /* 2. Apply the update immediately */
     /* This API writes the new values to the Shadow registers.
      * Because 'syncUpdateEnabled = TRUE' was set in init, the GTM hardware
      * will automatically transfer these to the Compare registers at the end of the PWM period.
      */
-    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_0, dutyU);
-    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_1, dutyV);
-    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_2, dutyW);
+//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_0, dutyU);
+//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_1, dutyV);
+//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_2, dutyW);
 }
