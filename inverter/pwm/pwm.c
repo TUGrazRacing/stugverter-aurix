@@ -50,9 +50,12 @@
 #define TRG_OUT                 &IfxGtm_ATOM1_3_TOUT3_P02_3_OUT        /* Pin which will be driven by the pin*/
 #define TRG_CH                  IfxGtm_Atom_Ch_3
 
-#define PHASE_U_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
-#define PHASE_V_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
-#define PHASE_W_DUTY            (0.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
+//adc sample point in ticks (10ns steps)
+#define TRIGGER_OFFSET -50 //0 -> center of pwm high time -50 = 500ns before
+
+#define PHASE_U_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
+#define PHASE_V_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
+#define PHASE_W_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global variables--------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -93,9 +96,14 @@ static void pwmInitAdcTriggerChannel(void)
 {
     Ifx_GTM_ATOM *atom = &MODULE_GTM.ATOM[IfxGtm_Atom_1];
     Ifx_GTM_ATOM_AGC *agc = &atom->AGC;
-    uint32 fullPeriodTicks = (uint32)((g_gtmAtom3phInv.pwm.sourceFrequency /
-                                       (float32)pwm_config->frequency) + 0.5f);
-    uint32 triggerPoint = fullPeriodTicks >> 1u;
+    uint32 fullPeriodTicks = (uint32)((g_gtmAtom3phInv.pwm.sourceFrequency / (float32)pwm_config->frequency) + 0.5f);
+
+    //at center of pwm high time, cnt -> 0 (resets) -> rising edge
+    //then counts up until trigger point, where it resets -> falling edge
+    //counter counts from 0 -> (fullPeriodTicks - 1)
+    //trigger at 0 means exactly at high pwm.
+    uint32 triggerPoint = (fullPeriodTicks - 1) + TRIGGER_OFFSET;
+
 
     /* Match the PMSM FOC timer-trigger channel: reset from the PWM trigger
      * chain and use CM1 as the precise ADC sample point.
@@ -103,7 +111,7 @@ static void pwmInitAdcTriggerChannel(void)
     IfxGtm_Atom_Ch_configurePwmMode(atom,
                                     TRG_CH,
                                     IfxGtm_Cmu_Clk_0,
-                                    Ifx_ActiveState_low,
+                                    Ifx_ActiveState_high,
                                     IfxGtm_Atom_Ch_ResetEvent_onTrigger,
                                     IfxGtm_Atom_Ch_OutputTrigger_forward);
     IfxGtm_Atom_Ch_setCounterValue(atom, TRG_CH, 0u);
@@ -279,7 +287,7 @@ void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW)
      * Because 'syncUpdateEnabled = TRUE' was set in init, the GTM hardware
      * will automatically transfer these to the Compare registers at the end of the PWM period.
      */
-    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_0, dutyU);
-    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_1, dutyV);
-    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_2, dutyW);
+//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_0, dutyU);
+//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_1, dutyV);
+//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_2, dutyW);
 }
