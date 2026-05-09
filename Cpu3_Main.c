@@ -34,7 +34,7 @@
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
-static void printGateDriverDataDuty(void);
+static void printGateDriverDataReadout(void);
 
 void core3_main(void)
 {
@@ -63,35 +63,30 @@ void core3_main(void)
         if((now - lastPrintTick) >= printPeriodTicks)
         {
             lastPrintTick = now;
-            printGateDriverDataDuty();
+            printGateDriverDataReadout();
         }
     }
 }
 
-static void printGateDriverDataDuty(void)
+static void printGateDriverDataReadout(void)
 {
     const GtmPwmInputMeasurement *measurement = gtmDriverDataTimGetMeasurement();
-    char message[96];
+    const GtmDriverDataReadout *readout = gtmDriverDataGetReadout();
+    char message[128];
     int len;
-    uint32 dutyCentiPercent = 0U;
-
-    if((measurement->initialized != FALSE) && (measurement->periodTicks > 0U))
-    {
-        dutyCentiPercent = (uint32)(((uint64)measurement->pulseTicks * 10000ULL) /
-                                    (uint64)measurement->periodTicks);
-    }
 
     len = snprintf(message,
                    sizeof(message),
-                   "GD DATA duty=%u.%02u%% p=%lu h=%lu coh=%u lost=%u ovf=%u glitch=%u\r\n",
-                   (unsigned int)(dutyCentiPercent / 100U),
-                   (unsigned int)(dutyCentiPercent % 100U),
-                   (unsigned long)measurement->periodTicks,
-                   (unsigned long)measurement->pulseTicks,
+                   "GD DATA adc=%u diag0=0x%04X diag1=0x%04X valid=%u%u%u last=0x%04X coh=%u lost=%u\r\n",
+                   (unsigned int)readout->adc,
+                   (unsigned int)readout->diagnosticFrame0,
+                   (unsigned int)readout->diagnosticFrame1,
+                   (unsigned int)readout->adcValid,
+                   (unsigned int)readout->diagnosticFrame0Valid,
+                   (unsigned int)readout->diagnosticFrame1Valid,
+                   (unsigned int)readout->lastRawFrame,
                    (unsigned int)measurement->dataCoherent,
-                   (unsigned int)measurement->dataLost,
-                   (unsigned int)measurement->overflow,
-                   (unsigned int)measurement->glitch);
+                   (unsigned int)measurement->dataLost);
 
     if(len > 0)
     {

@@ -58,6 +58,11 @@
 #define PHASE_V_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
 #define PHASE_W_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
 #define GATEDRIVER_DATA_PWM_IN  (&IfxGtm_TIM0_0_P00_9_IN)
+#define GATEDRIVER_DATA_PWM_SCALE        (8192U)
+#define GATEDRIVER_DATA_ADC_MASK         (0x0FFFU)
+#define GATEDRIVER_DATA_DIAG_FRAME_MASK  (0x1FFFU)
+#define GATEDRIVER_DATA_DIAG_BIT         (0x1000U)
+#define GATEDRIVER_DATA_DIAG1_BIT        (0x0800U)
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global variables--------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -86,11 +91,13 @@ boolean g_measuredPwmGlitch = FALSE;
 
 static IfxGtm_Tim_In g_driverDataTim;
 static GtmPwmInputMeasurement g_driverDataPwmMeasurement;
+static GtmDriverDataReadout g_driverDataReadout;
 
 /*********************************************************************************************************************/
 /*-----------------------------------------------Function Prototypes-------------------------------------------------*/
 /*********************************************************************************************************************/
 static void gtmEnsureClock0(void);
+static void gtmDecodeDriverDataFrame(void);
 static void gtmPublishDriverDataMeasurement(void);
 
 /*********************************************************************************************************************/
@@ -329,6 +336,46 @@ static void gtmPublishDriverDataMeasurement(void)
     g_measuredPwmGlitch = g_driverDataPwmMeasurement.glitch;
 }
 
+static void gtmDecodeDriverDataFrame(void)
+{
+    uint32 rawFrame;
+
+    if(g_driverDataPwmMeasurement.periodTicks == 0U)
+    {
+        return;
+    }
+
+    rawFrame = (uint32)((((uint64)g_driverDataPwmMeasurement.pulseTicks * GATEDRIVER_DATA_PWM_SCALE) +
+                         ((uint64)g_driverDataPwmMeasurement.periodTicks / 2ULL)) /
+                        (uint64)g_driverDataPwmMeasurement.periodTicks);
+
+    if(rawFrame > GATEDRIVER_DATA_DIAG_FRAME_MASK)
+    {
+        rawFrame = GATEDRIVER_DATA_DIAG_FRAME_MASK;
+    }
+
+    g_driverDataReadout.lastRawFrame = (uint16)rawFrame;
+
+    if((rawFrame & GATEDRIVER_DATA_DIAG_BIT) == 0U)
+    {
+        g_driverDataReadout.adc = (uint16)(rawFrame & GATEDRIVER_DATA_ADC_MASK);
+        g_driverDataReadout.adcValid = TRUE;
+        g_driverDataReadout.lastFrameType = GtmDriverDataFrameType_adc;
+    }
+    else if((rawFrame & GATEDRIVER_DATA_DIAG1_BIT) == 0U)
+    {
+        g_driverDataReadout.diagnosticFrame0 = (uint16)rawFrame;
+        g_driverDataReadout.diagnosticFrame0Valid = TRUE;
+        g_driverDataReadout.lastFrameType = GtmDriverDataFrameType_diag0;
+    }
+    else
+    {
+        g_driverDataReadout.diagnosticFrame1 = (uint16)rawFrame;
+        g_driverDataReadout.diagnosticFrame1Valid = TRUE;
+        g_driverDataReadout.lastFrameType = GtmDriverDataFrameType_diag1;
+    }
+}
+
 void gtmDriverDataTimInit(void)
 {
     IfxGtm_Tim_In_Config configTIM;
@@ -356,6 +403,16 @@ void gtmDriverDataTimInit(void)
     g_driverDataPwmMeasurement.overflow = FALSE;
     g_driverDataPwmMeasurement.glitch = FALSE;
     g_driverDataPwmMeasurement.initialized = initialized;
+
+    g_driverDataReadout.adc = 0U;
+    g_driverDataReadout.diagnosticFrame0 = 0U;
+    g_driverDataReadout.diagnosticFrame1 = 0U;
+    g_driverDataReadout.lastRawFrame = 0U;
+    g_driverDataReadout.lastFrameType = GtmDriverDataFrameType_unknown;
+    g_driverDataReadout.adcValid = FALSE;
+    g_driverDataReadout.diagnosticFrame0Valid = FALSE;
+    g_driverDataReadout.diagnosticFrame1Valid = FALSE;
+
     gtmPublishDriverDataMeasurement();
 }
 
@@ -391,6 +448,7 @@ boolean gtmDriverDataTimUpdate(void)
                 g_driverDataPwmMeasurement.dutyPercent =
                     ((float32)g_driverDataPwmMeasurement.pulseTicks * 100.0f) /
                     (float32)g_driverDataPwmMeasurement.periodTicks;
+                gtmDecodeDriverDataFrame();
                 measurementUpdated = TRUE;
             }
         }
@@ -403,6 +461,11 @@ boolean gtmDriverDataTimUpdate(void)
 const GtmPwmInputMeasurement *gtmDriverDataTimGetMeasurement(void)
 {
     return &g_driverDataPwmMeasurement;
+}
+
+const GtmDriverDataReadout *gtmDriverDataGetReadout(void)
+{
+    return &g_driverDataReadout;
 }
 
 void initTIM(void)

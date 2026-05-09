@@ -23,12 +23,33 @@ typedef struct
     boolean initialized;
 } GtmPwmInputMeasurement;
 
+typedef enum
+{
+    GtmDriverDataFrameType_unknown = 0U,
+    GtmDriverDataFrameType_adc,
+    GtmDriverDataFrameType_diag0,
+    GtmDriverDataFrameType_diag1
+} GtmDriverDataFrameType;
+
+typedef struct
+{
+    uint16 adc;
+    uint16 diagnosticFrame0;
+    uint16 diagnosticFrame1;
+    uint16 lastRawFrame;
+    GtmDriverDataFrameType lastFrameType;
+    boolean adcValid;
+    boolean diagnosticFrame0Valid;
+    boolean diagnosticFrame1Valid;
+} GtmDriverDataReadout;
+
 void pwmInit(PwmConfig *pconfig);
 void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW);
 
 void gtmDriverDataTimInit(void);
 boolean gtmDriverDataTimUpdate(void);
 const GtmPwmInputMeasurement *gtmDriverDataTimGetMeasurement(void);
+const GtmDriverDataReadout *gtmDriverDataGetReadout(void);
 
 void initTIM(void);
 void measure_PWM(void);
