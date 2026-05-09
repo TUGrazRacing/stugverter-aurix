@@ -41,6 +41,7 @@ typedef struct
 
 typedef struct
 {
+    /* Latest valid DATA frames decoded from one gate driver. */
     uint16 adc;
     uint16 diagnosticFrame0;
     uint16 diagnosticFrame1;
@@ -64,16 +65,54 @@ typedef struct
     uint32 glitchCount;
 } GtmDriverDataChannelState;
 
+/**
+ * @brief Initializes all configured TIM channels for gate-driver DATA capture.
+ */
 void gtmDriverDataTimInit(void);
+
+/**
+ * @brief Polls the configured TIM channels and decodes new DATA PWM frames.
+ */
 boolean gtmDriverDataTimProcess(void);
+
+/**
+ * @brief Backwards-compatible alias for gtmDriverDataTimProcess().
+ */
 boolean gtmDriverDataTimUpdate(void);
+
+/**
+ * @brief Copies one channel snapshot for use outside the TIM module.
+ */
 boolean gtmDriverDataTimCopyChannel(GtmDriverDataChannelId channelId, GtmDriverDataChannelState *channel);
+
+/**
+ * @brief Returns a direct pointer to one channel state for local debug use.
+ */
 const GtmDriverDataChannelState *gtmDriverDataTimGetChannel(GtmDriverDataChannelId channelId);
+
+/**
+ * @brief Returns the legacy single-channel PWM measurement.
+ */
 const GtmPwmInputMeasurement *gtmDriverDataTimGetMeasurement(void);
+
+/**
+ * @brief Returns the legacy single-channel DATA readout.
+ */
 const GtmDriverDataReadout *gtmDriverDataGetReadout(void);
+
+/**
+ * @brief Returns the lock-free snapshot sequence counter.
+ */
 uint32 gtmDriverDataTimGetSequence(void);
 
+/**
+ * @brief Legacy TIM initialization wrapper.
+ */
 void initTIM(void);
+
+/**
+ * @brief Legacy TIM polling wrapper.
+ */
 void measure_PWM(void);
 
 #endif /* GTM_TIM_H_ */

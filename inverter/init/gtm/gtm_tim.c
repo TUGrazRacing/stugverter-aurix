@@ -55,9 +55,16 @@ boolean g_measuredPwmOverflow = FALSE;
 boolean g_measuredPwmGlitch = FALSE;
 
 static boolean gtmDriverDataDecodeFrame(GtmDriverDataChannelState *channel);
+static boolean gtmDriverDataInitChannel(uint32 channel);
 static void gtmDriverDataPublishLegacyDebug(void);
 static void gtmDriverDataResetChannel(GtmDriverDataChannelId channelId);
+static boolean gtmDriverDataProcessChannel(GtmDriverDataTimChannel *timChannel);
+static void gtmDriverDataReadTimStatus(GtmDriverDataTimChannel *timChannel);
+static boolean gtmDriverDataMeasurementValid(const GtmDriverDataChannelState *state);
 
+/**
+ * @brief Initializes all configured TIM channels for gate-driver DATA PWM capture.
+ */
 void gtmDriverDataTimInit(void)
 {
     uint32 channel;
@@ -69,28 +76,18 @@ void gtmDriverDataTimInit(void)
     for(channel = 0U; channel < GTM_DRIVER_DATA_CHANNEL_COUNT; channel++)
     {
         gtmDriverDataResetChannel((GtmDriverDataChannelId)channel);
-
-        if(g_driverDataConfig[channel].pin != NULL_PTR)
-        {
-            IfxGtm_Tim_In_Config configTIM;
-
-            IfxGtm_Tim_In_initConfig(&configTIM, &MODULE_GTM);
-            configTIM.filter.inputPin = g_driverDataConfig[channel].pin;
-            configTIM.filter.inputPinMode = g_driverDataConfig[channel].pinMode;
-            configTIM.capture.clock = IfxGtm_Cmu_Clk_0;
-            configTIM.capture.mode = Ifx_Pwm_Mode_leftAligned;
-            configTIM.mode = IfxGtm_Tim_Mode_pwmMeasurement;
-
-            g_driverDataChannels[channel].state.enabled = TRUE;
-            g_driverDataChannels[channel].state.pwm.initialized =
-                IfxGtm_Tim_In_init(&g_driverDataChannels[channel].driver, &configTIM);
-        }
+        (void)gtmDriverDataInitChannel(channel);
     }
 
     gtmDriverDataPublishLegacyDebug();
     g_driverDataSequence++;
 }
 
+/**
+ * @brief Polls every initialized DATA channel and decodes newly captured PWM frames.
+ *
+ * @return TRUE if at least one channel produced a valid ADC or diagnostic frame.
+ */
 boolean gtmDriverDataTimProcess(void)
 {
     boolean anyUpdated = FALSE;
@@ -100,69 +97,9 @@ boolean gtmDriverDataTimProcess(void)
 
     for(channel = 0U; channel < GTM_DRIVER_DATA_CHANNEL_COUNT; channel++)
     {
-        GtmDriverDataTimChannel *timChannel = &g_driverDataChannels[channel];
-        GtmDriverDataChannelState *state = &timChannel->state;
-
-        if((state->enabled == FALSE) || (state->pwm.initialized == FALSE))
+        if(gtmDriverDataProcessChannel(&g_driverDataChannels[channel]) != FALSE)
         {
-            continue;
-        }
-
-        IfxGtm_Tim_In_update(&timChannel->driver);
-
-        state->pwm.newData = IfxGtm_Tim_In_isNewData(&timChannel->driver);
-        state->pwm.dataLost = IfxGtm_Tim_In_isDataLost(&timChannel->driver);
-        state->pwm.overflow = timChannel->driver.overflowCnt;
-        state->pwm.glitch = timChannel->driver.glitch;
-
-        if(state->pwm.dataLost != FALSE)
-        {
-            state->dataLostCount++;
-        }
-
-        if(state->pwm.overflow != FALSE)
-        {
-            state->overflowCount++;
-        }
-
-        if(state->pwm.glitch != FALSE)
-        {
-            state->glitchCount++;
-        }
-
-        if(state->pwm.newData != FALSE)
-        {
-            state->pwm.periodTicks = (uint32)IfxGtm_Tim_In_getPeriodTicks(&timChannel->driver);
-            state->pwm.pulseTicks = (uint32)IfxGtm_Tim_In_getPulseLengthTick(&timChannel->driver);
-            state->pwm.dataCoherent = timChannel->driver.dataCoherent;
-
-            if((state->pwm.periodTicks > 0U) &&
-               (state->pwm.dataCoherent != FALSE) &&
-               (state->pwm.dataLost == FALSE) &&
-               (state->pwm.overflow == FALSE))
-            {
-                state->pwm.periodSeconds = IfxGtm_Tim_In_getPeriodSecond(&timChannel->driver);
-
-                if(state->pwm.periodSeconds > 0.0f)
-                {
-                    state->pwm.frequencyHz = 1.0f / state->pwm.periodSeconds;
-                    state->pwm.dutyPercent =
-                        ((float32)state->pwm.pulseTicks * 100.0f) /
-                        (float32)state->pwm.periodTicks;
-                    if(gtmDriverDataDecodeFrame(state) != FALSE)
-                    {
-                        anyUpdated = TRUE;
-                    }
-                }
-                else
-                {
-                    state->invalidFrameCount++;
-                }
-            }
-            else
-            {
-                state->invalidFrameCount++;
-            }
+            anyUpdated = TRUE;
         }
     }
 
@@ -172,11 +109,17 @@ boolean gtmDriverDataTimProcess(void)
     return anyUpdated;
 }
 
+/**
+ * @brief Backwards-compatible alias for gtmDriverDataTimProcess().
+ */
 boolean gtmDriverDataTimUpdate(void)
 {
     return gtmDriverDataTimProcess();
 }
 
+/**
+ * @brief Copies a coherent snapshot of one channel for readers on other cores.
+ */
 boolean gtmDriverDataTimCopyChannel(GtmDriverDataChannelId channelId, GtmDriverDataChannelState *channel)
 {
     uint32 startSequence;
@@ -197,6 +140,9 @@ boolean gtmDriverDataTimCopyChannel(GtmDriverDataChannelId channelId, GtmDriverD
     return channel->enabled;
 }
 
+/**
+ * @brief Returns the live channel state pointer for local debug use.
+ */
 const GtmDriverDataChannelState *gtmDriverDataTimGetChannel(GtmDriverDataChannelId channelId)
 {
     if(channelId >= GtmDriverDataChannel_count)
@@ -207,31 +153,49 @@ const GtmDriverDataChannelState *gtmDriverDataTimGetChannel(GtmDriverDataChannel
     return &g_driverDataChannels[channelId].state;
 }
 
+/**
+ * @brief Returns the legacy single-channel PWM measurement pointer.
+ */
 const GtmPwmInputMeasurement *gtmDriverDataTimGetMeasurement(void)
 {
     return &g_driverDataChannels[GtmDriverDataChannel_uLow].state.pwm;
 }
 
+/**
+ * @brief Returns the legacy single-channel decoded readout pointer.
+ */
 const GtmDriverDataReadout *gtmDriverDataGetReadout(void)
 {
     return &g_driverDataChannels[GtmDriverDataChannel_uLow].state.readout;
 }
 
+/**
+ * @brief Returns the snapshot sequence counter used by lock-free readers.
+ */
 uint32 gtmDriverDataTimGetSequence(void)
 {
     return g_driverDataSequence;
 }
 
+/**
+ * @brief Legacy initialization entry point.
+ */
 void initTIM(void)
 {
     gtmDriverDataTimInit();
 }
 
+/**
+ * @brief Legacy polling entry point.
+ */
 void measure_PWM(void)
 {
     (void)gtmDriverDataTimProcess();
 }
 
+/**
+ * @brief Clears all runtime state for a logical gate-driver DATA channel.
+ */
 static void gtmDriverDataResetChannel(GtmDriverDataChannelId channelId)
 {
     GtmDriverDataChannelState *state = &g_driverDataChannels[channelId].state;
@@ -264,6 +228,118 @@ static void gtmDriverDataResetChannel(GtmDriverDataChannelId channelId)
     state->glitchCount = 0U;
 }
 
+/**
+ * @brief Initializes one DATA channel when a real TIM input pin is configured.
+ */
+static boolean gtmDriverDataInitChannel(uint32 channel)
+{
+    IfxGtm_Tim_In_Config configTIM;
+
+    if(g_driverDataConfig[channel].pin == NULL_PTR)
+    {
+        return FALSE;
+    }
+
+    IfxGtm_Tim_In_initConfig(&configTIM, &MODULE_GTM);
+    configTIM.filter.inputPin = g_driverDataConfig[channel].pin;
+    configTIM.filter.inputPinMode = g_driverDataConfig[channel].pinMode;
+    configTIM.capture.clock = IfxGtm_Cmu_Clk_0;
+    configTIM.capture.mode = Ifx_Pwm_Mode_leftAligned;
+    configTIM.mode = IfxGtm_Tim_Mode_pwmMeasurement;
+
+    g_driverDataChannels[channel].state.enabled = TRUE;
+    g_driverDataChannels[channel].state.pwm.initialized =
+        IfxGtm_Tim_In_init(&g_driverDataChannels[channel].driver, &configTIM);
+
+    return g_driverDataChannels[channel].state.pwm.initialized;
+}
+
+/**
+ * @brief Polls one TIM channel and decodes a frame if a valid measurement is present.
+ */
+static boolean gtmDriverDataProcessChannel(GtmDriverDataTimChannel *timChannel)
+{
+    GtmDriverDataChannelState *state = &timChannel->state;
+
+    if((state->enabled == FALSE) || (state->pwm.initialized == FALSE))
+    {
+        return FALSE;
+    }
+
+    IfxGtm_Tim_In_update(&timChannel->driver);
+    gtmDriverDataReadTimStatus(timChannel);
+
+    if(state->pwm.newData == FALSE)
+    {
+        return FALSE;
+    }
+
+    state->pwm.periodTicks = (uint32)IfxGtm_Tim_In_getPeriodTicks(&timChannel->driver);
+    state->pwm.pulseTicks = (uint32)IfxGtm_Tim_In_getPulseLengthTick(&timChannel->driver);
+    state->pwm.dataCoherent = timChannel->driver.dataCoherent;
+
+    if(gtmDriverDataMeasurementValid(state) == FALSE)
+    {
+        state->invalidFrameCount++;
+        return FALSE;
+    }
+
+    state->pwm.periodSeconds = IfxGtm_Tim_In_getPeriodSecond(&timChannel->driver);
+    if(state->pwm.periodSeconds <= 0.0f)
+    {
+        state->invalidFrameCount++;
+        return FALSE;
+    }
+
+    state->pwm.frequencyHz = 1.0f / state->pwm.periodSeconds;
+    state->pwm.dutyPercent = ((float32)state->pwm.pulseTicks * 100.0f) /
+                             (float32)state->pwm.periodTicks;
+
+    return gtmDriverDataDecodeFrame(state);
+}
+
+/**
+ * @brief Mirrors TIM status flags into the channel state and increments counters.
+ */
+static void gtmDriverDataReadTimStatus(GtmDriverDataTimChannel *timChannel)
+{
+    GtmDriverDataChannelState *state = &timChannel->state;
+
+    state->pwm.newData = IfxGtm_Tim_In_isNewData(&timChannel->driver);
+    state->pwm.dataLost = IfxGtm_Tim_In_isDataLost(&timChannel->driver);
+    state->pwm.overflow = timChannel->driver.overflowCnt;
+    state->pwm.glitch = timChannel->driver.glitch;
+
+    if(state->pwm.dataLost != FALSE)
+    {
+        state->dataLostCount++;
+    }
+
+    if(state->pwm.overflow != FALSE)
+    {
+        state->overflowCount++;
+    }
+
+    if(state->pwm.glitch != FALSE)
+    {
+        state->glitchCount++;
+    }
+}
+
+/**
+ * @brief Checks that period and duty came from one coherent non-error TIM capture.
+ */
+static boolean gtmDriverDataMeasurementValid(const GtmDriverDataChannelState *state)
+{
+    return ((state->pwm.periodTicks > 0U) &&
+            (state->pwm.dataCoherent != FALSE) &&
+            (state->pwm.dataLost == FALSE) &&
+            (state->pwm.overflow == FALSE));
+}
+
+/**
+ * @brief Converts the DATA duty cycle into ADC, diagnostic frame 0, or diagnostic frame 1.
+ */
 static boolean gtmDriverDataDecodeFrame(GtmDriverDataChannelState *channel)
 {
     uint32 rawFrame;
@@ -310,6 +386,9 @@ static boolean gtmDriverDataDecodeFrame(GtmDriverDataChannelState *channel)
     return TRUE;
 }
 
+/**
+ * @brief Keeps the old single-channel debug globals synchronized with channel UL.
+ */
 static void gtmDriverDataPublishLegacyDebug(void)
 {
     const GtmPwmInputMeasurement *measurement = &g_driverDataChannels[GtmDriverDataChannel_uLow].state.pwm;

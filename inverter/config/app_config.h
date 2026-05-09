@@ -22,6 +22,7 @@ typedef struct
 {
     FocState       foc;
     ResolverState  resolver;
+    GateDriverDataState gate_driver_data;
 } AppState;
 
 extern AppConfig app_config;
