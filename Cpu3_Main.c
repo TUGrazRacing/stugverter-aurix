@@ -15,7 +15,6 @@ extern IfxCpu_syncEvent g_cpuSyncEvent;
 
 #define BUZZER_PIN              (&IfxPort_P33_0)
 #define REST                    (0u)
-#define SONG_STEP_MS            (75u)
 #define NOTE_GATE_PERCENT       (88u)
 #define SONG_REPEAT_GAP_MS      (1000u)
 
@@ -48,52 +47,40 @@ typedef struct
 
 #define N(freq, steps)          { (freq), (steps) }
 
-static const BuzzerNote megalovania[] =
+#define SONG_STEP_MS            (50u)  /* Fast and snappy for that 90s feel */
+
+/* Nokia Tune Frequencies (Octaves 5 and 6) */
+#define NOTE_CS5                (554u)
+#define NOTE_D5                 (587u)
+#define NOTE_E5                 (659u)
+#define NOTE_FS5                (740u)
+#define NOTE_GS5                (831u)
+#define NOTE_A5                 (880u)
+#define NOTE_B5                 (988u)
+#define NOTE_CS6                (1109u)
+#define NOTE_D6                 (1175u)
+#define NOTE_E6                 (1319u)
+
+#define N(freq, steps)          { (freq), (steps) }
+
+static const BuzzerNote music[] =
 {
-    N(NOTE_D4, 1), N(NOTE_D4, 1), N(NOTE_D5, 2), N(NOTE_A4, 2),
-    N(NOTE_GS4, 1), N(NOTE_G4, 1), N(NOTE_F4, 2),
-    N(NOTE_D4, 1), N(NOTE_F4, 1), N(NOTE_G4, 1), N(REST, 1),
+    /* Phrase 1 */
+    N(NOTE_E6, 2), N(NOTE_D6, 2), N(NOTE_FS5, 4), N(NOTE_GS5, 4),
 
-    N(NOTE_C4, 1), N(NOTE_C4, 1), N(NOTE_D5, 2), N(NOTE_A4, 2),
-    N(NOTE_GS4, 1), N(NOTE_G4, 1), N(NOTE_F4, 2),
-    N(NOTE_D4, 1), N(NOTE_F4, 1), N(NOTE_G4, 1), N(REST, 1),
+    /* Phrase 2 */
+    N(NOTE_CS6, 2), N(NOTE_B5, 2), N(NOTE_D5, 4), N(NOTE_E5, 4),
 
-    N(NOTE_B3, 1), N(NOTE_B3, 1), N(NOTE_D5, 2), N(NOTE_A4, 2),
-    N(NOTE_GS4, 1), N(NOTE_G4, 1), N(NOTE_F4, 2),
-    N(NOTE_D4, 1), N(NOTE_F4, 1), N(NOTE_G4, 1), N(REST, 1),
+    /* Phrase 3 */
+    N(NOTE_B5, 2), N(NOTE_A5, 2), N(NOTE_CS5, 4), N(NOTE_E5, 4),
 
-    N(NOTE_AS3, 1), N(NOTE_AS3, 1), N(NOTE_D5, 2), N(NOTE_A4, 2),
-    N(NOTE_GS4, 1), N(NOTE_G4, 1), N(NOTE_F4, 2),
-    N(NOTE_D4, 1), N(NOTE_F4, 1), N(NOTE_G4, 1), N(REST, 2),
-
-    N(NOTE_D5, 1), N(NOTE_D5, 1), N(NOTE_D6, 2), N(NOTE_A5, 2),
-    N(NOTE_GS5, 1), N(NOTE_G5, 1), N(NOTE_F5, 2),
-    N(NOTE_D5, 1), N(NOTE_F5, 1), N(NOTE_G5, 1), N(REST, 1),
-
-    N(NOTE_C5, 1), N(NOTE_C5, 1), N(NOTE_D6, 2), N(NOTE_A5, 2),
-    N(NOTE_GS5, 1), N(NOTE_G5, 1), N(NOTE_F5, 2),
-    N(NOTE_D5, 1), N(NOTE_F5, 1), N(NOTE_G5, 1), N(REST, 1),
-
-    N(NOTE_B4, 1), N(NOTE_B4, 1), N(NOTE_D6, 2), N(NOTE_A5, 2),
-    N(NOTE_GS5, 1), N(NOTE_G5, 1), N(NOTE_F5, 2),
-    N(NOTE_D5, 1), N(NOTE_F5, 1), N(NOTE_G5, 1), N(REST, 1),
-
-    N(NOTE_AS4, 1), N(NOTE_AS4, 1), N(NOTE_D6, 2), N(NOTE_A5, 2),
-    N(NOTE_GS5, 1), N(NOTE_G5, 1), N(NOTE_F5, 2),
-    N(NOTE_D5, 1), N(NOTE_F5, 1), N(NOTE_G5, 1), N(REST, 2),
-
-    N(NOTE_F5, 1), N(NOTE_F5, 1), N(NOTE_F5, 1), N(NOTE_F5, 1),
-    N(NOTE_F5, 1), N(NOTE_D5, 1), N(NOTE_D5, 1), N(NOTE_D5, 1),
-    N(NOTE_F5, 1), N(NOTE_F5, 1), N(NOTE_F5, 1), N(NOTE_G5, 1),
-    N(NOTE_GS5, 2), N(NOTE_G5, 2), N(NOTE_F5, 2), N(NOTE_D5, 2),
-
-    N(NOTE_F5, 1), N(NOTE_G5, 1), N(NOTE_GS5, 1), N(NOTE_A5, 1),
-    N(NOTE_C6, 2), N(NOTE_A5, 2), N(NOTE_D6, 4), N(REST, 4)
+    /* The final resting note */
+    N(NOTE_A5, 8)
 };
 
 #undef N
 
-#define SONG_LENGTH             ((uint32)(sizeof(megalovania) / sizeof(megalovania[0])))
+#define SONG_LENGTH             ((uint32)(sizeof(music) / sizeof(music[0])))
 
 /* ---------------- Delay Functions ---------------- */
 
@@ -173,7 +160,7 @@ static void buzzer_playSong(void)
 
     for (i = 0u; i < SONG_LENGTH; i++)
     {
-        buzzer_playNote(&megalovania[i]);
+        buzzer_playNote(&music[i]);
     }
 }
 
