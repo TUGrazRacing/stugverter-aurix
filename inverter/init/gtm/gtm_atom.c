@@ -21,9 +21,9 @@
 
 #define TRIGGER_OFFSET          (-50)
 
-#define PHASE_U_DUTY            (50.0f)
-#define PHASE_V_DUTY            (50.0f)
-#define PHASE_W_DUTY            (50.0f)
+#define PHASE_U_DUTY            (0.0f)
+#define PHASE_V_DUTY            (0.0f)
+#define PHASE_W_DUTY            (0.0f)
 
 typedef struct
 {
@@ -180,7 +180,7 @@ void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW)
     (void)dutyV;
     (void)dutyW;
 
-//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_0, dutyU);
-//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_1, dutyV);
-//    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_2, dutyW);
+    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_0, dutyU);
+    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_1, dutyV);
+    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_2, dutyW);
 }

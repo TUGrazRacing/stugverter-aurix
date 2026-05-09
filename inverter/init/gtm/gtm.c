@@ -2,6 +2,7 @@
 
 #include "IfxGtm_Cmu.h"
 #include "IfxGtm_reg.h"
+#include "IfxGtm.h"
 
 void gtmInit(void)
 {
