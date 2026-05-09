@@ -38,7 +38,6 @@ const IfxPort_Io_ConfigPin gatedriver_config[] = {
     {GATEDRIVER_EN_U_HIGH,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
     {GATEDRIVER_EN_V_HIGH,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
     {GATEDRIVER_EN_W_HIGH,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
-    {BUZZER,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
 };
 
 #if APP_GATE_DRIVER_DATA_CHANNEL_COUNT != GTM_DRIVER_DATA_CHANNEL_COUNT
