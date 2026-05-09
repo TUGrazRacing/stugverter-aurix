@@ -3,9 +3,7 @@
 #include "app_config.h"
 #include <Port/Io/IfxPort_Io.h>
 #include "IfxPort_Pinmap.h"
-#include "IfxStm.h"
-#include "UART_Logging.h"
-#include <stdio.h>
+#include <math.h>
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -18,8 +16,15 @@
 #define GATEDRIVER_EN_V_HIGH     (&IfxPort_P14_7)
 #define GATEDRIVER_EN_W_HIGH     (&IfxPort_P21_3)
 
-#define GATEDRIVER_DATA_PRINT_PERIOD_MS (100U)
-
+#define GATEDRIVER_ADC_FULL_SCALE_STEPS (4095.0f)
+#define GATEDRIVER_ADC_FULL_SCALE_V     (3.5f)
+#define GATEDRIVER_NTC_SUPPLY_V         (15.0f)
+#define GATEDRIVER_NTC_PULLUP_OHM       (2700.0f)
+#define GATEDRIVER_NTC_PARALLEL_OHM     (560.0f)
+#define GATEDRIVER_NTC_R25_OHM          (5000.0f)
+#define GATEDRIVER_NTC_BETA_K           (3433.0f)
+#define GATEDRIVER_NTC_T25_K            (298.15f)
+#define GATEDRIVER_TEMP_INVALID_DEGC    (-273.15f)
 
 /*********************************************************************************************************************/
 /*------------------------------------------------Global Variables---------------------------------------------------*/
@@ -34,27 +39,15 @@ const IfxPort_Io_ConfigPin gatedriver_config[] = {
     {GATEDRIVER_EN_W_HIGH,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
 };
 
-static const char *const g_gatedriverDataChannelNames[GTM_DRIVER_DATA_CHANNEL_COUNT] =
-{
-    "UL",
-    "VL",
-    "WL",
-    "UH",
-    "VH",
-    "WH"
-};
-
-static uint64 g_gatedriverDataLastPrintTick;
-static uint64 g_gatedriverDataPrintPeriodTicks;
-
 #if APP_GATE_DRIVER_DATA_CHANNEL_COUNT != GTM_DRIVER_DATA_CHANNEL_COUNT
 #error "App gate-driver DATA channel count must match the GTM TIM channel count."
 #endif
 
+static float32 gatedriverDataCalculateNtcTemperature(uint16 adc);
+static void gatedriverDataPublishHighSideTemperature(uint32 channel, const GtmDriverDataChannelState *state);
 static void gatedriverDataPublishChannel(uint32 channel, const GtmDriverDataChannelState *state);
-static boolean gatedriverDataPrintDue(void);
-static void gatedriverDataPrintChannel(uint32 channel, const GtmDriverDataChannelState *state);
 static void gatedriverDataPoll(void);
+static void gatedriverDataResetPublishedState(void);
 
 /*********************************************************************************************************************/
 /*---------------------------------------------Function Implementations----------------------------------------------*/
@@ -69,20 +62,16 @@ void gatedriverDataCapture(void)
 }
 
 /**
- * @brief Initializes UART, GTM TIM capture, and the core3 print cadence.
+ * @brief Initializes GTM TIM capture and clears the published DATA readout state.
  */
 void gatedriverDataServiceInit(void)
 {
-    initUART();
+    gatedriverDataResetPublishedState();
     gtmDriverDataTimInit();
-
-    g_gatedriverDataLastPrintTick = (uint64)IfxStm_get(&MODULE_STM0);
-    g_gatedriverDataPrintPeriodTicks =
-        (uint64)IfxStm_getTicksFromMilliseconds(&MODULE_STM0, GATEDRIVER_DATA_PRINT_PERIOD_MS);
 }
 
 /**
- * @brief Polls all configured DATA channels, publishes their values, and prints periodically.
+ * @brief Polls all configured DATA channels and publishes their latest values.
  */
 void gatedriverDataServiceTask(void)
 {
@@ -101,7 +90,81 @@ void gatedriverDataServiceRun(void)
 }
 
 /**
- * @brief Copies the last valid DATA readout into app_state for Ethernet parameters.
+ * @brief Converts a high-side driver ADC code into NTC temperature in degree Celsius.
+ *
+ * The ADC reports VAIP against a 3.5 V ideal full-scale. The external circuit is
+ * VCC2 -> 2.7 kOhm -> VAIP -> (NTC || 560 Ohm) -> GND2.
+ */
+static float32 gatedriverDataCalculateNtcTemperature(uint16 adc)
+{
+    float32 vaip;
+    float32 rBottom;
+    float32 rNtc;
+    float32 temperatureK;
+
+    if(adc == 0U)
+    {
+        return GATEDRIVER_TEMP_INVALID_DEGC;
+    }
+
+    vaip = ((float32)adc * GATEDRIVER_ADC_FULL_SCALE_V) / GATEDRIVER_ADC_FULL_SCALE_STEPS;
+    if((vaip <= 0.0f) || (vaip >= GATEDRIVER_NTC_SUPPLY_V))
+    {
+        return GATEDRIVER_TEMP_INVALID_DEGC;
+    }
+
+    rBottom = (GATEDRIVER_NTC_PULLUP_OHM * vaip) / (GATEDRIVER_NTC_SUPPLY_V - vaip);
+    if((rBottom <= 0.0f) || (rBottom >= GATEDRIVER_NTC_PARALLEL_OHM))
+    {
+        return GATEDRIVER_TEMP_INVALID_DEGC;
+    }
+
+    rNtc = (rBottom * GATEDRIVER_NTC_PARALLEL_OHM) /
+           (GATEDRIVER_NTC_PARALLEL_OHM - rBottom);
+    if(rNtc <= 0.0f)
+    {
+        return GATEDRIVER_TEMP_INVALID_DEGC;
+    }
+
+    temperatureK = 1.0f / ((1.0f / GATEDRIVER_NTC_T25_K) +
+                           (logf(rNtc / GATEDRIVER_NTC_R25_OHM) / GATEDRIVER_NTC_BETA_K));
+
+    return temperatureK - 273.15f;
+}
+
+/**
+ * @brief Publishes calculated SiC module temperatures from the high-side drivers.
+ */
+static void gatedriverDataPublishHighSideTemperature(uint32 channel, const GtmDriverDataChannelState *state)
+{
+    float32 temperature = GATEDRIVER_TEMP_INVALID_DEGC;
+
+    if(state->readout.adcValid != FALSE)
+    {
+        temperature = gatedriverDataCalculateNtcTemperature(state->readout.adc);
+    }
+
+    switch((GtmDriverDataChannelId)channel)
+    {
+        case GtmDriverDataChannel_uHigh:
+            app_state.gate_driver_data.sic_temperature.u_degC = temperature;
+            break;
+
+        case GtmDriverDataChannel_vHigh:
+            app_state.gate_driver_data.sic_temperature.v_degC = temperature;
+            break;
+
+        case GtmDriverDataChannel_wHigh:
+            app_state.gate_driver_data.sic_temperature.w_degC = temperature;
+            break;
+
+        default:
+            break;
+    }
+}
+
+/**
+ * @brief Copies the last valid DATA readout and derived values into app_state.
  */
 static void gatedriverDataPublishChannel(uint32 channel, const GtmDriverDataChannelState *state)
 {
@@ -110,71 +173,18 @@ static void gatedriverDataPublishChannel(uint32 channel, const GtmDriverDataChan
     published->adc = state->readout.adc;
     published->diagnosticFrame0 = state->readout.diagnosticFrame0;
     published->diagnosticFrame1 = state->readout.diagnosticFrame1;
+
+    gatedriverDataPublishHighSideTemperature(channel, state);
 }
 
 /**
- * @brief Returns TRUE once the configured UART print period has elapsed.
- */
-static boolean gatedriverDataPrintDue(void)
-{
-    uint64 now = (uint64)IfxStm_get(&MODULE_STM0);
-
-    if((now - g_gatedriverDataLastPrintTick) < g_gatedriverDataPrintPeriodTicks)
-    {
-        return FALSE;
-    }
-
-    g_gatedriverDataLastPrintTick = now;
-    return TRUE;
-}
-
-/**
- * @brief Prints one initialized DATA channel for bench bring-up.
- */
-static void gatedriverDataPrintChannel(uint32 channel, const GtmDriverDataChannelState *state)
-{
-    char message[160];
-    int len;
-
-    len = snprintf(message,
-                   sizeof(message),
-                   "GD %s adc=%u diag0=0x%04X diag1=0x%04X valid=%u%u%u raw=0x%04X frames=%lu lost=%lu inv=%lu\r\n",
-                   g_gatedriverDataChannelNames[channel],
-                   (unsigned int)state->readout.adc,
-                   (unsigned int)state->readout.diagnosticFrame0,
-                   (unsigned int)state->readout.diagnosticFrame1,
-                   (unsigned int)state->readout.adcValid,
-                   (unsigned int)state->readout.diagnosticFrame0Valid,
-                   (unsigned int)state->readout.diagnosticFrame1Valid,
-                   (unsigned int)state->readout.lastRawFrame,
-                   (unsigned long)state->frameCount,
-                   (unsigned long)state->dataLostCount,
-                   (unsigned long)state->invalidFrameCount);
-
-    if(len <= 0)
-    {
-        return;
-    }
-
-    if((unsigned int)len >= sizeof(message))
-    {
-        len = (int)(sizeof(message) - 1U);
-        message[len] = '\0';
-    }
-
-    sendUARTMessage(message, (Ifx_SizeT)len);
-}
-
-/**
- * @brief Polls TIM, publishes all active channels, and emits optional UART diagnostics.
+ * @brief Polls TIM and publishes all active channels for Ethernet logging.
  */
 static void gatedriverDataPoll(void)
 {
-    boolean printDue;
     uint32 channel;
 
     (void)gtmDriverDataTimProcess();
-    printDue = gatedriverDataPrintDue();
 
     for(channel = 0U; channel < GTM_DRIVER_DATA_CHANNEL_COUNT; channel++)
     {
@@ -191,12 +201,26 @@ static void gatedriverDataPoll(void)
         }
 
         gatedriverDataPublishChannel(channel, &state);
-
-        if(printDue != FALSE)
-        {
-            gatedriverDataPrintChannel(channel, &state);
-        }
     }
+}
+
+/**
+ * @brief Clears published DATA values and marks derived temperatures invalid.
+ */
+static void gatedriverDataResetPublishedState(void)
+{
+    uint32 channel;
+
+    for(channel = 0U; channel < APP_GATE_DRIVER_DATA_CHANNEL_COUNT; channel++)
+    {
+        app_state.gate_driver_data.channel[channel].adc = 0U;
+        app_state.gate_driver_data.channel[channel].diagnosticFrame0 = 0U;
+        app_state.gate_driver_data.channel[channel].diagnosticFrame1 = 0U;
+    }
+
+    app_state.gate_driver_data.sic_temperature.u_degC = GATEDRIVER_TEMP_INVALID_DEGC;
+    app_state.gate_driver_data.sic_temperature.v_degC = GATEDRIVER_TEMP_INVALID_DEGC;
+    app_state.gate_driver_data.sic_temperature.w_degC = GATEDRIVER_TEMP_INVALID_DEGC;
 }
 
 void gatedriverInit(void)

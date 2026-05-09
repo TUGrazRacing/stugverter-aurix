@@ -140,6 +140,9 @@ static const Parameter param_table[] = {
     {0x270F, &app_state.gate_driver_data.channel[5].adc,              NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WH_ADC",     ""},
     {0x2710, &app_state.gate_driver_data.channel[5].diagnosticFrame0, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WH_DIAG0",   ""},
     {0x2711, &app_state.gate_driver_data.channel[5].diagnosticFrame1, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WH_DIAG1",   ""},
+    {0x2712, &app_state.gate_driver_data.sic_temperature.u_degC,      NULL,                      TYPE_FLOAT32, ACCESS_READ_ONLY,          0x27, "SIC_U_TEMP",    "degC"},
+    {0x2713, &app_state.gate_driver_data.sic_temperature.v_degC,      NULL,                      TYPE_FLOAT32, ACCESS_READ_ONLY,          0x27, "SIC_V_TEMP",    "degC"},
+    {0x2714, &app_state.gate_driver_data.sic_temperature.w_degC,      NULL,                      TYPE_FLOAT32, ACCESS_READ_ONLY,          0x27, "SIC_W_TEMP",    "degC"},
 };
 
 #define PARAM_TABLE_SIZE (sizeof(param_table) / sizeof(param_table[0]))

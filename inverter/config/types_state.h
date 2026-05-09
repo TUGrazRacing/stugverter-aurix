@@ -22,7 +22,15 @@ typedef struct
 
 typedef struct
 {
+    float32 u_degC;
+    float32 v_degC;
+    float32 w_degC;
+} SicModuleTemperatureState;
+
+typedef struct
+{
     GateDriverDataReadoutState channel[APP_GATE_DRIVER_DATA_CHANNEL_COUNT];
+    SicModuleTemperatureState sic_temperature;
 } GateDriverDataState;
 
 typedef struct
