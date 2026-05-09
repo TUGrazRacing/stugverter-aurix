@@ -120,6 +120,29 @@ static const Parameter param_table[] = {
     {0x2603, &app_state.foc.resolver_mech_angle,   NULL,                                        TYPE_FLOAT32, ACCESS_READ_ONLY,          0x26, "MECH_ANGLE",    "rad"},
     {0x2604, &app_state.foc.control_loop_counter,  NULL,                                        TYPE_UINT32,  ACCESS_READ_ONLY,          0x26, "LOOP_COUNT",    ""},
     {0x2605, &app_state.foc.control_loop_tick,     NULL,                                        TYPE_UINT64,  ACCESS_READ_ONLY,          0x26, "LOOP_TICK",     ""},
+
+    // --- Gate Driver DATA Readout (0x2700) ---
+    {0x2700, &app_state.gate_driver_data.channel[0].adc,              NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_UL_ADC",     ""},
+    {0x2701, &app_state.gate_driver_data.channel[0].diagnosticFrame0, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_UL_DIAG0",   ""},
+    {0x2702, &app_state.gate_driver_data.channel[0].diagnosticFrame1, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_UL_DIAG1",   ""},
+    {0x2703, &app_state.gate_driver_data.channel[1].adc,              NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_VL_ADC",     ""},
+    {0x2704, &app_state.gate_driver_data.channel[1].diagnosticFrame0, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_VL_DIAG0",   ""},
+    {0x2705, &app_state.gate_driver_data.channel[1].diagnosticFrame1, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_VL_DIAG1",   ""},
+    {0x2706, &app_state.gate_driver_data.channel[2].adc,              NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WL_ADC",     ""},
+    {0x2707, &app_state.gate_driver_data.channel[2].diagnosticFrame0, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WL_DIAG0",   ""},
+    {0x2708, &app_state.gate_driver_data.channel[2].diagnosticFrame1, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WL_DIAG1",   ""},
+    {0x2709, &app_state.gate_driver_data.channel[3].adc,              NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_UH_ADC",     ""},
+    {0x270A, &app_state.gate_driver_data.channel[3].diagnosticFrame0, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_UH_DIAG0",   ""},
+    {0x270B, &app_state.gate_driver_data.channel[3].diagnosticFrame1, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_UH_DIAG1",   ""},
+    {0x270C, &app_state.gate_driver_data.channel[4].adc,              NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_VH_ADC",     ""},
+    {0x270D, &app_state.gate_driver_data.channel[4].diagnosticFrame0, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_VH_DIAG0",   ""},
+    {0x270E, &app_state.gate_driver_data.channel[4].diagnosticFrame1, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_VH_DIAG1",   ""},
+    {0x270F, &app_state.gate_driver_data.channel[5].adc,              NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WH_ADC",     ""},
+    {0x2710, &app_state.gate_driver_data.channel[5].diagnosticFrame0, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WH_DIAG0",   ""},
+    {0x2711, &app_state.gate_driver_data.channel[5].diagnosticFrame1, NULL,                      TYPE_UINT16,  ACCESS_READ_ONLY,          0x27, "GD_WH_DIAG1",   ""},
+    {0x2712, &app_state.gate_driver_data.sic_temperature.u_degC,      NULL,                      TYPE_FLOAT32, ACCESS_READ_ONLY,          0x27, "SIC_U_TEMP",    "degC"},
+    {0x2713, &app_state.gate_driver_data.sic_temperature.v_degC,      NULL,                      TYPE_FLOAT32, ACCESS_READ_ONLY,          0x27, "SIC_V_TEMP",    "degC"},
+    {0x2714, &app_state.gate_driver_data.sic_temperature.w_degC,      NULL,                      TYPE_FLOAT32, ACCESS_READ_ONLY,          0x27, "SIC_W_TEMP",    "degC"},
 };
 
 #define PARAM_TABLE_SIZE (sizeof(param_table) / sizeof(param_table[0]))

@@ -72,7 +72,7 @@ void initUART(void)
 
     /* ISR priorities and interrupt target */
     ascConfig.interrupt.txPriority = INTPRIO_ASCLIN0_TX;
-    ascConfig.interrupt.typeOfService = IfxCpu_Irq_getTos(IfxCpu_getCoreIndex());
+    ascConfig.interrupt.typeOfService = IfxCpu_Irq_getTos((IfxCpu_ResourceCpu)CPU_WHICH_SERVICE_ETHERNET);
 
     /* FIFO configuration */
     ascConfig.txBuffer = &g_ascTxBuffer;

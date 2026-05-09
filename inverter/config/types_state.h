@@ -5,10 +5,33 @@
 #include "Ifx_Types.h"
 #include <stdbool.h>
 
+#define APP_GATE_DRIVER_DATA_CHANNEL_COUNT (6U)
+
 typedef struct
 {
     float32 integral;
 } PiState;
+
+typedef struct
+{
+    /* Latest gate-driver DATA values exposed through the parameter table. */
+    uint16 adc;
+    uint16 diagnosticFrame0;
+    uint16 diagnosticFrame1;
+} GateDriverDataReadoutState;
+
+typedef struct
+{
+    float32 u_degC;
+    float32 v_degC;
+    float32 w_degC;
+} SicModuleTemperatureState;
+
+typedef struct
+{
+    GateDriverDataReadoutState channel[APP_GATE_DRIVER_DATA_CHANNEL_COUNT];
+    SicModuleTemperatureState sic_temperature;
+} GateDriverDataState;
 
 typedef struct
 {
