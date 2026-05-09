@@ -7,8 +7,6 @@
 /*------------------------------------------------Function Prototypes------------------------------------------------*/
 /*********************************************************************************************************************/
 
-#define BUZZER     (&IfxPort_P33_0)
-
 /**
  * @brief Initializes the Gate Driver GPIOs.
  * Configures Reset and Enable pins as push-pull outputs.

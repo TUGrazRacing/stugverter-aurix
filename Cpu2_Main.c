@@ -33,8 +33,6 @@
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
-#define BUZZER (&IfxPort_P33_0)
-
 void core2_main(void)
 {
     IfxCpu_enableInterrupts();
