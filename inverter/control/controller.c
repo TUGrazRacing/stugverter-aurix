@@ -1,5 +1,5 @@
 #include <controller.h>
-#include "pwm.h"
+#include <init/pwm.h>
 #include "adc.h"
 #include "resolver_math.h"
 #include "foc.h"

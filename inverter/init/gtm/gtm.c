@@ -28,12 +28,13 @@
 /*********************************************************************************************************************/
 /*-----------------------------------------------------Includes------------------------------------------------------*/
 /*********************************************************************************************************************/
-#include <pwm.h>
+#include "gtm.h"
 #include "IfxGtm_Pwm.h"
 #include "IfxGtm_Atom.h"
 #include "IfxGtm_PinMap.h"
 #include "IfxPort.h"
 #include "IfxPort_Pinmap.h"
+#include "IfxGtm_Tim_In.h"
 
 /*********************************************************************************************************************/
 /*------------------------------------------------------Macros-------------------------------------------------------*/
@@ -290,4 +291,35 @@ void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW)
 //    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_0, dutyU);
 //    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_1, dutyV);
 //    IfxGtm_Pwm_updateChannelDutyImmediate(&g_gtmAtom3phInv.pwm, IfxGtm_Pwm_SyncChannelIndex_2, dutyW);
+}
+
+
+#define PWM_IN IfxGtm_TIM0_0_P00_9_IN
+
+float32 g_measuredPwmDutyCycle = 0.0;                   /* Global variable for duty cycle of generated PWM signal   */
+float32 g_measuredPwmFreq_Hz = 0.0;                     /* Global variable for frequency calculation of PWM signal  */
+float32 g_measuredPwmPeriod = 0.0;                      /* Global variable for period calculation of PWM signal     */
+
+IfxGtm_Tim_In g_driverTIM;                              /* TIM driver structure                                     */
+boolean g_dataCoherent = FALSE;                         /* Boolean to know if the measured data is coherent         */
+
+void initTIM(void)
+{
+  IfxGtm_enable(&MODULE_GTM);                                         /* Enable the GTM                           */
+  IfxGtm_Cmu_enableClocks(&MODULE_GTM, IFXGTM_CMU_CLKEN_CLK0);        /* Enable the CMU clock 0                   */
+
+  IfxGtm_Tim_In_Config configTIM;
+
+  IfxGtm_Tim_In_initConfig(&configTIM, &MODULE_GTM);                  /* Initialize default parameters            */
+  configTIM.filter.inputPin = &PWM_IN;                                /* Select input port pin                    */
+  configTIM.filter.inputPinMode = IfxPort_InputMode_pullDown;         /* Select input port pin mode               */
+  IfxGtm_Tim_In_init(&g_driverTIM, &configTIM);                       /* Initialize the TIM                       */
+}
+
+void measure_PWM(void)
+{
+    IfxGtm_Tim_In_update(&g_driverTIM);                                         /* Update the measured data         */
+    g_measuredPwmPeriod = IfxGtm_Tim_In_getPeriodSecond(&g_driverTIM);          /* Get the period of the PWM signal */
+    g_measuredPwmFreq_Hz = 1 / g_measuredPwmPeriod;                             /* Calculate the frequency          */
+    g_measuredPwmDutyCycle = IfxGtm_Tim_In_getDutyPercent(&g_driverTIM, &g_dataCoherent); /* Get the duty cycle     */
 }
