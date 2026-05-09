@@ -40,7 +40,6 @@ static uint16 controllerCurrentToAdcSteps(float32 current, uint16 offset_adcstep
 void controllerStep(void)
 {
     controllerReadAdcSample();
-    gatedriverDataCapture();
     controllerUpdateSpeedMeasurement();
     controllerRunCurrentLoop();
     controllerPublishLoopTiming();

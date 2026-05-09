@@ -20,6 +20,21 @@ void gatedriverInit(void);
 void gatedriverDataCapture(void);
 
 /**
+ * @brief Initializes the gate-driver DATA readout service.
+ */
+void gatedriverDataServiceInit(void);
+
+/**
+ * @brief Runs the gate-driver DATA readout service.
+ */
+void gatedriverDataServiceTask(void);
+
+/**
+ * @brief Runs the gate-driver DATA readout service forever.
+ */
+void gatedriverDataServiceRun(void);
+
+/**
  * @brief Enables the Gate Driver outputs.
  * Sets the EN pins High.
  */

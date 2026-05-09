@@ -27,75 +27,29 @@
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
-#include "IfxStm.h"
-#include "UART_Logging.h"
-#include <gtm/gtm.h>
-#include <stdio.h>
+#include "gate_driver.h"
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
-static void printGateDriverDataReadout(void);
+static void core3Startup(void);
 
 void core3_main(void)
 {
-    uint64 lastPrintTick;
-    uint64 printPeriodTicks;
+    core3Startup();
+    gatedriverDataServiceInit();
+    gatedriverDataServiceRun();
+}
 
+static void core3Startup(void)
+{
     IfxCpu_enableInterrupts();
-    
+
     /* !!WATCHDOG3 IS DISABLED HERE!!
      * Enable the watchdog and service it periodically if it is required
      */
     IfxScuWdt_disableCpuWatchdog(IfxScuWdt_getCpuWatchdogPassword());
-    
+
     /* Wait for CPU sync event */
     IfxCpu_emitEvent(&g_cpuSyncEvent);
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
-    
-    initUART();
-    lastPrintTick = (uint64)IfxStm_get(&MODULE_STM0);
-    printPeriodTicks = (uint64)IfxStm_getTicksFromMilliseconds(&MODULE_STM0, 100U);
-
-    while(1)
-    {
-        uint64 now = (uint64)IfxStm_get(&MODULE_STM0);
-
-        if((now - lastPrintTick) >= printPeriodTicks)
-        {
-            lastPrintTick = now;
-            printGateDriverDataReadout();
-        }
-    }
-}
-
-static void printGateDriverDataReadout(void)
-{
-    const GtmPwmInputMeasurement *measurement = gtmDriverDataTimGetMeasurement();
-    const GtmDriverDataReadout *readout = gtmDriverDataGetReadout();
-    char message[128];
-    int len;
-
-    len = snprintf(message,
-                   sizeof(message),
-                   "GD DATA adc=%u diag0=0x%04X diag1=0x%04X valid=%u%u%u last=0x%04X coh=%u lost=%u\r\n",
-                   (unsigned int)readout->adc,
-                   (unsigned int)readout->diagnosticFrame0,
-                   (unsigned int)readout->diagnosticFrame1,
-                   (unsigned int)readout->adcValid,
-                   (unsigned int)readout->diagnosticFrame0Valid,
-                   (unsigned int)readout->diagnosticFrame1Valid,
-                   (unsigned int)readout->lastRawFrame,
-                   (unsigned int)measurement->dataCoherent,
-                   (unsigned int)measurement->dataLost);
-
-    if(len > 0)
-    {
-        if((unsigned int)len >= sizeof(message))
-        {
-            len = (int)(sizeof(message) - 1U);
-            message[len] = '\0';
-        }
-
-        sendUARTMessage(message, (Ifx_SizeT)len);
-    }
 }
