@@ -27,20 +27,12 @@
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
+#include "UART_Logging.h"
 #include "gate_driver.h"
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
-static void core3Startup(void);
-
 void core3_main(void)
-{
-    core3Startup();
-    gatedriverDataServiceInit();
-    gatedriverDataServiceRun();
-}
-
-static void core3Startup(void)
 {
     IfxCpu_enableInterrupts();
 
@@ -52,4 +44,12 @@ static void core3Startup(void)
     /* Wait for CPU sync event */
     IfxCpu_emitEvent(&g_cpuSyncEvent);
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
+
+    initUART();
+    gatedriverDataServiceInit();
+    gatedriverDataServiceRun();
+    while(1)
+    {
+    }
 }
+
