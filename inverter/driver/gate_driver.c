@@ -16,6 +16,7 @@
 #define GATEDRIVER_EN_V_HIGH     (&IfxPort_P14_7)
 #define GATEDRIVER_EN_W_HIGH     (&IfxPort_P21_3)
 
+
 #define GATEDRIVER_ADC_FULL_SCALE_STEPS (4095.0f)
 #define GATEDRIVER_ADC_FULL_SCALE_V     (3.3f)
 #define GATEDRIVER_NTC_SUPPLY_V         (18.0f)
@@ -37,6 +38,7 @@ const IfxPort_Io_ConfigPin gatedriver_config[] = {
     {GATEDRIVER_EN_U_HIGH,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
     {GATEDRIVER_EN_V_HIGH,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
     {GATEDRIVER_EN_W_HIGH,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
+    {BUZZER,   IfxPort_Mode_outputPushPullGeneral, IfxPort_PadDriver_cmosAutomotiveSpeed1},
 };
 
 #if APP_GATE_DRIVER_DATA_CHANNEL_COUNT != GTM_DRIVER_DATA_CHANNEL_COUNT
@@ -236,6 +238,7 @@ void gatedriverInit(void)
     IfxPort_setPinLow(GATEDRIVER_EN_U_LOW->port, GATEDRIVER_EN_U_LOW->pinIndex);
     IfxPort_setPinLow(GATEDRIVER_EN_V_LOW->port, GATEDRIVER_EN_V_LOW->pinIndex);
     IfxPort_setPinLow(GATEDRIVER_EN_W_LOW->port, GATEDRIVER_EN_W_LOW->pinIndex);
+
 
 
     /* 2. Setup IO Mode (switch pins to Output Push-Pull) */
