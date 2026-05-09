@@ -15,6 +15,11 @@
 void gatedriverInit(void);
 
 /**
+ * @brief Polls the configured GTM TIM channel for the gate-driver DATA PWM signal.
+ */
+void gatedriverDataCapture(void);
+
+/**
  * @brief Enables the Gate Driver outputs.
  * Sets the EN pins High.
  */

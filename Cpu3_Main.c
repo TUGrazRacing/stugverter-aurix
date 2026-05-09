@@ -27,12 +27,20 @@
 #include "Ifx_Types.h"
 #include "IfxCpu.h"
 #include "IfxScuWdt.h"
+#include "IfxStm.h"
 #include "UART_Logging.h"
+#include <gtm/gtm.h>
+#include <stdio.h>
 
 extern IfxCpu_syncEvent g_cpuSyncEvent;
 
+static void printGateDriverDataDuty(void);
+
 void core3_main(void)
 {
+    uint64 lastPrintTick;
+    uint64 printPeriodTicks;
+
     IfxCpu_enableInterrupts();
     
     /* !!WATCHDOG3 IS DISABLED HERE!!
@@ -45,7 +53,54 @@ void core3_main(void)
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
     
     initUART();
+    lastPrintTick = (uint64)IfxStm_get(&MODULE_STM0);
+    printPeriodTicks = (uint64)IfxStm_getTicksFromMilliseconds(&MODULE_STM0, 100U);
+
     while(1)
     {
+        uint64 now = (uint64)IfxStm_get(&MODULE_STM0);
+
+        if((now - lastPrintTick) >= printPeriodTicks)
+        {
+            lastPrintTick = now;
+            printGateDriverDataDuty();
+        }
+    }
+}
+
+static void printGateDriverDataDuty(void)
+{
+    const GtmPwmInputMeasurement *measurement = gtmDriverDataTimGetMeasurement();
+    char message[96];
+    int len;
+    uint32 dutyCentiPercent = 0U;
+
+    if((measurement->initialized != FALSE) && (measurement->periodTicks > 0U))
+    {
+        dutyCentiPercent = (uint32)(((uint64)measurement->pulseTicks * 10000ULL) /
+                                    (uint64)measurement->periodTicks);
+    }
+
+    len = snprintf(message,
+                   sizeof(message),
+                   "GD DATA duty=%u.%02u%% p=%lu h=%lu coh=%u lost=%u ovf=%u glitch=%u\r\n",
+                   (unsigned int)(dutyCentiPercent / 100U),
+                   (unsigned int)(dutyCentiPercent % 100U),
+                   (unsigned long)measurement->periodTicks,
+                   (unsigned long)measurement->pulseTicks,
+                   (unsigned int)measurement->dataCoherent,
+                   (unsigned int)measurement->dataLost,
+                   (unsigned int)measurement->overflow,
+                   (unsigned int)measurement->glitch);
+
+    if(len > 0)
+    {
+        if((unsigned int)len >= sizeof(message))
+        {
+            len = (int)(sizeof(message) - 1U);
+            message[len] = '\0';
+        }
+
+        sendUARTMessage(message, (Ifx_SizeT)len);
     }
 }

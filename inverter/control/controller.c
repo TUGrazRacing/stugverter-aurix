@@ -1,5 +1,5 @@
 #include <controller.h>
-#include <init/pwm.h>
+#include <gtm/gtm.h>
 #include "adc.h"
 #include "resolver_math.h"
 #include "foc.h"
@@ -40,6 +40,7 @@ static uint16 controllerCurrentToAdcSteps(float32 current, uint16 offset_adcstep
 void controllerStep(void)
 {
     controllerReadAdcSample();
+    gatedriverDataCapture();
     controllerUpdateSpeedMeasurement();
     controllerRunCurrentLoop();
     controllerPublishLoopTiming();

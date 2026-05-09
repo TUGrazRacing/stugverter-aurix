@@ -1,4 +1,5 @@
 #include "gate_driver.h"
+#include <gtm/gtm.h>
 #include <Port/Io/IfxPort_Io.h>
 #include "IfxPort_Pinmap.h"
 #include "IfxStm.h"
@@ -41,7 +42,7 @@ const IfxPort_Io_ConfigPin gatedriver_config[] = {
 
 void gatedriverDataCapture(void)
 {
-
+    (void)gtmDriverDataTimUpdate();
 }
 
 void gatedriverInit(void)

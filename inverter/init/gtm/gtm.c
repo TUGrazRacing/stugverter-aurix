@@ -57,6 +57,7 @@
 #define PHASE_U_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase U in [%]   */
 #define PHASE_V_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase V in [%]   */
 #define PHASE_W_DUTY            (50.0f)                                /* Initial PWM duty cycle of phase W in [%]   */
+#define GATEDRIVER_DATA_PWM_IN  (&IfxGtm_TIM0_0_P00_9_IN)
 /*********************************************************************************************************************/
 /*-------------------------------------------------Global variables--------------------------------------------------*/
 /*********************************************************************************************************************/
@@ -72,9 +73,25 @@ IFX_STATIC GtmAtom3phInv g_gtmAtom3phInv;
 
 PwmConfig* pwm_config;
 
+float32 g_measuredPwmDutyCycle = 0.0f;                /* Duty cycle of the DATA PWM signal in percent. */
+float32 g_measuredPwmFreq_Hz = 0.0f;                  /* Frequency of the DATA PWM signal. */
+float32 g_measuredPwmPeriod = 0.0f;                   /* Period of the DATA PWM signal in seconds. */
+uint32  g_measuredPwmPeriodTicks = 0U;                /* Period of the DATA PWM signal in TIM ticks. */
+uint32  g_measuredPwmPulseTicks = 0U;                 /* High time of the DATA PWM signal in TIM ticks. */
+boolean g_dataCoherent = FALSE;                       /* TRUE if duty and period were captured coherently. */
+boolean g_measuredPwmNewData = FALSE;
+boolean g_measuredPwmDataLost = FALSE;
+boolean g_measuredPwmOverflow = FALSE;
+boolean g_measuredPwmGlitch = FALSE;
+
+static IfxGtm_Tim_In g_driverDataTim;
+static GtmPwmInputMeasurement g_driverDataPwmMeasurement;
+
 /*********************************************************************************************************************/
 /*-----------------------------------------------Function Prototypes-------------------------------------------------*/
 /*********************************************************************************************************************/
+static void gtmEnsureClock0(void);
+static void gtmPublishDriverDataMeasurement(void);
 
 /*********************************************************************************************************************/
 /*--------------------------------------------Function Implementations-----------------------------------------------*/
@@ -91,6 +108,22 @@ void interruptGtmAtom(void)
 /* Period interrupt callback function */
 void IfxGtm_periodEventFunction(void *data)
 {
+}
+
+static void gtmEnsureClock0(void)
+{
+    if(!IfxGtm_isEnabled(&MODULE_GTM))
+    {
+        float32 frequency;
+
+        IfxGtm_enable(&MODULE_GTM);
+
+        frequency = IfxGtm_Cmu_getModuleFrequency(&MODULE_GTM);
+        IfxGtm_Cmu_setGclkFrequency(&MODULE_GTM, frequency);
+        IfxGtm_Cmu_setClkFrequency(&MODULE_GTM, IfxGtm_Cmu_Clk_0, frequency);
+    }
+
+    IfxGtm_Cmu_enableClocks(&MODULE_GTM, IFXGTM_CMU_CLKEN_CLK0);
 }
 
 static void pwmInitAdcTriggerChannel(void)
@@ -249,24 +282,12 @@ void pwmInit(PwmConfig* pconfig)
 
     /* 7. Call the init function */
 
-    if(!IfxGtm_isEnabled(&MODULE_GTM))
-    {
-        float32 frequency;
-        /* Enable GTM, it is necessary if the GTM is not initialized earlier */
-        IfxGtm_enable(&MODULE_GTM);
-
-        frequency = IfxGtm_Cmu_getModuleFrequency(&MODULE_GTM);
-        /* Set the global clock frequency to the max */
-        IfxGtm_Cmu_setGclkFrequency(&MODULE_GTM, frequency);
-        /* Set the CMU CLK0 */
-        IfxGtm_Cmu_setClkFrequency(&MODULE_GTM, IfxGtm_Cmu_Clk_0, frequency);
-        /* Enable the FXU clock */
-        IfxGtm_Cmu_enableClocks(&MODULE_GTM, IFXGTM_CMU_CLKEN_CLK0);
-    }
+    gtmEnsureClock0();
 
     IfxGtm_Pwm_init(&g_gtmAtom3phInv.pwm, &g_gtmAtom3phInv.channels[0], &config);
 
     pwmInitAdcTriggerChannel();
+    gtmDriverDataTimInit();
 
     /* 8. Store the current duty values and dead-times for runtime calls */
     g_gtmAtom3phInv.dutyCycles[0]= channelConfig[0].duty;
@@ -294,32 +315,102 @@ void setDutyCycles(float32 dutyU, float32 dutyV, float32 dutyW)
 }
 
 
-#define PWM_IN IfxGtm_TIM0_0_P00_9_IN
+static void gtmPublishDriverDataMeasurement(void)
+{
+    g_measuredPwmDutyCycle = g_driverDataPwmMeasurement.dutyPercent;
+    g_measuredPwmFreq_Hz = g_driverDataPwmMeasurement.frequencyHz;
+    g_measuredPwmPeriod = g_driverDataPwmMeasurement.periodSeconds;
+    g_measuredPwmPeriodTicks = g_driverDataPwmMeasurement.periodTicks;
+    g_measuredPwmPulseTicks = g_driverDataPwmMeasurement.pulseTicks;
+    g_dataCoherent = g_driverDataPwmMeasurement.dataCoherent;
+    g_measuredPwmNewData = g_driverDataPwmMeasurement.newData;
+    g_measuredPwmDataLost = g_driverDataPwmMeasurement.dataLost;
+    g_measuredPwmOverflow = g_driverDataPwmMeasurement.overflow;
+    g_measuredPwmGlitch = g_driverDataPwmMeasurement.glitch;
+}
 
-float32 g_measuredPwmDutyCycle = 0.0;                   /* Global variable for duty cycle of generated PWM signal   */
-float32 g_measuredPwmFreq_Hz = 0.0;                     /* Global variable for frequency calculation of PWM signal  */
-float32 g_measuredPwmPeriod = 0.0;                      /* Global variable for period calculation of PWM signal     */
+void gtmDriverDataTimInit(void)
+{
+    IfxGtm_Tim_In_Config configTIM;
+    boolean initialized;
 
-IfxGtm_Tim_In g_driverTIM;                              /* TIM driver structure                                     */
-boolean g_dataCoherent = FALSE;                         /* Boolean to know if the measured data is coherent         */
+    gtmEnsureClock0();
+
+    IfxGtm_Tim_In_initConfig(&configTIM, &MODULE_GTM);
+    configTIM.filter.inputPin = (IfxGtm_Tim_TinMap *)GATEDRIVER_DATA_PWM_IN;
+    configTIM.filter.inputPinMode = IfxPort_InputMode_noPullDevice;
+    configTIM.capture.clock = IfxGtm_Cmu_Clk_0;
+    configTIM.capture.mode = Ifx_Pwm_Mode_leftAligned;
+    configTIM.mode = IfxGtm_Tim_Mode_pwmMeasurement;
+
+    initialized = IfxGtm_Tim_In_init(&g_driverDataTim, &configTIM);
+
+    g_driverDataPwmMeasurement.dutyPercent = 0.0f;
+    g_driverDataPwmMeasurement.frequencyHz = 0.0f;
+    g_driverDataPwmMeasurement.periodSeconds = 0.0f;
+    g_driverDataPwmMeasurement.periodTicks = 0U;
+    g_driverDataPwmMeasurement.pulseTicks = 0U;
+    g_driverDataPwmMeasurement.dataCoherent = FALSE;
+    g_driverDataPwmMeasurement.newData = FALSE;
+    g_driverDataPwmMeasurement.dataLost = FALSE;
+    g_driverDataPwmMeasurement.overflow = FALSE;
+    g_driverDataPwmMeasurement.glitch = FALSE;
+    g_driverDataPwmMeasurement.initialized = initialized;
+    gtmPublishDriverDataMeasurement();
+}
+
+boolean gtmDriverDataTimUpdate(void)
+{
+    boolean measurementUpdated = FALSE;
+
+    if(g_driverDataPwmMeasurement.initialized == FALSE)
+    {
+        return FALSE;
+    }
+
+    IfxGtm_Tim_In_update(&g_driverDataTim);
+
+    g_driverDataPwmMeasurement.newData = IfxGtm_Tim_In_isNewData(&g_driverDataTim);
+    g_driverDataPwmMeasurement.dataLost = IfxGtm_Tim_In_isDataLost(&g_driverDataTim);
+    g_driverDataPwmMeasurement.overflow = g_driverDataTim.overflowCnt;
+    g_driverDataPwmMeasurement.glitch = g_driverDataTim.glitch;
+
+    if(g_driverDataPwmMeasurement.newData != FALSE)
+    {
+        g_driverDataPwmMeasurement.periodTicks = (uint32)IfxGtm_Tim_In_getPeriodTicks(&g_driverDataTim);
+        g_driverDataPwmMeasurement.pulseTicks = (uint32)IfxGtm_Tim_In_getPulseLengthTick(&g_driverDataTim);
+        g_driverDataPwmMeasurement.dataCoherent = g_driverDataTim.dataCoherent;
+
+        if(g_driverDataPwmMeasurement.periodTicks > 0U)
+        {
+            g_driverDataPwmMeasurement.periodSeconds = IfxGtm_Tim_In_getPeriodSecond(&g_driverDataTim);
+
+            if(g_driverDataPwmMeasurement.periodSeconds > 0.0f)
+            {
+                g_driverDataPwmMeasurement.frequencyHz = 1.0f / g_driverDataPwmMeasurement.periodSeconds;
+                g_driverDataPwmMeasurement.dutyPercent =
+                    ((float32)g_driverDataPwmMeasurement.pulseTicks * 100.0f) /
+                    (float32)g_driverDataPwmMeasurement.periodTicks;
+                measurementUpdated = TRUE;
+            }
+        }
+    }
+
+    gtmPublishDriverDataMeasurement();
+    return measurementUpdated;
+}
+
+const GtmPwmInputMeasurement *gtmDriverDataTimGetMeasurement(void)
+{
+    return &g_driverDataPwmMeasurement;
+}
 
 void initTIM(void)
 {
-  IfxGtm_enable(&MODULE_GTM);                                         /* Enable the GTM                           */
-  IfxGtm_Cmu_enableClocks(&MODULE_GTM, IFXGTM_CMU_CLKEN_CLK0);        /* Enable the CMU clock 0                   */
-
-  IfxGtm_Tim_In_Config configTIM;
-
-  IfxGtm_Tim_In_initConfig(&configTIM, &MODULE_GTM);                  /* Initialize default parameters            */
-  configTIM.filter.inputPin = &PWM_IN;                                /* Select input port pin                    */
-  configTIM.filter.inputPinMode = IfxPort_InputMode_pullDown;         /* Select input port pin mode               */
-  IfxGtm_Tim_In_init(&g_driverTIM, &configTIM);                       /* Initialize the TIM                       */
+    gtmDriverDataTimInit();
 }
 
 void measure_PWM(void)
 {
-    IfxGtm_Tim_In_update(&g_driverTIM);                                         /* Update the measured data         */
-    g_measuredPwmPeriod = IfxGtm_Tim_In_getPeriodSecond(&g_driverTIM);          /* Get the period of the PWM signal */
-    g_measuredPwmFreq_Hz = 1 / g_measuredPwmPeriod;                             /* Calculate the frequency          */
-    g_measuredPwmDutyCycle = IfxGtm_Tim_In_getDutyPercent(&g_driverTIM, &g_dataCoherent); /* Get the duty cycle     */
+    (void)gtmDriverDataTimUpdate();
 }
